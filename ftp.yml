@@ -1,0 +1,8 @@
+
+# FTP server for maps uploading
+
+---
+
+serv: ftp://example.com/
+auth: username:secret
+
