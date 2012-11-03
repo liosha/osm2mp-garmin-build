@@ -1,6 +1,7 @@
-#! /usr/bin/perl 
+#! /usr/bin/perl
 
-# nix adaptation
+# FreeBSD version
+# last edit 2012/11/03 (clean comments)
 
 use strict;
 
@@ -53,7 +54,6 @@ my $name_postfix :shared = exists($config_ref->{name_postfix}) ? "$config_ref->{
 my $today :shared = strftime( "%Y-%m-%d", localtime );
 
 
-# my $dirname :shared = "$prefix.temp";
 my $dirname :shared = "$prefix.gryphon.temp";
 mkdir $dirname  unless -d $dirname;
 
@@ -69,7 +69,6 @@ logg( "Let's go!" );
 `svn up open-cfg`;
 my $svn_info=`svn info open-cfg`;
 logg("svn info\n$svn_info");
-#`copy open-cfg\\osm.typ osm.typ`;
 rcopy_glob("open-cfg/osm.typ","osm.typ");
 logg( "Configuration files updated" );
 
@@ -110,16 +109,10 @@ my $t_bnd = threads->create( sub {
                 $reg->{bound} = $reg->{alias} unless exists $reg->{bound};
                 my $onering = exists($reg->{onering})   ?  '--onering'    :  q{};
                 $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
-                #gryphon: обновил версию, должны работать большие отношения
                 `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $basedir/$dirname/$reg->{mapid}.getbound.log`;
-                #gryphon: большие границы через full не загружаются, пробуем обойти
-                #my $boundrelation="$basedir/_bounds/$reg->{bound}_bound.osm";
-                #`$basedir/getrelation.py $reg->{bound} >$boundrelation 2>$basedir/$dirname/$reg->{mapid}.getbound.log`;
-                #`$basedir/getbound.pl -o $reg->{poly} -file $boundrelation $onering $reg->{bound}  2>>$basedir/$dirname/$reg->{mapid}.getbound.log`;
     		if ( $? != 0 ) {
 	            logg( "Error! Can't get boundary $reg->{code} $reg->{alias}" );
     		}
-                #unlink $boundrelation;
             }
         };
         $q_bld->enqueue( $reg );
@@ -172,7 +165,6 @@ my $t_bld = threads->create( sub {
 
             logg( "$reg->{code} $reg->{alias} - converting to MP" );
             $reg->{keys} = q{} unless exists $reg->{keys};
-    	    #my $cmd = encode 'utf8', qq{ 
             my $cmd =  qq{ 
                 $basedir/osm2mp.pl -
                 --config $cfgfile
@@ -195,7 +187,6 @@ my $t_bld = threads->create( sub {
             `osmconvert "$reg->{source}" --out-osm | $cmd >"$dirname/$reg->{mapid}.mp" 2>"$dirname/$reg->{mapid}.osm2mp.log"`;
             if (exists $reg->{fixmultipoly} && $reg->{fixmultipoly}=="yes"){
                 logg( "$reg->{code} $reg->{alias} - converting broken multipolygons to MP" );
-                #my $cmd_brokenmpoly = encode 'utf8', qq{ 
                 my $cmd_brokenmpoly = qq{ 
                     $basedir/osm2mp.pl -
                     --config $cfgfile_brokenmpoly
@@ -232,15 +223,10 @@ my $t_bld = threads->create( sub {
             logg( "$reg->{code} $reg->{alias} - compressing MP" );
             my $regdir = "$reg->{alias}_$today";
             mkdir $regdir;
-            #`move $dirname\\$reg->{mapid}.* $regdir`;
             rmove_glob("$dirname/$reg->{mapid}.*", "$regdir");
-            #`mv $dirname/$reg->{mapid}.* $regdir`;
-            #`copy $regdir\\$reg->{mapid}.mp $dirname`;
             rcopy_glob("$regdir/$reg->{mapid}.mp","$dirname");
-            #`cp $regdir/$reg->{mapid}.mp $dirname`;
             unlink "$basedir/_rel/$prefix.$reg->{alias}.mp.7z";
             `7za a -y $basedir/_rel/$prefix.$reg->{alias}.mp.7z $regdir`;
-            #`rmdir /s /q $regdir`;
             rmtree("$regdir");
 
             $q_upl->enqueue( { 
@@ -254,13 +240,11 @@ my $t_bld = threads->create( sub {
             logg( "$reg->{code} $reg->{alias} - compiling IMG" );
             chdir $dirname;
 
-            #`wine cgpsmapper ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2>>wine.log`;
             cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2>>wine.log","$reg->{mapid}.img");
 
             
             if ( $housesearch ) {
                 `$basedir/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2>/dev/null`;
-                #`wine cgpsmapper ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log 2>>wine.log`;
                 cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
             }
 
@@ -293,10 +277,7 @@ my $t_bld = threads->create( sub {
                 close PV;
 
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
-                #`wine cpreview pv.txt -m > $reg->{mapid}.cpreview.log 2>>wine.log`;
                 unlink 'OSM.reg';
-                #`cgpsmapper_sse2 OSM.mp`;
-                #`wine cgpsmapper OSM.mp 2>>wine.log`;
                 cgpsm_run("OSM.mp 2>>wine.log", "OSM.img");
 
                 unlink 'OSM.mp';
@@ -315,29 +296,14 @@ my $t_bld = threads->create( sub {
                 close PV;
 
 
-                #`copy ..\\osm.typ .`;
-                #rcopy_glob("../osm.typ",".");
-                #`gmt -wy $fid osm.typ`;
                 rcopy_glob("../osm.typ","./osm${fid}.typ");
                 `gmt -wy $fid ./osm${fid}.typ`;
                 
-                #`ren $reg->{mapid}.img $reg->{mapid}.img`;
-                #`ren $smp.img $smp.img`         if $housesearch;
-                #`ren osm.img osm.img`;
-                #`ren osm_mdr.img osm_mdr.img`;
-                #`ren osm.mdx osm.mdx`;
-                #`ren osm.tdb osm.tdb`;
                 ren_lowercase("*.*");
 
                 logg( "$reg->{code} $reg->{alias} - compressing mapset" );
 
                 mkdir $regdir;
-                #`move $reg->{mapid}.* $regdir`;
-                #`copy $regdir\\$reg->{mapid}.img* .`;
-                #`copy $smp.img* $regdir`        if $housesearch;
-                #`move OSM* $regdir`;
-                #`move *.txt $regdir`;
-                #`move install.bat $regdir`;
                 rmove_glob("$reg->{mapid}.*", "$regdir");
                 rcopy_glob("$regdir/$reg->{mapid}.img*",".");
                 rcopy_glob("$smp.img*", "$regdir")        if $housesearch;
@@ -346,7 +312,6 @@ my $t_bld = threads->create( sub {
                 rmove_glob("install.bat","$regdir");
                 unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
                 `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
-                #`rmdir /s /q $regdir`;
                 rmtree("$regdir");
 
                 $q_upl->enqueue( { 
@@ -358,7 +323,7 @@ my $t_bld = threads->create( sub {
             }
             else {
                 logg( "Error! $reg->{code} $reg->{alias} - IMG build failed, skipping" );
-		#`sendEmail.bat oleg-secondary\@ya.ru "error" "$reg->{code} $reg->{alias} - IMG build failed, skipping" $reg->{mapid}.cgpsmapper.log`;
+                rcopy_glob("$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
             }
 
             chdir $basedir;
@@ -412,14 +377,11 @@ close PV;
 
 
 `cpreview pv.txt -m > cpreview.log`;
-#`wine cpreview pv.txt -m > cpreview.log 2>>wine.log`;
 unlink "OSM.reg";
 for my $mp (@reglist) {
 #    unlink "$mp.img.idx";
 }
 
-#`cgpsmapper OSM.mp`;
-#`wine cgpsmapper OSM.mp 2>>wine.log`;
 cgpsm_run("OSM.mp 2>>wine.log", "OSM.img");
 
 unlink 'OSM.mp';
@@ -438,27 +400,18 @@ print PV $pv;
 close PV;
 
 
-#`copy ..\\osm.typ .`;
-#rcopy_glob("../osm.typ",".");
-#`gmt -wy $fidbase osm.typ`;
 rcopy_glob("../osm.typ","./osm${fidbase}.typ");
 `gmt -wy $fidbase ./osm${fidbase}.typ`;
 
-#`ren osm.img osm.img`;
-#`ren osm_mdr.img osm_mdr.img`;
-#`ren osm.mdx osm.mdx`;
-#`ren osm.tdb osm.tdb`;
 ren_lowercase("*.*");
 
 logg( "Compressing mapset" );
 
 my $mapdir = "${filename}_$today";
 mkdir $mapdir;
-#`move * $mapdir`;
 rmove_glob("*","$mapdir");
 unlink "$basedir/_rel/$prefix.$filename.7z";
 `7za a -y $basedir/_rel/$prefix.$filename.7z $mapdir`;
-#`rmdir /s /q $mapdir`;
 rmtree("$mapdir");
 
 chdir $basedir;
@@ -467,7 +420,6 @@ chdir $basedir;
 logg( "Uploading mapset" );
 
 `curl --retry 100 -u $auth -T $basedir/_rel/$prefix.$filename.7z $serv`;
-#`rmdir /s /q $dirname`;
 rmtree("$dirname");
 
 
