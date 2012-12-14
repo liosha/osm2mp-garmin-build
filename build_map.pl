@@ -1,7 +1,8 @@
 #! /usr/bin/perl
 
 # FreeBSD version
-# last edit 2012/11/03 (clean comments)
+#      edit 2012/11/03 (clean comments)
+#      edit 2012/12/14 (new osm2mp)
 
 use strict;
 
@@ -173,12 +174,6 @@ my $t_bld = threads->create( sub {
                 --bpoly $reg->{poly}
                 --defaultcountry $countrycode
                 --defaultregion "$reg->{name}"
-                --countrylist "iso-3166-1-a2-ru.txt"
-                --disableuturns
-                --nodetectdupes
-                --nointerchange3d
-                --shorelines
-                --hugesea 100000
                 $common_keys
                 $reg->{keys}
             };
@@ -195,12 +190,6 @@ my $t_bld = threads->create( sub {
                     --bpoly $reg->{poly}
                     --defaultcountry $countrycode
                     --defaultregion "$reg->{name}"
-                    --countrylist "iso-3166-1-a2-ru.txt"
-                    --disableuturns
-                    --nodetectdupes
-                    --nointerchange3d
-                    --shorelines
-                    --hugesea 100000
                     $common_keys
                     $reg->{keys}
                 };
