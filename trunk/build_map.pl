@@ -1,14 +1,18 @@
 #! /usr/bin/perl
 
 # FreeBSD version
-#      edit 2012/11/03 (clean comments)
-#      edit 2012/12/14 (new osm2mp)
+#	edit 2012/11/03 (clean comments)
+#	edit 2012/12/14 (new osm2mp)
+#	edit 2012/12/20 (check cpreview for errors, 2 building threads: MP and IMG)
+#	edit 2012/12/20 (multiple MP threads)
+#	edit 2012/12/20 (noupload flag)
 
 use strict;
 
 use threads;
 use threads::shared;
 use Thread::Queue::Any;
+use Thread::Semaphore;
 
 use POSIX;
 use Encode;
@@ -28,8 +32,10 @@ STDOUT->autoflush(1);
 
 
 my $basedir :shared = getcwd();
+my $mp_threads_num :shared = 2; #number of the mp building threads
+my $noupload :shared = 0; # do not upload to server flag
 
-my $config_file_ftp = 'ftp.yml';
+my $config_file_ftp = $noupload ? 'ftp_example.yml' : 'ftp.yml'; 
 my ( $config_ref_ftp ) = YAML::LoadFile( $config_file_ftp );
 my $auth :shared = exists($config_ref_ftp->{auth})     ?  $config_ref_ftp->{auth}        :  'anonymous:anonymous';
 my $serv :shared = exists($config_ref_ftp->{serv})     ?  $config_ref_ftp->{serv}        :  '';
@@ -57,20 +63,26 @@ my $today :shared = strftime( "%Y-%m-%d", localtime );
 
 my $dirname :shared = "$prefix.gryphon.temp";
 mkdir $dirname  unless -d $dirname;
+mkdir "_bounds"  unless -d "_bounds";
+mkdir "_rel"  unless -d "_rel";
+mkdir "_src"  unless -d "_src";
 
 
 my $q_src :shared = Thread::Queue::Any->new();
 my $q_bnd :shared = Thread::Queue::Any->new();
-my $q_bld :shared = Thread::Queue::Any->new();
+my $q_bld_mp :shared = Thread::Queue::Any->new();
+my $q_bld_img :shared = Thread::Queue::Any->new();
 my $q_upl :shared = Thread::Queue::Any->new();
+
+my $sema_mp :shared = Thread::Semaphore->new($mp_threads_num);
 
 
 logg( "Let's go!" );
 
-`svn up open-cfg`;
+`svn up open-cfg` unless $noupload;
 my $svn_info=`svn info open-cfg`;
 logg("svn info\n$svn_info");
-rcopy_glob("open-cfg/osm.typ","osm.typ");
+rcopy_glob("open-cfg/osm.typ","osm.typ") unless $noupload;
 logg( "Configuration files updated" );
 
 
@@ -80,7 +92,7 @@ my $t_src = threads->create( sub {
     while ( my ($reg) = $q_src->dequeue() ) {
         if ( defined $reg ) {
             logg( "$reg->{code} $reg->{alias} - downloading source" );
-            unless ( -f "$dirname/$reg->{mapid}.img"  &&  -f "$dirname/$reg->{mapid}.img.idx"  ) {
+            unless ( -f "$basedir/$dirname/$reg->{mapid}.img"  &&  -f "$basedir/$dirname/$reg->{mapid}.img.idx"  ) {
         	$reg->{srcalias} = $reg->{alias}
         		unless (exists $reg->{srcalias});
 	        $reg->{srcurl} = "http://data.gis-lab.info/osm_dump/dump/latest/$reg->{srcalias}.osm.pbf"
@@ -106,17 +118,17 @@ my $t_bnd = threads->create( sub {
     while ( my ($reg) = $q_bnd->dequeue() ) {
         if ( defined $reg ) {
             logg( "$reg->{code} $reg->{alias} - downloading boundary" );
-            unless ( -f "$dirname/$reg->{mapid}.img"  &&  -f "$dirname/$reg->{mapid}.img.idx"  ) {
+            unless ( -f "$basedir/$dirname/$reg->{mapid}.img"  &&  -f "$basedir/$dirname/$reg->{mapid}.img.idx"  ) {
                 $reg->{bound} = $reg->{alias} unless exists $reg->{bound};
                 my $onering = exists($reg->{onering})   ?  '--onering'    :  q{};
                 $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
-                `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $basedir/$dirname/$reg->{mapid}.getbound.log`;
+                `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $basedir/$dirname/$reg->{mapid}.getbound.log` unless $noupload;
     		if ( $? != 0 ) {
 	            logg( "Error! Can't get boundary $reg->{code} $reg->{alias}" );
     		}
             }
         };
-        $q_bld->enqueue( $reg );
+        $q_bld_mp->enqueue( $reg );
         unless ( defined $reg ) {
             logg( "All boundaries downloaded!" );
             return;
@@ -133,7 +145,7 @@ my $t_upl = threads->create( sub {
     while ( my ($file) = $q_upl->dequeue() ) {
         if ( defined $file ) {
             logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
-            `curl --retry 100 -u $auth -T $file->{file} $serv 2> nul`;
+            `curl --retry 100 -u $auth -T $file->{file} $serv 2> nul`  unless $noupload;
             unlink $file->{file} if exists $file->{delete};
         }
         else {
@@ -145,103 +157,135 @@ my $t_upl = threads->create( sub {
 logg( "Uploading thread created" );
 
 
+sub build_mp {
 
+    my $reg = @_[0];
 
-# Main building thread (cwd!)
-my $t_bld = threads->create( sub {
-    while ( my ($reg) = $q_bld->dequeue() ) {
+    logg( "$reg->{code} $reg->{alias} - converting to MP" );
+    my $regdir = "$reg->{alias}_$today";
+    my $regdir_full = "$basedir/$dirname/$regdir";
+    mkdir "$regdir_full";
+    $reg->{keys} = q{} unless exists $reg->{keys};
+    my $cmd =  qq{ 
+        $basedir/osm2mp.pl -
+        --config $basedir/$cfgfile
+        --mapid $reg->{mapid}
+        --mapname "$reg->{name}"
+        --bpoly $reg->{poly}
+        --defaultcountry $countrycode
+        --defaultregion "$reg->{name}"
+        $common_keys
+        $reg->{keys}
+    };
+    $cmd =~ s/\s+/ /g;
+    `osmconvert "$reg->{source}" --out-osm | $cmd >"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.log"`;
+    if (exists $reg->{fixmultipoly} && $reg->{fixmultipoly}=="yes"){
+        logg( "$reg->{code} $reg->{alias} - converting broken multipolygons to MP" );
+        my $cmd_brokenmpoly = qq{ 
+            $basedir/osm2mp.pl -
+            --config $basedir/$cfgfile_brokenmpoly
+            --mapid $reg->{mapid}
+            --mapname "$reg->{name}"
+            --bpoly $reg->{poly}
+            --defaultcountry $countrycode
+            --defaultregion "$reg->{name}"
+            $common_keys
+            $reg->{keys}
+        };
+        $cmd_brokenmpoly =~ s/\s+/ /g;
+        `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2>"$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >>"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.broken.log"`;
+    }
+    logg( "$reg->{code} $reg->{alias} - MP postprocess" );
+    `$basedir/mp-postprocess.pl "$regdir_full/$reg->{mapid}.mp"`;
+
+    `grep ERROR: $regdir_full/$reg->{mapid}.mp > $regdir_full/$reg->{mapid}.errors.log`;
+    `$basedir/log2html.pl $regdir_full/$reg->{mapid}.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
+    $q_upl->enqueue( { 
+        code    => $reg->{code},
+        alias   => $reg->{alias},
+        role    => 'error log',
+        file    => "$basedir/_rel/$prefix.$reg->{alias}.err.htm",
+        delete  => 1,
+    } );
+    logg( "$reg->{code} $reg->{alias} - compressing MP" );
+    rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
+    rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
+    unlink "$basedir/_rel/$prefix.$reg->{alias}.mp.7z";
+    `7za a -y $basedir/_rel/$prefix.$reg->{alias}.mp.7z $regdir_full`;
+    rmtree("$regdir_full");
+
+    $q_upl->enqueue( { 
+        code    => $reg->{code},
+        alias   => $reg->{alias},
+        role    => 'MP',
+        file    => "$basedir/_rel/$prefix.$reg->{alias}.mp.7z",
+    } );
+    
+    
+    $q_bld_img->enqueue( $reg );
+    $sema_mp->up();
+
+} 
+
+# MP building thread
+my $t_bld_mp = threads->create( sub {
+    my @mp_threads=();
+    while ( my ($reg) = $q_bld_mp->dequeue() ) {
+        if ( defined $reg ) {
+            if ( -f "$basedir/$dirname/$reg->{mapid}.mp" ) {
+                logg( "$reg->{code} $reg->{alias} - MP already built" );
+	        $q_bld_img->enqueue( $reg );
+                next;
+            }
+            $sema_mp->down();
+	    my $t_bld_mp_reg = threads->create( "build_mp", $reg );
+	    push(@mp_threads, $t_bld_mp_reg);
+        };
+        
+        
+	
+        
+        unless ( defined $reg ) {
+            $sema_mp->down($mp_threads_num); #wait last threads to be finished
+            $q_bld_img->enqueue( $reg );
+            foreach my $thr (@mp_threads) {
+        	$thr->join();
+            }
+            logg( "All MP files has been built!" );
+            return;
+        }
+    }
+} );
+logg( "MP building thread created" );
+
+# IMG building thread
+my $t_bld_img = threads->create( sub {
+    while ( my ($reg) = $q_bld_img->dequeue() ) {
         if ( defined $reg ) {
             if ( -f "$dirname/$reg->{mapid}.img"  &&  -f "$dirname/$reg->{mapid}.img.idx"  ) {
-                logg( "$reg->{code} $reg->{alias} - already built" );
-                for my $file ( glob "$dirname/$reg->{mapid}*.log" ) {
-                    unlink $file;
-                }
+                logg( "$reg->{code} $reg->{alias} - IMG already built" );
 
                 push @reglist, $reg->{mapid};
                 push @reglist, $reg->{mapid} + 10000000         if $housesearch;
 
                 next;
             }
-    
-
-            logg( "$reg->{code} $reg->{alias} - converting to MP" );
-            $reg->{keys} = q{} unless exists $reg->{keys};
-            my $cmd =  qq{ 
-                $basedir/osm2mp.pl -
-                --config $cfgfile
-                --mapid $reg->{mapid}
-                --mapname "$reg->{name}"
-                --bpoly $reg->{poly}
-                --defaultcountry $countrycode
-                --defaultregion "$reg->{name}"
-                $common_keys
-                $reg->{keys}
-            };
-
-            $cmd =~ s/\s+/ /g;
-            `osmconvert "$reg->{source}" --out-osm | $cmd >"$dirname/$reg->{mapid}.mp" 2>"$dirname/$reg->{mapid}.osm2mp.log"`;
-            if (exists $reg->{fixmultipoly} && $reg->{fixmultipoly}=="yes"){
-                logg( "$reg->{code} $reg->{alias} - converting broken multipolygons to MP" );
-                my $cmd_brokenmpoly = qq{ 
-                    $basedir/osm2mp.pl -
-                    --config $cfgfile_brokenmpoly
-                    --mapid $reg->{mapid}
-                    --mapname "$reg->{name}"
-                    --bpoly $reg->{poly}
-                    --defaultcountry $countrycode
-                    --defaultregion "$reg->{name}"
-                    $common_keys
-                    $reg->{keys}
-                };
-                $cmd_brokenmpoly =~ s/\s+/ /g;
-                `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2>"$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >>"$dirname/$reg->{mapid}.mp" 2>"$dirname/$reg->{mapid}.osm2mp.broken.log"`;
-            }
-            logg( "$reg->{code} $reg->{alias} - MP postprocess" );
-            `$basedir/mp-postprocess.pl "$dirname/$reg->{mapid}.mp"`;
-
-            `grep ERROR: $dirname/$reg->{mapid}.mp > $dirname/$reg->{mapid}.errors.log`;
-            `$basedir/log2html.pl $dirname/$reg->{mapid}.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
-            $q_upl->enqueue( { 
-                code    => $reg->{code},
-                alias   => $reg->{alias},
-                role    => 'error log',
-                file    => "$basedir/_rel/$prefix.$reg->{alias}.err.htm",
-                delete  => 1,
-            } );
-
-            logg( "$reg->{code} $reg->{alias} - compressing MP" );
-            my $regdir = "$reg->{alias}_$today";
-            mkdir $regdir;
-            rmove_glob("$dirname/$reg->{mapid}.*", "$regdir");
-            rcopy_glob("$regdir/$reg->{mapid}.mp","$dirname");
-            unlink "$basedir/_rel/$prefix.$reg->{alias}.mp.7z";
-            `7za a -y $basedir/_rel/$prefix.$reg->{alias}.mp.7z $regdir`;
-            rmtree("$regdir");
-
-            $q_upl->enqueue( { 
-                code    => $reg->{code},
-                alias   => $reg->{alias},
-                role    => 'MP',
-                file    => "$basedir/_rel/$prefix.$reg->{alias}.mp.7z",
-            } );
-
 
             logg( "$reg->{code} $reg->{alias} - compiling IMG" );
-            chdir $dirname;
+            my $regdir = "$reg->{alias}_$today";
+            mkdir "$dirname/$regdir";
+            chdir "$dirname/$regdir";
+            move("$basedir/$dirname/$reg->{mapid}.mp",".");
 
-            cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2>>wine.log","$reg->{mapid}.img");
-
-            
+            cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2>/dev/null","$reg->{mapid}.img");
             if ( $housesearch ) {
                 `$basedir/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2>/dev/null`;
                 cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
             }
-
             my $smp = $reg->{mapid} + 10000000;
 
             unlink "$reg->{mapid}.mp";
             unlink "$reg->{mapid}-s.mp"     if $housesearch;
-
 
             if ( -f "$reg->{mapid}.img" ) {
                 logg( "$reg->{code} $reg->{alias} - indexing mapset" );
@@ -266,8 +310,9 @@ my $t_bld = threads->create( sub {
                 close PV;
 
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
+	        logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
                 unlink 'OSM.reg';
-                cgpsm_run("OSM.mp 2>>wine.log", "OSM.img");
+                cgpsm_run("OSM.mp 2>/dev/null", "OSM.img");
 
                 unlink 'OSM.mp';
                 unlink 'OSM.img.idx';
@@ -285,20 +330,17 @@ my $t_bld = threads->create( sub {
                 close PV;
 
 
-                rcopy_glob("../osm.typ","./osm${fid}.typ");
+                rcopy_glob("$basedir/osm.typ","./osm${fid}.typ");
                 `gmt -wy $fid ./osm${fid}.typ`;
                 
                 ren_lowercase("*.*");
+                unlink "wine.core";
 
                 logg( "$reg->{code} $reg->{alias} - compressing mapset" );
 
-                mkdir $regdir;
-                rmove_glob("$reg->{mapid}.*", "$regdir");
+                chdir "$basedir/$dirname";
                 rcopy_glob("$regdir/$reg->{mapid}.img*",".");
-                rcopy_glob("$smp.img*", "$regdir")        if $housesearch;
-                rmove_glob("osm*","$regdir");
-                rmove_glob("*.txt","$regdir");
-                rmove_glob("install.bat","$regdir");
+                rcopy_glob("$regdir/$smp.img*", ".")        if $housesearch;
                 unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
                 `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
                 rmtree("$regdir");
@@ -324,7 +366,8 @@ my $t_bld = threads->create( sub {
         }
     }
 } );
-logg( "Converting thread created" );
+logg( "IMG building thread created" );
+
 
 
 
@@ -341,7 +384,8 @@ $q_src->enqueue( undef );
 
 $t_src->join();
 $t_bnd->join();
-$t_bld->join();
+$t_bld_mp->join();
+$t_bld_img->join();
 $q_upl->enqueue( undef );
 
 
@@ -366,15 +410,18 @@ close PV;
 
 
 `cpreview pv.txt -m > cpreview.log`;
+logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+
 unlink "OSM.reg";
 for my $mp (@reglist) {
 #    unlink "$mp.img.idx";
 }
 
-cgpsm_run("OSM.mp 2>>wine.log", "OSM.img");
+cgpsm_run("OSM.mp 2>/dev/null", "OSM.img");
 
 unlink 'OSM.mp';
 unlink 'OSM.img.idx';
+unlink "wine.core";
 
 open PV, '<', "$basedir/install.bat.ex";
 $pv = join '', <PV>;
@@ -408,7 +455,7 @@ chdir $basedir;
 
 logg( "Uploading mapset" );
 
-`curl --retry 100 -u $auth -T $basedir/_rel/$prefix.$filename.7z $serv`;
+`curl --retry 100 -u $auth -T $basedir/_rel/$prefix.$filename.7z $serv` unless $noupload;
 rmtree("$dirname");
 
 
@@ -418,7 +465,7 @@ logg( "That's all, folks!" );
 
 
 sub logg {
-    printf STDERR "%s:  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), @_;
+    printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), @_;
 }
 
 sub ren_lowercase {
@@ -437,6 +484,7 @@ sub cgpsm_run {
         while ($ret_code != 0 && $num<=5){
     	    `wine cgpsmapper.exe $_[0]`;
     	    $ret_code = $?;
+
     	    if ( ($ret_code == 0) && (! -f "$_[1]") ) {
     		$ret_code=9999;
     	    }

@@ -166,6 +166,7 @@ keys:           --textfilter PrepareCP1251
   code:  29
   alias: arkhan
   srcalias:  RU-ARK
+  keys: --mp-header TreSize=2048
 
 - name:  Астраханская область
   code:  30
