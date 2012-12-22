@@ -5,6 +5,8 @@
 use strict;
 use uni::perl;
 
+use Getopt::Long qw{ :config pass_through };
+
 use threads;
 use threads::shared;
 use Thread::Queue::Any;
@@ -29,6 +31,10 @@ STDERR->autoflush(1);
 STDOUT->autoflush(1);
 
 
+my $config_file = 'test.yml';
+GetOptions( 'c|config=s' => \$config_file );
+
+
 my $basedir :shared = getcwd();
 my $mp_threads_num :shared = 2; #number of the mp building threads
 my $noupload :shared = 0; # do not upload to server flag
@@ -38,7 +44,6 @@ my ( $config_ref_ftp ) = YAML::LoadFile( $config_file_ftp );
 my $auth :shared = exists($config_ref_ftp->{auth})     ?  $config_ref_ftp->{auth}        :  'anonymous:anonymous';
 my $serv :shared = exists($config_ref_ftp->{serv})     ?  $config_ref_ftp->{serv}        :  '';
 
-my $config_file = $ARGV[0]  //  'test.yml';
 my $housesearch = $ARGV[1];
 
 my ( $config_ref, $regions_ref ) = YAML::LoadFile( $config_file );
@@ -57,6 +62,7 @@ my $common_keys :shared = $config_ref->{keys} // q{};
 my $name_postfix :shared = exists($config_ref->{name_postfix}) ? "$config_ref->{filename} " : q{};
 
 my $today :shared = strftime( "%Y-%m-%d", localtime );
+my $devnull :shared = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 
 
 my $dirname :shared = "$prefix.gryphon.temp";
@@ -96,7 +102,7 @@ my $t_src = threads->create( sub {
             $reg->{srcurl} = "http://data.gis-lab.info/osm_dump/dump/latest/$reg->{srcalias}.osm.pbf"
                 unless (exists $reg->{srcurl});
                 $reg->{source} = "$basedir/_src/$prefix.$reg->{alias}.osm.pbf";
-                `wget $reg->{srcurl} -O $reg->{source} -o $basedir/$dirname/$reg->{mapid}.wget.log 2>/dev/null`;
+                `wget $reg->{srcurl} -O $reg->{source} -o $basedir/$dirname/$reg->{mapid}.wget.log 2> $devnull`;
             }
         };
         $q_bnd->enqueue( $reg );
@@ -164,8 +170,12 @@ sub build_mp {
     my $regdir_full = "$basedir/$dirname/$regdir";
     mkdir "$regdir_full";
     $reg->{keys} = q{} unless exists $reg->{keys};
+
+    my $osm2mp = "$basedir/osm2mp/osm2mp.pl";
+    $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
+
     my $cmd =  qq{ 
-        $basedir/osm2mp.pl -
+        perl $osm2mp
         --config $basedir/$cfgfile
         --mapid $reg->{mapid}
         --mapname "$reg->{name}"
@@ -174,13 +184,15 @@ sub build_mp {
         --defaultregion "$reg->{name}"
         $common_keys
         $reg->{keys}
+        -
     };
     $cmd =~ s/\s+/ /g;
+
     `osmconvert "$reg->{source}" --out-osm | $cmd >"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.log"`;
     if (exists $reg->{fixmultipoly} && $reg->{fixmultipoly}=="yes"){
         logg( "$reg->{code} $reg->{alias} - converting broken multipolygons to MP" );
         my $cmd_brokenmpoly = qq{ 
-            $basedir/osm2mp.pl -
+            perl $osm2mp
             --config $basedir/$cfgfile_brokenmpoly
             --mapid $reg->{mapid}
             --mapname "$reg->{name}"
@@ -189,12 +201,13 @@ sub build_mp {
             --defaultregion "$reg->{name}"
             $common_keys
             $reg->{keys}
+            -
         };
         $cmd_brokenmpoly =~ s/\s+/ /g;
         `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2>"$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >>"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.broken.log"`;
     }
     logg( "$reg->{code} $reg->{alias} - MP postprocess" );
-    `$basedir/mp-postprocess.pl "$regdir_full/$reg->{mapid}.mp"`;
+    `$basedir/osm2mp/mp-postprocess.pl "$regdir_full/$reg->{mapid}.mp"`;
 
     `grep ERROR: $regdir_full/$reg->{mapid}.mp > $regdir_full/$reg->{mapid}.errors.log`;
     `$basedir/log2html.pl $regdir_full/$reg->{mapid}.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
@@ -275,9 +288,9 @@ my $t_bld_img = threads->create( sub {
             chdir "$dirname/$regdir";
             move("$basedir/$dirname/$reg->{mapid}.mp",".");
 
-            cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2>/dev/null","$reg->{mapid}.img");
+            cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
             if ( $housesearch ) {
-                `$basedir/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2>/dev/null`;
+                `$basedir/osm2mp/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull`;
                 cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
             }
             my $smp = $reg->{mapid} + 10000000;
@@ -310,7 +323,7 @@ my $t_bld_img = threads->create( sub {
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
             logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
                 unlink 'OSM.reg';
-                cgpsm_run("OSM.mp 2>/dev/null", "OSM.img");
+                cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
 
                 unlink 'OSM.mp';
                 unlink 'OSM.img.idx';
@@ -415,7 +428,7 @@ for my $mp (@reglist) {
 #    unlink "$mp.img.idx";
 }
 
-cgpsm_run("OSM.mp 2>/dev/null", "OSM.img");
+cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
 
 unlink 'OSM.mp';
 unlink 'OSM.img.idx';
@@ -482,8 +495,11 @@ sub cgpsm_run {
         logg("cgpsmapper @_");
         my $ret_code = 1;
         my $num = 1;
+
+        my $cmd = $^O ? 'cgpsmapper' : 'wine cgpsmapper.exe';
+
         while ($ret_code != 0 && $num<=5){
-            `wine cgpsmapper.exe $_[0]`;
+            `$cmd $_[0]`;
             $ret_code = $?;
 
             if ( ($ret_code == 0) && (! -f "$_[1]") ) {
