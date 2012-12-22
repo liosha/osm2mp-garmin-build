@@ -1,0 +1,28 @@
+[Map]
+FileName=OSM
+MapVersion=100
+FID=[% settings.fid + (data.code || 0) %]
+ProductCode=1
+;Color=32
+
+CodePage=[% settings.codepage || 1251 %]
+
+Levels=2
+Level0=14
+Level1=13
+
+Zoom0=5
+Zoom1=6
+
+Copy1=http://openstreetmap.org/
+Copy2=liosha, xliosha@gmail.com
+MapsourceName=OSM [% data.name %] [% settings.today %]
+MapSetName=OSM [% data.name %]
+CDSetName=OSM [% data.name %]
+[End-Map]
+
+[Files]
+[%- FOREACH file IN files %]
+img=[% file %]
+[%- END %]
+[End-Files]
