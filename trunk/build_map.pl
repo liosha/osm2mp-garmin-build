@@ -20,7 +20,6 @@ use File::Copy;
 use File::Path;
 
 use Template;
-use File::Slurp;
 
 use File::Copy::Recursive;
 BEGIN {
@@ -311,12 +310,12 @@ my $t_bld_img = threads->create( sub {
                 push @reglist, $reg->{mapid};
                 push @reglist, $smp         if $housesearch;
 
+                $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
+
                 my @files = ("$reg->{mapid}.img");
                 push @files, "$smp.img"    if $housesearch;
                 my $vars = { settings => $settings, data => $reg, files => \@files };
-                $tt->process('osm_pv.txt.tt2', $vars, \my $pv);
-
-                write_file "pv.txt", encode $settings->{encoding} => $pv;
+                $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
                 logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
@@ -327,22 +326,11 @@ my $t_bld_img = threads->create( sub {
                 unlink 'OSM.mp';
                 unlink 'OSM.img.idx';
 
-                open PV, '<', "$basedir/install.bat.ex";
-                $pv = join '', <PV>;
-                close PV;
-                
-                my $fid = $settings->{fid} + $reg->{code};
-                $pv =~ s/888/$fid/g;
-                my $hfid = sprintf "%04X", ($fid >> 8) + (($fid & 0xFF) << 8);
-                $pv =~ s/7803/$hfid/g;
-    
-                open PV, '>:encoding(cp1251)', "install.bat";
-                print PV $pv;
-                close PV;
+                $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
 
-                rcopy_glob("$basedir/osm.typ","./osm${fid}.typ");
-                `gmt -wy $fid ./osm${fid}.typ`;
+                rcopy_glob("$basedir/osm.typ","./osm$reg->{fid}.typ");
+                `gmt -wy $reg->{fid} ./osm$reg->{fid}.typ`;
                 
                 ren_lowercase("*.*");
                 unlink "wine.core";
@@ -407,9 +395,7 @@ chdir $dirname;
 
 my @files = map {"$_.img"} @reglist;
 my $vars = { settings => $settings, data => { name => $countryname }, files => \@files };
-$tt->process('osm_pv.txt.tt2', $vars, \my $pv);
-
-write_file "pv.txt", encode $settings->{encoding} => $pv;
+$tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
 
 `cpreview pv.txt -m > cpreview.log`;
@@ -426,18 +412,7 @@ unlink 'OSM.mp';
 unlink 'OSM.img.idx';
 unlink "wine.core";
 
-open PV, '<', "$basedir/install.bat.ex";
-$pv = join '', <PV>;
-close PV;
-
-$pv =~ s/888/$fidbase/g;
-my $hfid = sprintf "%04X", ($fidbase >> 8) + (($fidbase & 0xFF) << 8);
-$pv =~ s/7803/$hfid/g;
-
-open PV, '>:encoding(cp1251)', "install.bat";
-print PV $pv;
-close PV;
-
+$tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
 rcopy_glob("../osm.typ","./osm${fidbase}.typ");
 `gmt -wy $fidbase ./osm${fidbase}.typ`;
@@ -514,16 +489,16 @@ sub _upload_thread {
     return if !$settings->{serv};
 
     while ( my ($file) = $q_upl->dequeue() ) {
-        if ( !defined $file ) {
-            logg( "All files uploaded!" );
-            return;
-        }
+        last if !defined $file;
 
         logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
         my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
         `curl --retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull`;
         unlink $file->{file}  if $file->{delete};
     }
+
+    logg( "All files uploaded!" );
+    return;
 }
 
 
