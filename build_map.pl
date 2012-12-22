@@ -19,6 +19,9 @@ use YAML;
 use File::Copy;
 use File::Path;
 
+use Template;
+use File::Slurp;
+
 use File::Copy::Recursive;
 BEGIN {
     # not exportable in 0.38
@@ -37,7 +40,8 @@ GetOptions( 'c|config=s' => \$config_file );
 my ( $settings, $regions ) = YAML::LoadFile( $config_file );
 
 GetOptions(
-    'upload=s' => \my $config_file_ftp,
+    'upload=s'  => \my $config_file_ftp,
+    'continue!' => \my $continue_mode,
 );
 
 if ( $config_file_ftp ) {
@@ -45,12 +49,18 @@ if ( $config_file_ftp ) {
     $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
 }
 
+$settings->{today} = strftime( "%Y-%m-%d", localtime );
+$settings->{codepage} ||= 1251;
+$settings->{encoding} = "cp$settings->{codepage}";
+
 $settings = shared_clone( $settings );    
 
 
+my $basedir = getcwd();
+my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
 
-my $basedir :shared = getcwd();
+
 my $mp_threads_num :shared = 2; #number of the mp building threads
 
 my $noupload :shared = 0; # do not upload to server flag
@@ -71,11 +81,11 @@ my $filename    = exists($settings->{filename})       ?  $settings->{filename}  
 my $common_keys :shared = $settings->{keys} // q{};
 my $name_postfix :shared = exists($settings->{name_postfix}) ? "$settings->{filename} " : q{};
 
-my $today :shared = strftime( "%Y-%m-%d", localtime );
 my $devnull :shared = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 
 
 my $dirname :shared = "$prefix.gryphon.temp";
+rmtree $dirname  if !$continue_mode;
 mkdir $dirname  unless -d $dirname;
 mkdir "_bounds"  unless -d "_bounds";
 mkdir "_rel"  unless -d "_rel";
@@ -164,7 +174,7 @@ sub build_mp {
     my $reg = @_[0];
 
     logg( "$reg->{code} $reg->{alias} - converting to MP" );
-    my $regdir = "$reg->{alias}_$today";
+    my $regdir = "$reg->{alias}_$settings->{today}";
     my $regdir_full = "$basedir/$dirname/$regdir";
     mkdir "$regdir_full";
     $reg->{keys} = q{} unless exists $reg->{keys};
@@ -281,7 +291,7 @@ my $t_bld_img = threads->create( sub {
             }
 
             logg( "$reg->{code} $reg->{alias} - compiling IMG" );
-            my $regdir = "$reg->{alias}_$today";
+            my $regdir = "$reg->{alias}_$settings->{today}";
             mkdir "$dirname/$regdir";
             chdir "$dirname/$regdir";
             move("$basedir/$dirname/$reg->{mapid}.mp",".");
@@ -301,25 +311,16 @@ my $t_bld_img = threads->create( sub {
                 push @reglist, $reg->{mapid};
                 push @reglist, $smp         if $housesearch;
 
-                open PV, '<', "$basedir/osm_pv.txt";
-                my $pv = join '', <PV>;
-                close PV;
+                my @files = ("$reg->{mapid}.img");
+                push @files, "$smp.img"    if $housesearch;
+                my $vars = { settings => $settings, data => $reg, files => \@files };
+                $tt->process('osm_pv.txt.tt2', $vars, \my $pv);
 
-                my $fid = $fidbase + $reg->{code};
-                $pv =~ s/FID=888/FID=$fid/;
-                $pv =~ s/MapsourceName=OpenStreetMap/MapsourceName=OSM $reg->{name} $name_postfix$today/;
-                $pv =~ s/MapSetName=OpenStreetMap/MapSetName=OSM $reg->{name}/;
-                $pv =~ s/CDSetName=OpenStreetMap/CDSetName=OSM $reg->{name}/;
-                $pv =~ s/img=88888888.img/img=$reg->{mapid}.img\nimg=$smp.img/      if $housesearch;
-                $pv =~ s/88888888/$reg->{mapid}/;
-
-    
-                open PV, '>:encoding(cp1251)', "pv.txt";
-                print PV $pv;
-                close PV;
+                write_file "pv.txt", encode $settings->{encoding} => $pv;
 
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
-            logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+                logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+
                 unlink 'OSM.reg';
                 cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
 
@@ -329,7 +330,8 @@ my $t_bld_img = threads->create( sub {
                 open PV, '<', "$basedir/install.bat.ex";
                 $pv = join '', <PV>;
                 close PV;
-
+                
+                my $fid = $settings->{fid} + $reg->{code};
                 $pv =~ s/888/$fid/g;
                 my $hfid = sprintf "%04X", ($fid >> 8) + (($fid & 0xFF) << 8);
                 $pv =~ s/7803/$hfid/g;
@@ -402,20 +404,12 @@ $q_upl->enqueue( undef );
 logg( "Indexing whole mapset" );
 
 chdir $dirname;
-open PV, '<', "$basedir/osm_pv1.txt";
-my $pv = join '', <PV>;
-close PV;
 
-$pv =~ s/FID=888/FID=$fidbase\n/;
-$pv =~ s/MapsourceName=OpenStreetMap/MapsourceName=OSM $countryname $name_postfix$today/;
-$pv =~ s/MapSetName=OpenStreetMap/MapSetName=OSM $countryname/;
-$pv =~ s/CDSetName=OpenStreetMap/CDSetName=OSM $countryname/;
-$pv .= join '', map { "img=$_.img\n" } @reglist;
-$pv .= "[End-Files]\n";
+my @files = map {"$_.img"} @reglist;
+my $vars = { settings => $settings, data => { name => $countryname }, files => \@files };
+$tt->process('osm_pv.txt.tt2', $vars, \my $pv);
 
-open PV, '>:encoding(cp1251)', "pv.txt";
-print PV $pv;
-close PV;
+write_file "pv.txt", encode $settings->{encoding} => $pv;
 
 
 `cpreview pv.txt -m > cpreview.log`;
@@ -452,7 +446,7 @@ ren_lowercase("*.*");
 
 logg( "Compressing mapset" );
 
-my $mapdir = "${filename}_$today";
+my $mapdir = "${filename}_$settings->{today}";
 mkdir $mapdir;
 move $_ => $mapdir  for grep {-f} glob q{*};
 
