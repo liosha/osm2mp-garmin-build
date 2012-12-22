@@ -39,9 +39,11 @@ GetOptions( 'c|config=s' => \$config_file );
 my ( $settings, $regions ) = YAML::LoadFile( $config_file );
 
 GetOptions(
-    'upload=s'  => \my $config_file_ftp,
-    'continue!' => \my $continue_mode,
+    'upload=s'      => \my $config_file_ftp,
+    'continue!'     => \my $continue_mode,
+    'update-cfg!'   => \( my $update_cfg = 1 ),
 );
+
 
 if ( $config_file_ftp ) {
     my ($ftp) = YAML::LoadFile( $config_file_ftp );
@@ -100,14 +102,14 @@ my $q_upl :shared = Thread::Queue::Any->new();
 my $sema_mp :shared = Thread::Semaphore->new($mp_threads_num);
 
 
-logg( "Let's go!" );
+logg( "Let's the fun begin! Building '$settings->{filename}'" );
 
-`svn up open-cfg` unless $noupload;
-my $svn_info=`svn info open-cfg`;
-logg("svn info\n$svn_info");
-rcopy_glob("open-cfg/osm.typ","osm.typ") unless $noupload;
-logg( "Configuration files updated" );
-
+if ( $update_cfg ) {
+    logg( "Updating configuration" );
+    `svn up open-cfg`;
+    logg( "svn info:\n" . `svn info open-cfg` );
+    rcopy_glob("open-cfg/osm.typ","osm.typ");
+}
 
 
 # Source downloading thread
