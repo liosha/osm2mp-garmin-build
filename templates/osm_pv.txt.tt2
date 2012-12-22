@@ -1,7 +1,7 @@
 [Map]
 FileName=OSM
 MapVersion=100
-FID=[% settings.fid + (data.code || 0) %]
+FID=[% data.fid || settings.fid %]
 ProductCode=1
 ;Color=32
 
