@@ -1,31 +1,29 @@
 #! /usr/bin/perl
 
-# FreeBSD version
-#	edit 2012/11/03 (clean comments)
-#	edit 2012/12/14 (new osm2mp)
-#	edit 2012/12/20 (check cpreview for errors, 2 building threads: MP and IMG)
-#	edit 2012/12/20 (multiple MP threads)
-#	edit 2012/12/20 (noupload flag)
+# $Id$
 
 use strict;
+use uni::perl;
 
 use threads;
 use threads::shared;
 use Thread::Queue::Any;
 use Thread::Semaphore;
 
+use IO::Handle;
 use POSIX;
 use Encode;
 use YAML;
 use File::Copy;
 use File::Path;
-use File::Copy::Recursive qw(rcopy_glob rmove_glob);
 
+use File::Copy::Recursive;
+BEGIN {
+    # not exportable in 0.38
+    *rcopy_glob = *File::Copy::Recursive::rcopy_glob;
+    *rmove_glob = *File::Copy::Recursive::rmove_glob;
+}
 
-
-use Data::Dump 'dd';
-
-use IO::Handle;
 
 STDERR->autoflush(1);
 STDOUT->autoflush(1);
@@ -93,10 +91,10 @@ my $t_src = threads->create( sub {
         if ( defined $reg ) {
             logg( "$reg->{code} $reg->{alias} - downloading source" );
             unless ( -f "$basedir/$dirname/$reg->{mapid}.img"  &&  -f "$basedir/$dirname/$reg->{mapid}.img.idx"  ) {
-        	$reg->{srcalias} = $reg->{alias}
-        		unless (exists $reg->{srcalias});
-	        $reg->{srcurl} = "http://data.gis-lab.info/osm_dump/dump/latest/$reg->{srcalias}.osm.pbf"
-        		unless (exists $reg->{srcurl});
+            $reg->{srcalias} = $reg->{alias}
+                unless (exists $reg->{srcalias});
+            $reg->{srcurl} = "http://data.gis-lab.info/osm_dump/dump/latest/$reg->{srcalias}.osm.pbf"
+                unless (exists $reg->{srcurl});
                 $reg->{source} = "$basedir/_src/$prefix.$reg->{alias}.osm.pbf";
                 `wget $reg->{srcurl} -O $reg->{source} -o $basedir/$dirname/$reg->{mapid}.wget.log 2>/dev/null`;
             }
@@ -123,9 +121,9 @@ my $t_bnd = threads->create( sub {
                 my $onering = exists($reg->{onering})   ?  '--onering'    :  q{};
                 $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
                 `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $basedir/$dirname/$reg->{mapid}.getbound.log` unless $noupload;
-    		if ( $? != 0 ) {
-	            logg( "Error! Can't get boundary $reg->{code} $reg->{alias}" );
-    		}
+            if ( $? != 0 ) {
+                logg( "Error! Can't get boundary $reg->{code} $reg->{alias}" );
+            }
             }
         };
         $q_bld_mp->enqueue( $reg );
@@ -234,22 +232,22 @@ my $t_bld_mp = threads->create( sub {
         if ( defined $reg ) {
             if ( -f "$basedir/$dirname/$reg->{mapid}.mp" ) {
                 logg( "$reg->{code} $reg->{alias} - MP already built" );
-	        $q_bld_img->enqueue( $reg );
+            $q_bld_img->enqueue( $reg );
                 next;
             }
             $sema_mp->down();
-	    my $t_bld_mp_reg = threads->create( "build_mp", $reg );
-	    push(@mp_threads, $t_bld_mp_reg);
+        my $t_bld_mp_reg = threads->create( "build_mp", $reg );
+        push(@mp_threads, $t_bld_mp_reg);
         };
         
         
-	
+    
         
         unless ( defined $reg ) {
             $sema_mp->down($mp_threads_num); #wait last threads to be finished
             $q_bld_img->enqueue( $reg );
             foreach my $thr (@mp_threads) {
-        	$thr->join();
+            $thr->join();
             }
             logg( "All MP files has been built!" );
             return;
@@ -310,7 +308,7 @@ my $t_bld_img = threads->create( sub {
                 close PV;
 
                 `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
-	        logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+            logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
                 unlink 'OSM.reg';
                 cgpsm_run("OSM.mp 2>/dev/null", "OSM.img");
 
@@ -463,6 +461,9 @@ $t_upl->join();
 logg( "That's all, folks!" );
 
 
+##############################
+
+
 
 sub logg {
     printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), @_;
@@ -482,16 +483,16 @@ sub cgpsm_run {
         my $ret_code = 1;
         my $num = 1;
         while ($ret_code != 0 && $num<=5){
-    	    `wine cgpsmapper.exe $_[0]`;
-    	    $ret_code = $?;
+            `wine cgpsmapper.exe $_[0]`;
+            $ret_code = $?;
 
-    	    if ( ($ret_code == 0) && (! -f "$_[1]") ) {
-    		$ret_code=9999;
-    	    }
-    	    logg("cgpsmapper exit($ret_code)");
-    	    if ($ret_code != 0) {
-    		sleep(60);
-    	    }
-    	    $num++;
+            if ( ($ret_code == 0) && (! -f "$_[1]") ) {
+            $ret_code=9999;
+            }
+            logg("cgpsmapper exit($ret_code)");
+            if ($ret_code != 0) {
+            sleep(60);
+            }
+            $num++;
         }
 }
