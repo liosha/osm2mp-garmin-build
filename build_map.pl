@@ -42,8 +42,9 @@ GetOptions(
     'upload=s'      => \my $config_file_ftp,
     'continue!'     => \my $continue_mode,
 
-    'update-cfg!'   => \( my $update_cfg = 1 ),
-    'skip-dl-src!'  => \my $skip_dl_src,
+    'update-cfg!'       => \( my $update_cfg = 1 ),
+    'skip-dl-src!'      => \my $skip_dl_src,
+    'skip-dl-bounds!'   => \my $skip_dl_bounds,
 );
 
 
@@ -97,7 +98,7 @@ mkdir "_src"  unless -d "_src";
 
 my $q_src :shared = Thread::Queue::Any->new();
 my $q_bnd :shared = Thread::Queue::Any->new();
-my $q_bld_mp :shared = Thread::Queue::Any->new();
+my $q_mp :shared = Thread::Queue::Any->new();
 my $q_bld_img :shared = Thread::Queue::Any->new();
 my $q_upl :shared = Thread::Queue::Any->new();
 
@@ -114,39 +115,13 @@ if ( $update_cfg ) {
 }
 
 
+# Initializing thread conveyor
+
 my $t_src = threads->create( \&_source_download_thread );
-
-
-# Boundary downloading thread
-my $t_bnd = threads->create( sub {
-    while ( my ($reg) = $q_bnd->dequeue() ) {
-        if ( defined $reg ) {
-            logg( "$reg->{code} $reg->{alias} - downloading boundary" );
-            unless ( -f "$basedir/$dirname/$reg->{mapid}.img"  &&  -f "$basedir/$dirname/$reg->{mapid}.img.idx"  ) {
-                $reg->{bound} = $reg->{alias} unless exists $reg->{bound};
-                my $onering = exists($reg->{onering})   ?  '--onering'    :  q{};
-                $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
-                `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $basedir/$dirname/$reg->{mapid}.getbound.log` unless $noupload;
-            if ( $? != 0 ) {
-                logg( "Error! Can't get boundary $reg->{code} $reg->{alias}" );
-            }
-            }
-        };
-        $q_bld_mp->enqueue( $reg );
-        unless ( defined $reg ) {
-            logg( "All boundaries downloaded!" );
-            return;
-        }
-    }
-} );
-logg( "Boundary downloading thread created" );
-
-
-
-
-# Uploading thread
+my $t_bnd = threads->create( \&_boundary_download_thread );
+# mp
+# img
 my $t_upl = threads->create( \&_upload_thread ); 
-logg( "Uploading thread created" );
 
 
 sub build_mp {
@@ -229,7 +204,7 @@ sub build_mp {
 # MP building thread
 my $t_bld_mp = threads->create( sub {
     my @mp_threads=();
-    while ( my ($reg) = $q_bld_mp->dequeue() ) {
+    while ( my ($reg) = $q_mp->dequeue() ) {
         if ( defined $reg ) {
             if ( -f "$basedir/$dirname/$reg->{mapid}.mp" ) {
                 logg( "$reg->{code} $reg->{alias} - MP already built" );
@@ -481,7 +456,7 @@ sub _source_download_thread {
         if ( !$skip_dl_src ) {
             my $filebase = "$basedir/$dirname/$reg->{mapid}";
             if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-                logg ( "Skip downloading '$reg->{alias}': img exists" );
+                logg ( "Skip downloading '$reg->{alias} source': img exists" );
             }
             else {
                 logg( "Downloading source for '$reg->{alias}'" );
@@ -494,6 +469,35 @@ sub _source_download_thread {
 
     logg( "All sources have been downloaded!" ) if !$skip_dl_src;
     $q_bnd->enqueue( undef );
+    return;
+}
+
+
+sub _boundary_download_thread {
+    while ( my ($reg) = $q_bnd->dequeue() ) {
+        last if !defined $reg;
+
+        $reg->{bound} //= $reg->{alias};
+        $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
+
+        if ( !$skip_dl_bounds ) {
+            my $filebase = "$basedir/$dirname/$reg->{mapid}";
+            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+                logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
+            }
+            else {
+                logg( "Downloading boundary for '$reg->{alias}'" );
+                my $onering = $reg->{onering} ? '--onering' : q{};
+                `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log`;
+                logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
+            }
+        }
+
+        $q_mp->enqueue( $reg );
+    }
+
+    logg( "All boundaries have been downloaded!" ) if !$skip_dl_bounds;
+    $q_mp->enqueue( undef );
     return;
 }
 
