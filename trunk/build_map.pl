@@ -34,32 +34,42 @@ STDOUT->autoflush(1);
 my $config_file = 'test.yml';
 GetOptions( 'c|config=s' => \$config_file );
 
+my ( $settings, $regions ) = YAML::LoadFile( $config_file );
+
+GetOptions(
+    'upload=s' => \my $config_file_ftp,
+);
+
+if ( $config_file_ftp ) {
+    my ($ftp) = YAML::LoadFile( $config_file_ftp );
+    $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
+}
+
+$settings = shared_clone( $settings );    
+
+
+
 
 my $basedir :shared = getcwd();
 my $mp_threads_num :shared = 2; #number of the mp building threads
-my $noupload :shared = 0; # do not upload to server flag
 
-my $config_file_ftp = $noupload ? 'ftp_example.yml' : 'ftp.yml'; 
-my ( $config_ref_ftp ) = YAML::LoadFile( $config_file_ftp );
-my $auth :shared = exists($config_ref_ftp->{auth})     ?  $config_ref_ftp->{auth}        :  'anonymous:anonymous';
-my $serv :shared = exists($config_ref_ftp->{serv})     ?  $config_ref_ftp->{serv}        :  '';
+my $noupload :shared = 0; # do not upload to server flag
 
 my $housesearch = $ARGV[1];
 
-my ( $config_ref, $regions_ref ) = YAML::LoadFile( $config_file );
 
-my @regions = @{ $regions_ref };
+my @regions = @{ $regions };
 my @reglist :shared;
 
-my $prefix  :shared = exists($config_ref->{prefix})     ?  $config_ref->{prefix}        :  'test';
-my $cfgfile :shared = exists($config_ref->{config})     ?  $config_ref->{config}        :  'garmin.yml';
-my $cfgfile_brokenmpoly :shared = exists($config_ref->{config_brokenmpoly})     ?  $config_ref->{config_brokenmpoly}        :  'garmin.yml';
-my $fidbase :shared = exists($config_ref->{fid})        ?  $config_ref->{fid}           :  100;;
-my $countrycode = exists($config_ref->{countrycode})    ?  $config_ref->{countrycode}   :  'test';
-my $countryname = exists($config_ref->{countryname})    ?  $config_ref->{countryname}   :  'test';
-my $filename    = exists($config_ref->{filename})       ?  $config_ref->{filename}      :  'test';
-my $common_keys :shared = $config_ref->{keys} // q{};
-my $name_postfix :shared = exists($config_ref->{name_postfix}) ? "$config_ref->{filename} " : q{};
+my $prefix  :shared = exists($settings->{prefix})     ?  $settings->{prefix}        :  'test';
+my $cfgfile :shared = exists($settings->{config})     ?  $settings->{config}        :  'garmin.yml';
+my $cfgfile_brokenmpoly :shared = exists($settings->{config_brokenmpoly})     ?  $settings->{config_brokenmpoly}        :  'garmin.yml';
+my $fidbase :shared = exists($settings->{fid})        ?  $settings->{fid}           :  100;;
+my $countrycode = exists($settings->{countrycode})    ?  $settings->{countrycode}   :  'test';
+my $countryname = exists($settings->{countryname})    ?  $settings->{countryname}   :  'test';
+my $filename    = exists($settings->{filename})       ?  $settings->{filename}      :  'test';
+my $common_keys :shared = $settings->{keys} // q{};
+my $name_postfix :shared = exists($settings->{name_postfix}) ? "$settings->{filename} " : q{};
 
 my $today :shared = strftime( "%Y-%m-%d", localtime );
 my $devnull :shared = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
@@ -145,19 +155,7 @@ logg( "Boundary downloading thread created" );
 
 
 # Uploading thread
-my $t_upl = threads->create( sub {
-    while ( my ($file) = $q_upl->dequeue() ) {
-        if ( defined $file ) {
-            logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
-            `curl --retry 100 -u $auth -T $file->{file} $serv 2> nul`  unless $noupload;
-            unlink $file->{file} if exists $file->{delete};
-        }
-        else {
-            logg( "All files uploaded!" );
-            return;
-        }
-    }
-} );
+my $t_upl = threads->create( \&_upload_thread ); 
 logg( "Uploading thread created" );
 
 
@@ -456,7 +454,8 @@ logg( "Compressing mapset" );
 
 my $mapdir = "${filename}_$today";
 mkdir $mapdir;
-rmove_glob("*","$mapdir");
+move $_ => $mapdir  for grep {-f} glob q{*};
+
 unlink "$basedir/_rel/$prefix.$filename.7z";
 `7za a -y $basedir/_rel/$prefix.$filename.7z $mapdir`;
 rmtree("$mapdir");
@@ -464,9 +463,12 @@ rmtree("$mapdir");
 chdir $basedir;
 
 
-logg( "Uploading mapset" );
+if ( $settings->{serv} ) {
+    logg( "Uploading mapset" );
+    my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
+    `curl --retry 100 $auth -T $basedir/_rel/$prefix.$filename.7z $settings->{serv}`;
+}
 
-`curl --retry 100 -u $auth -T $basedir/_rel/$prefix.$filename.7z $serv` unless $noupload;
 rmtree("$dirname");
 
 
@@ -512,3 +514,22 @@ sub cgpsm_run {
             $num++;
         }
 }
+
+
+sub _upload_thread {
+    return if !$settings->{serv};
+
+    while ( my ($file) = $q_upl->dequeue() ) {
+        if ( !defined $file ) {
+            logg( "All files uploaded!" );
+            return;
+        }
+
+        logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
+        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
+        `curl --retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull`;
+        unlink $file->{file}  if $file->{delete};
+    }
+}
+
+
