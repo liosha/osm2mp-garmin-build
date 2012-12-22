@@ -42,6 +42,10 @@ GetOptions(
     'upload=s'      => \my $config_file_ftp,
     'continue!'     => \my $continue_mode,
 
+    'house-search!' => \my $make_house_search,
+
+    'mp-threads=i'  => \( my $mp_threads_num = 2 ),
+
     'update-cfg!'       => \( my $update_cfg = 1 ),
     'skip-dl-src!'      => \my $skip_dl_src,
     'skip-dl-bounds!'   => \my $skip_dl_bounds,
@@ -57,23 +61,23 @@ $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
 $settings->{encoding} = "cp$settings->{codepage}";
 
-$settings = shared_clone( $settings );    
 
+my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 
 my $basedir = getcwd();
+my $dirname = "$settings->{prefix}.temp";
+rmtree $dirname  if !$continue_mode;
+mkdir $dirname  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
+
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
+my @reglist :shared;
 
 
-my $mp_threads_num :shared = 2; #number of the mp building threads
+
 
 my $noupload :shared = 0; # do not upload to server flag
 
-my $housesearch = $ARGV[1];
-
-
-my @regions = @{ $regions };
-my @reglist :shared;
 
 my $prefix  :shared = exists($settings->{prefix})     ?  $settings->{prefix}        :  'test';
 my $cfgfile :shared = exists($settings->{config})     ?  $settings->{config}        :  'garmin.yml';
@@ -85,27 +89,21 @@ my $filename    = exists($settings->{filename})       ?  $settings->{filename}  
 my $common_keys :shared = $settings->{keys} // q{};
 my $name_postfix :shared = exists($settings->{name_postfix}) ? "$settings->{filename} " : q{};
 
-my $devnull :shared = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
-
-
-my $dirname :shared = "$prefix.gryphon.temp";
-rmtree $dirname  if !$continue_mode;
-mkdir $dirname  unless -d $dirname;
-mkdir "_bounds"  unless -d "_bounds";
-mkdir "_rel"  unless -d "_rel";
-mkdir "_src"  unless -d "_src";
 
 
 my $q_src :shared = Thread::Queue::Any->new();
 my $q_bnd :shared = Thread::Queue::Any->new();
-my $q_mp :shared = Thread::Queue::Any->new();
+my $q_mp  :shared = Thread::Queue::Any->new();
 my $q_bld_img :shared = Thread::Queue::Any->new();
 my $q_upl :shared = Thread::Queue::Any->new();
 
 my $sema_mp :shared = Thread::Semaphore->new($mp_threads_num);
 
 
-logg( "Let's the fun begin! Building '$settings->{filename}'" );
+
+
+logg( "Let's the fun begin!" );
+logg( "Start building'$settings->{filename}' mapset" );
 
 if ( $update_cfg ) {
     logg( "Updating configuration" );
@@ -115,12 +113,15 @@ if ( $update_cfg ) {
 }
 
 
-# Initializing thread conveyor
+# Initializing thread pipeline
 
-my $t_src = threads->create( \&_source_download_thread );
-my $t_bnd = threads->create( \&_boundary_download_thread );
+my @build_threads = (
+    threads->create( \&_source_download_thread ),
+    threads->create( \&_boundary_download_thread ),
 # mp
 # img
+);
+
 my $t_upl = threads->create( \&_upload_thread ); 
 
 
@@ -240,7 +241,7 @@ my $t_bld_img = threads->create( sub {
                 logg( "$reg->{code} $reg->{alias} - IMG already built" );
 
                 push @reglist, $reg->{mapid};
-                push @reglist, $reg->{mapid} + 10000000         if $housesearch;
+                push @reglist, $reg->{mapid} + 10000000         if $make_house_search;
 
                 next;
             }
@@ -252,24 +253,24 @@ my $t_bld_img = threads->create( sub {
             move("$basedir/$dirname/$reg->{mapid}.mp",".");
 
             cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
-            if ( $housesearch ) {
+            if ( $make_house_search ) {
                 `$basedir/osm2mp/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull`;
                 cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
             }
             my $smp = $reg->{mapid} + 10000000;
 
             unlink "$reg->{mapid}.mp";
-            unlink "$reg->{mapid}-s.mp"     if $housesearch;
+            unlink "$reg->{mapid}-s.mp"     if $make_house_search;
 
             if ( -f "$reg->{mapid}.img" ) {
                 logg( "$reg->{code} $reg->{alias} - indexing mapset" );
                 push @reglist, $reg->{mapid};
-                push @reglist, $smp         if $housesearch;
+                push @reglist, $smp         if $make_house_search;
 
                 $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
 
                 my @files = ("$reg->{mapid}.img");
-                push @files, "$smp.img"    if $housesearch;
+                push @files, "$smp.img"    if $make_house_search;
                 my $vars = { settings => $settings, data => $reg, files => \@files };
                 $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
@@ -295,7 +296,7 @@ my $t_bld_img = threads->create( sub {
 
                 chdir "$basedir/$dirname";
                 rcopy_glob("$regdir/$reg->{mapid}.img*",".");
-                rcopy_glob("$regdir/$smp.img*", ".")        if $housesearch;
+                rcopy_glob("$regdir/$smp.img*", ".")        if $make_house_search;
                 unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
                 `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
                 rmtree("$regdir");
@@ -328,19 +329,22 @@ logg( "IMG building thread created" );
 
 
 # Start!
-REGION:
-for my $reg ( @regions ) {
 
+REGION:
+for my $reg ( @$regions ) {
     $reg->{mapid} = sprintf "%08d", $fidbase*1000 + $reg->{code};
     $q_src->enqueue( $reg );
 }
 
 $q_src->enqueue( undef );
 
-$t_src->join();
-$t_bnd->join();
+# wait for regions to build
+
+$_->join()  for @build_threads;
+
 $t_bld_mp->join();
 $t_bld_img->join();
+
 $q_upl->enqueue( undef );
 
 
