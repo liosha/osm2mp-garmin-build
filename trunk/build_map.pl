@@ -41,7 +41,9 @@ my ( $settings, $regions ) = YAML::LoadFile( $config_file );
 GetOptions(
     'upload=s'      => \my $config_file_ftp,
     'continue!'     => \my $continue_mode,
+
     'update-cfg!'   => \( my $update_cfg = 1 ),
+    'skip-dl-src!'  => \my $skip_dl_src,
 );
 
 
@@ -112,30 +114,7 @@ if ( $update_cfg ) {
 }
 
 
-# Source downloading thread
-my $t_src = threads->create( sub {
-    while ( my ($reg) = $q_src->dequeue() ) {
-        if ( defined $reg ) {
-            logg( "$reg->{code} $reg->{alias} - downloading source" );
-            unless ( -f "$basedir/$dirname/$reg->{mapid}.img"  &&  -f "$basedir/$dirname/$reg->{mapid}.img.idx"  ) {
-            $reg->{srcalias} = $reg->{alias}
-                unless (exists $reg->{srcalias});
-            $reg->{srcurl} = "http://data.gis-lab.info/osm_dump/dump/latest/$reg->{srcalias}.osm.pbf"
-                unless (exists $reg->{srcurl});
-                $reg->{source} = "$basedir/_src/$prefix.$reg->{alias}.osm.pbf";
-                `wget $reg->{srcurl} -O $reg->{source} -o $basedir/$dirname/$reg->{mapid}.wget.log 2> $devnull`;
-            }
-        };
-        $q_bnd->enqueue( $reg );
-        unless ( defined $reg ) {
-            logg( "All sources downloaded!" );
-            return;
-        }
-    }
-} );
-logg( "Source downloading thread created" );
-
-
+my $t_src = threads->create( \&_source_download_thread );
 
 
 # Boundary downloading thread
@@ -484,6 +463,38 @@ sub cgpsm_run {
             }
             $num++;
         }
+}
+
+
+
+##  Thread routines
+
+sub _source_download_thread {
+    while ( my ($reg) = $q_src->dequeue() ) {
+        last if !defined $reg;
+
+        my $ext = 'osm.pbf';
+        $reg->{srcalias} //= $reg->{alias};
+        $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
+        $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
+
+        if ( !$skip_dl_src ) {
+            my $filebase = "$basedir/$dirname/$reg->{mapid}";
+            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+                logg ( "Skip downloading '$reg->{alias}': img exists" );
+            }
+            else {
+                logg( "Downloading source for '$reg->{alias}'" );
+                `wget $reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull`;
+            }
+        }
+
+        $q_bnd->enqueue( $reg );
+    }
+
+    logg( "All sources have been downloaded!" ) if !$skip_dl_src;
+    $q_bnd->enqueue( undef );
+    return;
 }
 
 
