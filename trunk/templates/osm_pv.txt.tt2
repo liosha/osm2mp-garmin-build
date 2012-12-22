@@ -14,8 +14,9 @@ Level1=13
 Zoom0=5
 Zoom1=6
 
-Copy1=http://openstreetmap.org/
-Copy2=liosha, xliosha@gmail.com
+Copy1=Gis-Lab garmin project, http://gis-lab.info/data/mp/
+Copy2=OpenStreetMap, http://osm.org/
+
 MapsourceName=OSM [% data.name %] [% settings.today %]
 MapSetName=OSM [% data.name %]
 CDSetName=OSM [% data.name %]
