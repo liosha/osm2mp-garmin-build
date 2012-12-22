@@ -2,7 +2,6 @@
 
 # $Id$
 
-use strict;
 use uni::perl;
 
 use Getopt::Long qw{ :config pass_through };
@@ -11,9 +10,11 @@ use threads;
 use threads::shared;
 use Thread::Queue::Any;
 
+use Encode;
+use Encode::Locale;
+
 use IO::Handle;
 use POSIX;
-use Encode;
 use YAML;
 use File::Copy;
 use File::Path;
@@ -342,12 +343,15 @@ sub build_mp {
     my $regdir = "$reg->{alias}_$settings->{today}";
     my $regdir_full = "$basedir/$dirname/$regdir";
     mkdir "$regdir_full";
-    $reg->{keys} = q{} unless exists $reg->{keys};
+
+    $reg->{keys} //= q{};
 
     my $osm2mp = "$basedir/osm2mp/osm2mp.pl";
     $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
 
-    my $cmd =  qq{ 
+    my $filebase = "$regdir_full/$reg->{mapid}";
+    my $cmd = encode locale => qq{
+        osmconvert "$reg->{source}" --out-osm |
         perl $osm2mp
         --config $basedir/$cfgfile
         --mapid $reg->{mapid}
@@ -358,32 +362,34 @@ sub build_mp {
         $common_keys
         $reg->{keys}
         -
+        -o $filebase.mp
+        2> $filebase.osm2mp.log
     };
     $cmd =~ s/\s+/ /g;
 
-    `osmconvert "$reg->{source}" --out-osm | $cmd >"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.log"`;
-    if (exists $reg->{fixmultipoly} && $reg->{fixmultipoly}=="yes"){
-        logg( "$reg->{code} $reg->{alias} - converting broken multipolygons to MP" );
+    `$cmd`;
+
+    if ( $reg->{fixmultipoly} ) {
+        logg( "Repairing broken multipolygons for '$reg->{alias}'" );
         my $cmd_brokenmpoly = qq{ 
             perl $osm2mp
             --config $basedir/$cfgfile_brokenmpoly
-            --mapid $reg->{mapid}
-            --mapname "$reg->{name}"
             --bpoly $reg->{poly}
             --defaultcountry $countrycode
             --defaultregion "$reg->{name}"
             $common_keys
             $reg->{keys}
-            -
         };
         $cmd_brokenmpoly =~ s/\s+/ /g;
-        `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2>"$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >>"$regdir_full/$reg->{mapid}.mp" 2>"$regdir_full/$reg->{mapid}.osm2mp.broken.log"`;
+        `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2> "$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >> "$filebase.mp" 2> "$filebase.osm2mp.broken.log"`;
     }
-    logg( "$reg->{code} $reg->{alias} - MP postprocess" );
-    `$basedir/osm2mp/mp-postprocess.pl "$regdir_full/$reg->{mapid}.mp"`;
 
-    `grep ERROR: $regdir_full/$reg->{mapid}.mp > $regdir_full/$reg->{mapid}.errors.log`;
-    `$basedir/log2html.pl $regdir_full/$reg->{mapid}.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
+    logg( "Postprocessing MP for '$reg->{alias}'" );
+    `$basedir/osm2mp/mp-postprocess.pl "$filebase.mp"`;
+
+
+    `grep ERROR: $filebase.mp > $filebase.errors.log`;
+    `$basedir/log2html.pl $filebase.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
@@ -391,7 +397,8 @@ sub build_mp {
         file    => "$basedir/_rel/$prefix.$reg->{alias}.err.htm",
         delete  => 1,
     } );
-    logg( "$reg->{code} $reg->{alias} - compressing MP" );
+
+    logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
     rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
     unlink "$basedir/_rel/$prefix.$reg->{alias}.mp.7z";
