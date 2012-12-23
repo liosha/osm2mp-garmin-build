@@ -70,7 +70,7 @@ my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 my $basedir = getcwd();
 my $dirname = "$settings->{prefix}.temp";
 rmtree $dirname  if !$continue_mode;
-mkdir $dirname  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
+mkdir $_  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
 
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
