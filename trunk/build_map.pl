@@ -2,7 +2,10 @@
 
 # $Id$
 
-use uni::perl;
+use 5.010;
+use strict;
+use warnings;
+use utf8;
 
 use Getopt::Long qw{ :config pass_through };
 
@@ -314,6 +317,19 @@ sub ren_lowercase {
     }
 }
 
+
+# locale-safe qx
+sub _qx {
+    my ($cmd) = @_;
+
+    $cmd =~ s/ ^ \s+ | \s+ (?= \s ) | \s+ $ //gxms;
+    $cmd = encode locale => $cmd;
+
+    return `$cmd`;
+}
+
+
+
 sub cgpsm_run {
         logg("cgpsmapper @_");
         my $ret_code = 1;
@@ -349,9 +365,7 @@ sub build_mp {
     my $osm2mp = "$basedir/osm2mp/osm2mp.pl";
     $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
 
-    my $filebase = "$regdir_full/$reg->{mapid}";
-    my $cmd = encode locale => qq{
-        osmconvert "$reg->{source}" --out-osm |
+    my $convert_cmd = qq{
         perl $osm2mp
         --config $basedir/$cfgfile
         --mapid $reg->{mapid}
@@ -361,13 +375,14 @@ sub build_mp {
         --defaultregion "$reg->{name}"
         $common_keys
         $reg->{keys}
-        -
-        -o $filebase.mp
-        2> $filebase.osm2mp.log
     };
-    $cmd =~ s/\s+/ /g;
 
-    `$cmd`;
+    my $filebase = "$regdir_full/$reg->{mapid}";
+    _qx( qq{
+        osmconvert "$reg->{source}" --out-osm |
+        $convert_cmd - -o $filebase.mp
+        2> $filebase.osm2mp.log
+    } );
 
     if ( $reg->{fixmultipoly} ) {
         logg( "Repairing broken multipolygons for '$reg->{alias}'" );
@@ -380,8 +395,14 @@ sub build_mp {
             $common_keys
             $reg->{keys}
         };
-        $cmd_brokenmpoly =~ s/\s+/ /g;
-        `osmconvert "$reg->{source}" --out-osm | $basedir/getbrokenrelations.py 2> "$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log" | $cmd_brokenmpoly >> "$filebase.mp" 2> "$filebase.osm2mp.broken.log"`;
+        _qx( qq{
+            osmconvert "$reg->{source}" --out-osm
+            | $basedir/getbrokenrelations.py
+                2> "$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log"
+            | $cmd_brokenmpoly
+                >> "$filebase.mp"
+                2> "$filebase.osm2mp.broken.log"
+         } );
     }
 
     logg( "Postprocessing MP for '$reg->{alias}'" );
