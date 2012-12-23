@@ -74,31 +74,13 @@ mkdir $dirname  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
 
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
-my @reglist :shared;
 
 
-
-
-my $noupload :shared = 0; # do not upload to server flag
-
-
-my $prefix  :shared = exists($settings->{prefix})     ?  $settings->{prefix}        :  'test';
-my $cfgfile :shared = exists($settings->{config})     ?  $settings->{config}        :  'garmin.yml';
-my $cfgfile_brokenmpoly :shared = exists($settings->{config_brokenmpoly})     ?  $settings->{config_brokenmpoly}        :  'garmin.yml';
-my $fidbase :shared = exists($settings->{fid})        ?  $settings->{fid}           :  100;;
-my $countrycode = exists($settings->{countrycode})    ?  $settings->{countrycode}   :  'test';
-my $countryname = exists($settings->{countryname})    ?  $settings->{countryname}   :  'test';
-my $filename    = exists($settings->{filename})       ?  $settings->{filename}      :  'test';
-my $common_keys :shared = $settings->{keys} // q{};
-my $name_postfix :shared = exists($settings->{name_postfix}) ? "$settings->{filename} " : q{};
-
-
-
-my $q_src :shared = Thread::Queue::Any->new();
-my $q_bnd :shared = Thread::Queue::Any->new();
-my $q_mp  :shared = Thread::Queue::Any->new();
-my $q_img :shared = Thread::Queue::Any->new();
-my $q_upl :shared = Thread::Queue::Any->new();
+my $q_src = Thread::Queue::Any->new();
+my $q_bnd = Thread::Queue::Any->new();
+my $q_mp  = Thread::Queue::Any->new();
+my $q_img = Thread::Queue::Any->new();
+my $q_upl = Thread::Queue::Any->new();
 
 
 
@@ -116,6 +98,7 @@ if ( $update_cfg ) {
 
 # Initializing thread pipeline
 
+my @reglist :shared;
 my $active_mp_threads_num :shared = $mp_threads_num;
 
 my @build_threads = (
@@ -133,7 +116,7 @@ my $t_upl = threads->create( \&_upload_thread );
 
 REGION:
 for my $reg ( @$regions ) {
-    $reg->{mapid} = sprintf "%08d", $fidbase*1000 + $reg->{code};
+    $reg->{mapid} = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
     $q_src->enqueue( $reg );
 }
 $q_src->enqueue( undef );
@@ -151,7 +134,7 @@ logg( "Indexing whole mapset" );
 chdir $dirname;
 
 my @files = map {"$_.img"} @reglist;
-my $vars = { settings => $settings, data => { name => $countryname }, files => \@files };
+my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@files };
 $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
 
@@ -171,19 +154,19 @@ unlink "wine.core";
 
 $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
-rcopy_glob("../osm.typ","./osm${fidbase}.typ");
-`gmt -wy $fidbase ./osm${fidbase}.typ`;
+rcopy_glob("../osm.typ","./osm$settings->{fid}.typ");
+`gmt -wy $settings->{fid} ./osm$settings->{fid}.typ`;
 
 ren_lowercase("*.*");
 
 logg( "Compressing mapset" );
 
-my $mapdir = "${filename}_$settings->{today}";
+my $mapdir = "$settings->{filename}_$settings->{today}";
 mkdir $mapdir;
 move $_ => $mapdir  for grep {-f} glob q{*};
 
-unlink "$basedir/_rel/$prefix.$filename.7z";
-`7za a -y $basedir/_rel/$prefix.$filename.7z $mapdir`;
+unlink "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
+`7za a -y $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $mapdir`;
 rmtree("$mapdir");
 
 chdir $basedir;
@@ -192,7 +175,7 @@ chdir $basedir;
 if ( $settings->{serv} ) {
     logg( "Uploading mapset" );
     my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-    `curl --retry 100 $auth -T $basedir/_rel/$prefix.$filename.7z $settings->{serv}`;
+    `curl --retry 100 $auth -T $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $settings->{serv}`;
 }
 
 rmtree("$dirname");
@@ -315,15 +298,15 @@ sub build_img {
         rcopy_glob("$regdir/$reg->{mapid}.img*",".");
         rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
 
-        unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
-        `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
+        unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
+        `7za a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir`;
         rmtree("$regdir");
 
         $q_upl->enqueue( { 
             code    => $reg->{code},
             alias   => $reg->{alias},
             role    => 'mapset',
-            file    => "$basedir/_rel/$prefix.$reg->{alias}.7z",
+            file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z",
         } );
     }
     else {
@@ -351,13 +334,13 @@ sub build_mp {
 
     my $convert_cmd = qq{
         perl $osm2mp
-        --config $basedir/$cfgfile
+        --config $basedir/$settings->{config}
         --mapid $reg->{mapid}
         --mapname "$reg->{name}"
         --bpoly $reg->{poly}
-        --defaultcountry $countrycode
+        --defaultcountry $settings->{countrycode}
         --defaultregion "$reg->{name}"
-        $common_keys
+        $settings->{keys}
         $reg->{keys}
     };
 
@@ -372,11 +355,11 @@ sub build_mp {
         logg( "Repairing broken multipolygons for '$reg->{alias}'" );
         my $cmd_brokenmpoly = qq{ 
             perl $osm2mp
-            --config $basedir/$cfgfile_brokenmpoly
+            --config $basedir/$settings->{config_brokenmpoly}
             --bpoly $reg->{poly}
-            --defaultcountry $countrycode
+            --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
-            $common_keys
+            $settings->{keys}
             $reg->{keys}
         };
         _qx( qq{
@@ -394,27 +377,27 @@ sub build_mp {
 
 
     `grep ERROR: $filebase.mp > $filebase.errors.log`;
-    `$basedir/log2html.pl $filebase.errors.log > $basedir/_rel/$prefix.$reg->{alias}.err.htm`;
+    `$basedir/log2html.pl $filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm`;
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
         role    => 'error log',
-        file    => "$basedir/_rel/$prefix.$reg->{alias}.err.htm",
+        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm",
         delete  => 1,
     } );
 
     logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
     rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
-    unlink "$basedir/_rel/$prefix.$reg->{alias}.mp.7z";
-    `7za a -y $basedir/_rel/$prefix.$reg->{alias}.mp.7z $regdir_full`;
+    unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
+    `7za a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full`;
     rmtree("$regdir_full");
 
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
         role    => 'MP',
-        file    => "$basedir/_rel/$prefix.$reg->{alias}.mp.7z",
+        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z",
     } );
 
     return; 
