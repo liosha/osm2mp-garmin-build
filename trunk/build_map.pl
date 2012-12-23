@@ -36,12 +36,9 @@ STDERR->autoflush(1);
 STDOUT->autoflush(1);
 
 
-my $config_file = 'test.yml';
-GetOptions( 'c|config=s' => \$config_file );
-
-my ( $settings, $regions ) = YAML::LoadFile( $config_file );
-
 GetOptions(
+    'h|help|usage'  => \&usage,
+
     'upload=s'      => \my $config_file_ftp,
     'continue!'     => \my $continue_mode,
 
@@ -55,6 +52,9 @@ GetOptions(
 );
 
 
+my $config_file = shift @ARGV  or usage();
+
+my ( $settings, $regions ) = YAML::LoadFile( $config_file );
 if ( $config_file_ftp ) {
     my ($ftp) = YAML::LoadFile( $config_file_ftp );
     $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
@@ -530,3 +530,8 @@ sub _upload_thread {
 }
 
 
+
+sub usage {
+    say "Usage:  ./build_map.pl [--opts] build-config.yml";
+    exit;
+} 
