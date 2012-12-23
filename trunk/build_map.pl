@@ -122,123 +122,25 @@ my @build_threads = (
     threads->create( \&_source_download_thread ),
     threads->create( \&_boundary_download_thread ),
     ( map { threads->create( \&_mp_build_thread ) } ( 1 .. $mp_threads_num ) ),
-# img
+    threads->create( \&_img_build_thread ),
 );
 
 my $t_upl = threads->create( \&_upload_thread ); 
 
 
 
-# IMG building thread
-my $t_bld_img = threads->create( sub {
-    while ( my ($reg) = $q_img->dequeue() ) {
-        if ( defined $reg ) {
-            if ( -f "$dirname/$reg->{mapid}.img"  &&  -f "$dirname/$reg->{mapid}.img.idx"  ) {
-                logg( "$reg->{code} $reg->{alias} - IMG already built" );
-
-                push @reglist, $reg->{mapid};
-                push @reglist, $reg->{mapid} + 10000000         if $make_house_search;
-
-                next;
-            }
-
-            logg( "$reg->{code} $reg->{alias} - compiling IMG" );
-            my $regdir = "$reg->{alias}_$settings->{today}";
-            mkdir "$dirname/$regdir";
-            chdir "$dirname/$regdir";
-            move("$basedir/$dirname/$reg->{mapid}.mp",".");
-
-            cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
-            if ( $make_house_search ) {
-                `$basedir/osm2mp/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull`;
-                cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
-            }
-            my $smp = $reg->{mapid} + 10000000;
-
-            unlink "$reg->{mapid}.mp";
-            unlink "$reg->{mapid}-s.mp"     if $make_house_search;
-
-            if ( -f "$reg->{mapid}.img" ) {
-                logg( "$reg->{code} $reg->{alias} - indexing mapset" );
-                push @reglist, $reg->{mapid};
-                push @reglist, $smp         if $make_house_search;
-
-                $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
-
-                my @files = ("$reg->{mapid}.img");
-                push @files, "$smp.img"    if $make_house_search;
-                my $vars = { settings => $settings, data => $reg, files => \@files };
-                $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
-
-                `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
-                logg("Error! $reg->{code} $reg->{alias} - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
-
-                unlink 'OSM.reg';
-                cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-
-                unlink 'OSM.mp';
-                unlink 'OSM.img.idx';
-
-                $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
-
-
-                rcopy_glob("$basedir/osm.typ","./osm$reg->{fid}.typ");
-                `gmt -wy $reg->{fid} ./osm$reg->{fid}.typ`;
-                
-                ren_lowercase("*.*");
-                unlink "wine.core";
-
-                logg( "$reg->{code} $reg->{alias} - compressing mapset" );
-
-                chdir "$basedir/$dirname";
-                rcopy_glob("$regdir/$reg->{mapid}.img*",".");
-                rcopy_glob("$regdir/$smp.img*", ".")        if $make_house_search;
-                unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
-                `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
-                rmtree("$regdir");
-
-                $q_upl->enqueue( { 
-                    code    => $reg->{code},
-                    alias   => $reg->{alias},
-                    role    => 'mapset',
-                    file    => "$basedir/_rel/$prefix.$reg->{alias}.7z",
-                } );
-            }
-            else {
-                logg( "Error! $reg->{code} $reg->{alias} - IMG build failed, skipping" );
-                rcopy_glob("$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
-            }
-
-            chdir $basedir;
-        };
-
-        unless ( defined $reg ) {
-            logg( "All maps has been built!" );
-            return;
-        }
-    }
-} );
-logg( "IMG building thread created" );
-
-
-
-
-
-# Start!
+# Fill queue
 
 REGION:
 for my $reg ( @$regions ) {
     $reg->{mapid} = sprintf "%08d", $fidbase*1000 + $reg->{code};
     $q_src->enqueue( $reg );
 }
-
 $q_src->enqueue( undef );
 
-# wait for regions to build
 
+# Wait for regions to build
 $_->join()  for @build_threads;
-
-$t_bld_img->join();
 
 $q_upl->enqueue( undef );
 
@@ -322,7 +224,8 @@ sub ren_lowercase {
 sub _qx {
     my ($cmd) = @_;
 
-    $cmd =~ s/ ^ \s+ | \s+ (?= \s ) | \s+ $ //gxms;
+    $cmd =~ s/ \s+ / /gxms;
+    $cmd =~ s/ ^ \s+ | \s+ $ //gxms;
     $cmd = encode locale => $cmd;
 
     return `$cmd`;
@@ -331,26 +234,107 @@ sub _qx {
 
 
 sub cgpsm_run {
-        logg("cgpsmapper @_");
-        my $ret_code = 1;
-        my $num = 1;
+    my ($params, $img_file) = @_;
 
-        my $cmd = $^O ? 'cgpsmapper' : 'wine cgpsmapper.exe';
+    logg("Run 'cgpsmapper $params'");
 
-        while ($ret_code != 0 && $num<=5){
-            `$cmd $_[0]`;
-            $ret_code = $?;
+    my $cmd = $^O ? 'cgpsmapper' : 'wine cgpsmapper.exe';
 
-            if ( ($ret_code == 0) && (! -f "$_[1]") ) {
-            $ret_code=9999;
-            }
-            logg("cgpsmapper exit($ret_code)");
-            if ($ret_code != 0) {
-            sleep(60);
-            }
-            $num++;
-        }
+    my $max_retry = 5;
+    for my $try ( 1 .. $max_retry ) {
+        `$cmd $_[0]`;
+ 
+        my $ret_code = $?;
+        $ret_code ||= 9999  if !-f $img_file;
+
+        logg("Cgpsmapper returns '$ret_code'");
+
+        last if !$ret_code || $try == $max_retry;
+
+        logg("Do some sleep");
+        sleep 30;
+    }
+
+    return;
 }
+
+
+# !!! cwd!
+sub build_img {
+    my ($reg) = @_;
+
+    my $regdir = "$reg->{alias}_$settings->{today}";
+    mkdir "$dirname/$regdir";
+    chdir "$dirname/$regdir";
+
+    move "$basedir/$dirname/$reg->{mapid}.mp" => ".";
+
+    cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
+
+    if ( $make_house_search ) {
+        `$basedir/osm2mp/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull`;
+        cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
+    }
+
+    unlink "$reg->{mapid}.mp";
+    unlink "$reg->{mapid}-s.mp"     if $make_house_search;
+
+    if ( -f "$reg->{mapid}.img" ) {
+        my $mapid_s = $reg->{mapid} + 10000000;
+
+        logg( "Indexing mapset for '$reg->{alias}'" );
+        
+        push @reglist, $reg->{mapid};
+        push @reglist, $mapid_s   if $make_house_search;
+
+        $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
+
+        my @files = ("$reg->{mapid}.img");
+        push @files, "$mapid_s.img"    if $make_house_search;
+        my $vars = { settings => $settings, data => $reg, files => \@files };
+        $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+
+        `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
+        logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
+
+        cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
+
+        unlink $_ for qw/ OSM.reg  OSM.mp  OSM.img.idx /;
+
+        $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+
+        rcopy_glob("$basedir/osm.typ","./osm$reg->{fid}.typ");
+        `gmt -wy $reg->{fid} ./osm$reg->{fid}.typ`;
+                
+        ren_lowercase("*.*");
+        unlink "wine.core";
+
+        logg( "Compressing mapset '$reg->{alias}'" );
+
+        chdir "$basedir/$dirname";
+        rcopy_glob("$regdir/$reg->{mapid}.img*",".");
+        rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
+
+        unlink "$basedir/_rel/$prefix.$reg->{alias}.7z";
+        `7za a -y $basedir/_rel/$prefix.$reg->{alias}.7z $regdir`;
+        rmtree("$regdir");
+
+        $q_upl->enqueue( { 
+            code    => $reg->{code},
+            alias   => $reg->{alias},
+            role    => 'mapset',
+            file    => "$basedir/_rel/$prefix.$reg->{alias}.7z",
+        } );
+    }
+    else {
+        logg( "Error! IMG build failed for '$reg->{alias}'" );
+        rcopy_glob("$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
+    }
+
+    chdir $basedir;
+    return;
+}
+
 
 
 sub build_mp {
@@ -398,7 +382,7 @@ sub build_mp {
         _qx( qq{
             osmconvert "$reg->{source}" --out-osm
             | $basedir/getbrokenrelations.py
-                2> "$basedir/$dirname/$reg->{mapid}.getbrokenrelations.log"
+                2> "$filebase.getbrokenrelations.log"
             | $cmd_brokenmpoly
                 >> "$filebase.mp"
                 2> "$filebase.osm2mp.broken.log"
@@ -502,7 +486,7 @@ sub _mp_build_thread {
         last if !defined $reg;
 
         my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.mp" ) {
+        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
             logg ( "Skip building MP for '$reg->{alias}': already built" );
         }
         else {
@@ -518,6 +502,29 @@ sub _mp_build_thread {
         logg( "All MP files have been built!" );
         $q_img->enqueue( undef );
     }
+
+    return;
+}    
+
+
+sub _img_build_thread {
+    while ( my ($reg) = $q_img->dequeue() ) {
+        last if !defined $reg;
+
+        my $filebase = "$basedir/$dirname/$reg->{mapid}";
+        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+            logg ( "Skip building IMG for '$reg->{alias}': already built" );
+
+            push @reglist, $reg->{mapid};
+            push @reglist, $reg->{mapid} + 10000000   if $make_house_search;
+        }
+        else {
+            logg ( "Building IMG for '$reg->{alias}'" );
+            build_img( $reg );
+        }
+    }
+
+    logg( "All IMG files have been built!" );
 
     return;
 }    
