@@ -44,7 +44,7 @@ GetOptions(
 
     'house-search!' => \my $make_house_search,
 
-    'mp-threads=i'  => \( my $mp_threads_num = 2 ),
+    'mp-threads=i'  => \( my $mp_threads_num = 1 ),
 
     'update-cfg!'       => \( my $update_cfg = 1 ),
     'skip-dl-src!'      => \my $skip_dl_src,
@@ -88,10 +88,12 @@ my $q_upl = Thread::Queue::Any->new();
 logg( "Let's the fun begin!" );
 logg( "Start building'$settings->{filename}' mapset" );
 
-if ( $update_cfg ) {
+if ( $settings->{update_config} && $update_cfg ) {
     logg( "Updating configuration" );
-    `svn up open-cfg`;
-    logg( "svn info:\n" . `svn info open-cfg` );
+    my $cfgdir = $settings->{config};
+    $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
+    `svn up $cfgdir`;
+    logg( "svn info:\n" . `svn info $cfgdir` );
     rcopy_glob("open-cfg/osm.typ","osm.typ");
 }
 
