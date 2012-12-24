@@ -1,8 +1,0 @@
-
-# FTP server for maps uploading
-
----
-
-serv: ftp://localhost/
-auth: anonymous:anonymous
-

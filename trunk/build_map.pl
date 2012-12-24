@@ -19,11 +19,10 @@ use Encode::Locale;
 use IO::Handle;
 use POSIX;
 use YAML;
-use File::Copy;
-use File::Path;
-
 use Template;
 
+use File::Path;
+use File::Copy;
 use File::Copy::Recursive;
 BEGIN {
     # not exportable in 0.38
@@ -31,10 +30,22 @@ BEGIN {
     *rmove_glob = *File::Copy::Recursive::rmove_glob;
 }
 
+my $basedir = getcwd();
 
-STDERR->autoflush(1);
-STDOUT->autoflush(1);
+# external commands required for building
+my %CMD = (
+    getbound    => "perl $basedir/getbound.pl",
+    osmconvert  => 'osmconvert',
+    osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
+    postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
+    housesearch => "perl $basedir/osm2mp/mp-housesearch.pl",
+    log2html    => "perl $basedir/log2html.pl",
+    cgpsmapper  => ( $^O ~~ 'MSWin32' ? 'cgpsmapper' : 'wine cgpsmapper.exe' ),
+    gmaptool    => 'gmt',
+    arc         => '7za',
+);
 
+my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 
 GetOptions(
     'h|help|usage'  => \&usage,
@@ -49,6 +60,7 @@ GetOptions(
     'update-cfg!'       => \( my $update_cfg = 1 ),
     'skip-dl-src!'      => \my $skip_dl_src,
     'skip-dl-bounds!'   => \my $skip_dl_bounds,
+    'skip-img!'         => \my $skip_img_build,
 );
 
 
@@ -62,12 +74,10 @@ if ( $config_file_ftp ) {
 
 $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
-$settings->{encoding} = "cp$settings->{codepage}";
+$settings->{encoding} ||= "cp$settings->{codepage}";
 
 
-my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
 
-my $basedir = getcwd();
 my $dirname = "$settings->{prefix}.temp";
 rmtree $dirname  if !$continue_mode;
 mkdir $_  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
@@ -84,6 +94,9 @@ my $q_upl = Thread::Queue::Any->new();
 
 
 
+STDERR->autoflush(1);
+STDOUT->autoflush(1);
+
 
 logg( "Let's the fun begin!" );
 logg( "Start building'$settings->{filename}' mapset" );
@@ -92,8 +105,8 @@ if ( $settings->{update_config} && $update_cfg ) {
     logg( "Updating configuration" );
     my $cfgdir = $settings->{config};
     $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
-    `svn up $cfgdir`;
-    logg( "svn info:\n" . `svn info $cfgdir` );
+    _qx( svn => "up $cfgdir" );
+    logg( "svn info:\n" . _qx( svn => "info $cfgdir" ) );
     rcopy_glob("open-cfg/osm.typ","osm.typ");
 }
 
@@ -130,58 +143,52 @@ $_->join()  for @build_threads;
 $q_upl->enqueue( undef );
 
 
+if ( !$skip_img_build ) {
+    logg( "Indexing whole mapset" );
 
-logg( "Indexing whole mapset" );
+    chdir $dirname;
 
-chdir $dirname;
+    my @files = map {"$_.img"} @reglist;
+    my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@files };
+    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
-my @files = map {"$_.img"} @reglist;
-my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@files };
-$tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+    _qx( cpreview => "pv.txt -m > cpreview.log" );
+    logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
 
+    unlink "OSM.reg";
+#    unlink "$_.img.idx" for @reglist;
 
-`cpreview pv.txt -m > cpreview.log`;
-logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+    cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
+    unlink $_ for qw/ OSM.mp OSM.img.idx wine.core /;
 
-unlink "OSM.reg";
-for my $mp (@reglist) {
-#    unlink "$mp.img.idx";
+    $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+
+    rcopy_glob("../osm.typ","./osm$settings->{fid}.typ");
+    _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
+
+    ren_lowercase("*.*");
+
+    logg( "Compressing mapset" );
+
+    my $mapdir = "$settings->{filename}_$settings->{today}";
+    mkdir $mapdir;
+    move $_ => $mapdir  for grep {-f} glob q{*};
+
+    unlink "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
+    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $mapdir" );
+    rmtree("$mapdir");
+
+    chdir $basedir;
+
+    if ( $settings->{serv} ) {
+        logg( "Uploading mapset" );
+        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
+        _qx( curl => "--retry 100 $auth -T $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $settings->{serv}" );
+    }
 }
 
-cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
 
-unlink 'OSM.mp';
-unlink 'OSM.img.idx';
-unlink "wine.core";
-
-$tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
-
-rcopy_glob("../osm.typ","./osm$settings->{fid}.typ");
-`gmt -wy $settings->{fid} ./osm$settings->{fid}.typ`;
-
-ren_lowercase("*.*");
-
-logg( "Compressing mapset" );
-
-my $mapdir = "$settings->{filename}_$settings->{today}";
-mkdir $mapdir;
-move $_ => $mapdir  for grep {-f} glob q{*};
-
-unlink "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
-`7za a -y $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $mapdir`;
-rmtree("$mapdir");
-
-chdir $basedir;
-
-
-if ( $settings->{serv} ) {
-    logg( "Uploading mapset" );
-    my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-    `curl --retry 100 $auth -T $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $settings->{serv}`;
-}
-
-rmtree("$dirname");
-
+rmtree $dirname;
 
 $t_upl->join();
 logg( "That's all, folks!" );
@@ -192,28 +199,30 @@ logg( "That's all, folks!" );
 
 
 sub logg {
-    printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), @_;
+    my @logs = @_;
+    printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), "@logs";
+    return;
 }
 
 sub ren_lowercase {
+    my ($mask) = @_;
 
-    my $mask= $_[0];
-    my @filelist=glob($mask);
-    foreach (@filelist) {
-        move($_,lc($_)) ;
-    }
+    move $_ => lc $_  for glob $mask;
+    return;
 }
 
 
 # locale-safe qx
 sub _qx {
-    my ($cmd) = @_;
+    my ($cmd, $params) = @_;
 
-    $cmd =~ s/ \s+ / /gxms;
-    $cmd =~ s/ ^ \s+ | \s+ $ //gxms;
-    $cmd = encode locale => $cmd;
+    $params =~ s/ \s+ / /gxms;
+    $params =~ s/ ^ \s+ | \s+ $ //gxms;
 
-    return `$cmd`;
+    my $program = $CMD{$cmd} || $cmd;
+    my $run = encode locale => "$program $params";
+
+    return `$run`;
 }
 
 
@@ -223,11 +232,9 @@ sub cgpsm_run {
 
     logg("Run 'cgpsmapper $params'");
 
-    my $cmd = $^O ? 'cgpsmapper' : 'wine cgpsmapper.exe';
-
     my $max_retry = 5;
     for my $try ( 1 .. $max_retry ) {
-        `$cmd $_[0]`;
+        _qx( cgpsmapper => $params );
  
         my $ret_code = $?;
         $ret_code ||= 9999  if !-f $img_file;
@@ -257,7 +264,7 @@ sub build_img {
     cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
 
     if ( $make_house_search ) {
-        `$basedir/osm2mp/mp-housesearch.pl "$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull`;
+        _qx( housesearch => qq("$reg->{mapid}.mp" > "$reg->{mapid}-s.mp" 2> $devnull) );
         cgpsm_run("ac $reg->{mapid}-s.mp -e -l >> $reg->{mapid}.cgpsmapper.log","$reg->{mapid}.img");
     }
 
@@ -279,7 +286,7 @@ sub build_img {
         my $vars = { settings => $settings, data => $reg, files => \@files };
         $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
-        `cpreview pv.txt -m > $reg->{mapid}.cpreview.log`;
+        _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
         logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
         cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
@@ -289,7 +296,7 @@ sub build_img {
         $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
         rcopy_glob("$basedir/osm.typ","./osm$reg->{fid}.typ");
-        `gmt -wy $reg->{fid} ./osm$reg->{fid}.typ`;
+        _qx( gmaptool => "-wy $reg->{fid} ./osm$reg->{fid}.typ" );
                 
         ren_lowercase("*.*");
         unlink "wine.core";
@@ -301,7 +308,7 @@ sub build_img {
         rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
 
         unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
-        `7za a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir`;
+        _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir" );
         rmtree("$regdir");
 
         $q_upl->enqueue( { 
@@ -331,11 +338,9 @@ sub build_mp {
 
     $reg->{keys} //= q{};
 
-    my $osm2mp = "$basedir/osm2mp/osm2mp.pl";
-    $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
+#    $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
 
-    my $convert_cmd = qq{
-        perl $osm2mp
+    my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
         --mapid $reg->{mapid}
         --mapname "$reg->{name}"
@@ -344,42 +349,40 @@ sub build_mp {
         --defaultregion "$reg->{name}"
         $settings->{keys}
         $reg->{keys}
-    };
+    ];
 
     my $filebase = "$regdir_full/$reg->{mapid}";
-    _qx( qq{
-        osmconvert "$reg->{source}" --out-osm |
-        $convert_cmd - -o $filebase.mp
-        2> $filebase.osm2mp.log
-    } );
+    _qx( osmconvert => qq[ "$reg->{source}" --out-osm
+        | $CMD{osm2mp} $osm2mp_params - -o $filebase.mp
+            2> $filebase.osm2mp.log
+    ] );
 
     if ( $reg->{fixmultipoly} ) {
         logg( "Repairing broken multipolygons for '$reg->{alias}'" );
-        my $cmd_brokenmpoly = qq{ 
-            perl $osm2mp
+        my $cmd_brokenmpoly = qq[
+            $CMD{osm2mp}
             --config $basedir/$settings->{config_brokenmpoly}
             --bpoly $reg->{poly}
             --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
             $settings->{keys}
             $reg->{keys}
-        };
-        _qx( qq{
-            osmconvert "$reg->{source}" --out-osm
+        ];
+        _qx( osmconvert => qq[ "$reg->{source}" --out-osm
             | $basedir/getbrokenrelations.py
                 2> "$filebase.getbrokenrelations.log"
-            | $cmd_brokenmpoly
+            | $cmd_brokenmpoly -
                 >> "$filebase.mp"
                 2> "$filebase.osm2mp.broken.log"
-         } );
+        ] );
     }
 
     logg( "Postprocessing MP for '$reg->{alias}'" );
-    `$basedir/osm2mp/mp-postprocess.pl "$filebase.mp"`;
+    _qx( postprocess => "$filebase.mp" );
 
 
-    `grep ERROR: $filebase.mp > $filebase.errors.log`;
-    `$basedir/log2html.pl $filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm`;
+    _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
+    _qx( log2html => "$filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm" );
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
@@ -392,7 +395,7 @@ sub build_mp {
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
     rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
     unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
-    `7za a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full`;
+    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full" );
     rmtree("$regdir_full");
 
     $q_upl->enqueue( { 
@@ -424,7 +427,7 @@ sub _source_download_thread {
             }
             else {
                 logg( "Downloading source for '$reg->{alias}'" );
-                `wget $reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull`;
+                _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
             }
         }
 
@@ -452,7 +455,7 @@ sub _boundary_download_thread {
             else {
                 logg( "Downloading boundary for '$reg->{alias}'" );
                 my $onering = $reg->{onering} ? '--onering' : q{};
-                `$basedir/getbound.pl -o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log`;
+                _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
                 logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
             }
         }
@@ -493,6 +496,8 @@ sub _mp_build_thread {
 
 
 sub _img_build_thread {
+    return if $skip_img_build;
+
     while ( my ($reg) = $q_img->dequeue() ) {
         last if !defined $reg;
 
@@ -523,7 +528,7 @@ sub _upload_thread {
 
         logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
         my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-        `curl --retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull`;
+        _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
         unlink $file->{file}  if $file->{delete};
     }
 
