@@ -107,7 +107,6 @@ if ( $settings->{update_config} && $update_cfg ) {
     $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
     _qx( svn => "up $cfgdir" );
     logg( "svn info:\n" . _qx( svn => "info $cfgdir" ) );
-    rcopy_glob("open-cfg/osm.typ","osm.typ");
 }
 
 
@@ -163,8 +162,10 @@ if ( !$skip_img_build ) {
 
     $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
-    rcopy_glob("../osm.typ","./osm$settings->{fid}.typ");
-    _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
+    if ( $settings->{typ} ) {
+        rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
+        _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
+    }
 
     ren_lowercase("*.*");
 
@@ -295,8 +296,10 @@ sub build_img {
 
         $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
-        rcopy_glob("$basedir/osm.typ","./osm$reg->{fid}.typ");
-        _qx( gmaptool => "-wy $reg->{fid} ./osm$reg->{fid}.typ" );
+        if ( $settings->{typ} ) {
+            rcopy_glob("$basedir/$settings->{typ}" => "./osm$reg->{fid}.typ");
+            _qx( gmaptool => "-wy $reg->{fid} ./osm$reg->{fid}.typ" );
+        }
                 
         ren_lowercase("*.*");
         unlink "wine.core";

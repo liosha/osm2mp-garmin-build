@@ -13,10 +13,15 @@ set KEY=HKLM\SOFTWARE\Garmin\MapSource
     USE format;
     hex = format('%04X');
  -%]
+
+reg DELETE %KEY%\Families\FAMILY_[% fid %] /va /f
+
 reg ADD %KEY%\Families\FAMILY_[% fid %] /v ID /t REG_BINARY /d [% hex(xfid) %] /f
 reg ADD %KEY%\Families\FAMILY_[% fid %] /v IDX /t REG_SZ /d "%~dp0OSM.mdx" /f
 reg ADD %KEY%\Families\FAMILY_[% fid %] /v MDR /t REG_SZ /d "%~dp0OSM_mdr.img" /f
+[% IF settings.typ -%]
 reg ADD %KEY%\Families\FAMILY_[% fid %] /v TYP /t REG_SZ /d "%~dp0osm[% fid %].typ" /f
+[%- END %]
 
 reg ADD %KEY%\Families\FAMILY_[% fid %]\1 /v Loc /t REG_SZ /d "%~dp0\" /f
 reg ADD %KEY%\Families\FAMILY_[% fid %]\1 /v Bmap /t REG_SZ /d "%~dp0OSM.img" /f
