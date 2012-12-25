@@ -111,7 +111,7 @@ if ( $settings->{update_config} && $update_cfg ) {
 
 my @blocks = (
     get_osm     => { sub => \&get_osm, },
-#    get_bound   => { sub => \&get_bound, },
+    get_bound   => { sub => \&get_bound, },
 #    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
 #    build_img   => { sub => \&build_img, },
 #    build_mapset=> { sub => \&build_mapset, },
@@ -135,8 +135,6 @@ $pipeline->get_results();
 
 # old code
 
-my $q_src = Thread::Queue::Any->new();
-my $q_bnd = Thread::Queue::Any->new();
 my $q_mp  = Thread::Queue::Any->new();
 my $q_img = Thread::Queue::Any->new();
 my $q_upl = Thread::Queue::Any->new();
@@ -286,7 +284,7 @@ sub cgpsm_run {
 }
 
 
-# !!! cwd!
+# !!! chdir!
 sub build_img {
     my ($reg) = @_;
 
@@ -476,32 +474,31 @@ sub get_osm {
 }
 
 
-sub _boundary_download_thread {
-    while ( my ($reg) = $q_bnd->dequeue() ) {
-        last if !defined $reg;
+sub get_bound {
+    my ($reg) = @_;
 
-        $reg->{bound} //= $reg->{alias};
-        $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
-
-        if ( !$skip_dl_bounds ) {
-            my $filebase = "$basedir/$dirname/$reg->{mapid}";
-            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-                logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
-            }
-            else {
-                logg( "Downloading boundary for '$reg->{alias}'" );
-                my $onering = $reg->{onering} ? '--onering' : q{};
-                _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
-                logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
-            }
-        }
-
-        $q_mp->enqueue( $reg );
+    if ( !defined $reg ) {
+        logg( "All boundaries have been downloaded!" ) if !$skip_dl_bounds;
+        return;
     }
 
-    logg( "All boundaries have been downloaded!" ) if !$skip_dl_bounds;
-    $q_mp->enqueue( undef )  for ( 1 .. $mp_threads_num );
-    return;
+    $reg->{bound} //= $reg->{alias};
+    $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
+
+    if ( !$skip_dl_bounds ) {
+        my $filebase = "$basedir/$dirname/$reg->{mapid}";
+        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+            logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
+        }
+        else {
+            logg( "Downloading boundary for '$reg->{alias}'" );
+            my $onering = $reg->{onering} ? '--onering' : q{};
+            _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
+            logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
+        }
+    }
+
+    return $reg;
 }
 
 
