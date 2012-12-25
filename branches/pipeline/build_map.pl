@@ -7,11 +7,14 @@ use strict;
 use warnings;
 use utf8;
 
+use threads;
+
 use Getopt::Long qw{ :config pass_through };
 
-use threads;
 use threads::shared;
 use Thread::Queue::Any;
+
+use Thread::Pipeline;
 
 use Encode;
 use Encode::Locale;
@@ -86,14 +89,6 @@ my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
 
 
-my $q_src = Thread::Queue::Any->new();
-my $q_bnd = Thread::Queue::Any->new();
-my $q_mp  = Thread::Queue::Any->new();
-my $q_img = Thread::Queue::Any->new();
-my $q_upl = Thread::Queue::Any->new();
-
-
-
 STDERR->autoflush(1);
 STDOUT->autoflush(1);
 
@@ -110,10 +105,46 @@ if ( $settings->{update_config} && $update_cfg ) {
 }
 
 
-# Initializing thread pipeline
+
+# !!! draft
+# Main pipeline
+
+my @blocks = (
+    get_osm     => { sub => \&get_osm, },
+    get_bound   => { sub => \&get_bound, },
+    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
+    build_img   => { sub => \&build_img, },
+    build_mapset=> { sub => \&build_mapset, },
+
+    upload      => { sub => \&upload },
+);
+
+my $pipeline = Thread::Pipeline->new( \@blocks );
+
+for my $reg ( @$regions ) {
+    $reg->{mapid} = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
+    $pipeline->enqueue( $reg );
+}
+
+$pipeline->no_more_data();
+
+$pipeline->get_results();
+
+
+
+
+# old code
+
+my $q_src = Thread::Queue::Any->new();
+my $q_bnd = Thread::Queue::Any->new();
+my $q_mp  = Thread::Queue::Any->new();
+my $q_img = Thread::Queue::Any->new();
+my $q_upl = Thread::Queue::Any->new();
 
 my @reglist :shared;
 my $active_mp_threads_num :shared = $mp_threads_num;
+
+=old
 
 my @build_threads = (
     threads->create( \&_source_download_thread ),
@@ -192,6 +223,9 @@ if ( !$skip_img_build ) {
 rmtree $dirname;
 
 $t_upl->join();
+
+=cut
+
 logg( "That's all, folks!" );
 
 
