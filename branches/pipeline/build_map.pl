@@ -111,12 +111,12 @@ if ( $settings->{update_config} && $update_cfg ) {
 
 my @blocks = (
     get_osm     => { sub => \&get_osm, },
-    get_bound   => { sub => \&get_bound, },
-    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
-    build_img   => { sub => \&build_img, },
-    build_mapset=> { sub => \&build_mapset, },
+#    get_bound   => { sub => \&get_bound, },
+#    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
+#    build_img   => { sub => \&build_img, },
+#    build_mapset=> { sub => \&build_mapset, },
 
-    upload      => { sub => \&upload },
+#    upload      => { sub => \&upload },
 );
 
 my $pipeline = Thread::Pipeline->new( \@blocks );
@@ -448,32 +448,31 @@ sub build_mp {
 
 ##  Thread routines
 
-sub _source_download_thread {
-    while ( my ($reg) = $q_src->dequeue() ) {
-        last if !defined $reg;
+sub get_osm {
+    my ($reg) = @_;
 
-        my $ext = 'osm.pbf';
-        $reg->{srcalias} //= $reg->{alias};
-        $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
-        $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
-
-        if ( !$skip_dl_src ) {
-            my $filebase = "$basedir/$dirname/$reg->{mapid}";
-            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-                logg ( "Skip downloading '$reg->{alias} source': img exists" );
-            }
-            else {
-                logg( "Downloading source for '$reg->{alias}'" );
-                _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
-            }
-        }
-
-        $q_bnd->enqueue( $reg );
+    if ( !defined $reg ) {
+        logg( "All sources have been downloaded!" ) if !$skip_dl_src;
+        return;
     }
 
-    logg( "All sources have been downloaded!" ) if !$skip_dl_src;
-    $q_bnd->enqueue( undef );
-    return;
+    my $ext = 'osm.pbf';
+    $reg->{srcalias} //= $reg->{alias};
+    $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
+    $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
+
+    if ( !$skip_dl_src ) {
+        my $filebase = "$basedir/$dirname/$reg->{mapid}";
+        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+            logg ( "Skip downloading '$reg->{alias} source': img exists" );
+        }
+        else {
+            logg( "Downloading source for '$reg->{alias}'" );
+            _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
+        }
+    }
+
+    return $reg;
 }
 
 
