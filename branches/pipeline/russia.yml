@@ -1,0 +1,457 @@
+
+# Common settings
+
+---
+
+prefix:         ru
+countrycode:    RU
+countryname:    Россия
+filename:       russia
+fid:            400
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
+keys:           --textfilter PrepareCP1251
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest
+update_config:  1
+
+
+
+# Regions
+
+---
+
+- name:  Адыгея
+  code:  1
+  alias: adygeya
+  srcalias:  RU-AD
+
+- name:  Башкортостан
+  code:  2
+  alias: bashkir
+  srcalias:  RU-BA
+  
+- name:  Бурятия
+  code:  3
+  alias: buryat
+  srcalias:  RU-BU
+  
+- name:  Алтай
+  code:  4
+  alias: altay
+  srcalias:  RU-AL
+  
+- name:  Дагестан
+  code:  5
+  alias: dagestan
+  srcalias:  RU-DA
+  
+- name:  Ингушетия
+  code:  6
+  alias: ingush
+  srcalias:  RU-IN
+  
+- name:  Кабардино-Балкария
+  code:  7
+  alias: kabardin
+  srcalias:  RU-KB
+  
+- name:  Калмыкия
+  code:  8
+  alias: kalmyk
+  srcalias:  RU-KL
+  
+- name:  Карачаево-Черкесия
+  code:  9
+  alias: karach
+  srcalias:  RU-KC
+
+- name:  Карелия
+  code:  10
+  alias: karel
+  srcalias:  RU-KR
+  fixmultipoly: yes
+
+- name:  Коми
+  code:  11
+  alias: komi
+  srcalias:  RU-KO
+
+- name:  Марий Эл
+  code:  12
+  alias: mariyel
+  srcalias:  RU-ME
+
+- name:  Мордовия
+  code:  13
+  alias: mordov
+  srcalias:  RU-MO
+
+- name:  Якутия (Саха)
+  code:  14
+  alias: yakut
+  srcalias:  RU-SA
+  keys:  --noshorelines --mp-header TreSize=4000
+
+- name:  Северная Осетия
+  code:  15
+  alias: osetiya
+  srcalias:  RU-SE
+
+- name:  Татарстан
+  code:  16
+  alias: tatar
+  srcalias:  RU-TA
+
+- name:  Тыва
+  code:  17
+  alias: tyva
+  srcalias:  RU-TY
+
+- name:  Удмуртская республика
+  code:  18
+  alias: udmurt
+  srcalias:  RU-UD
+
+- name:  Хакасия
+  code:  19
+  alias: khakas
+  srcalias:  RU-KK
+
+- name:  Чеченская республика
+  code:  20
+  alias: chechen
+  srcalias:  RU-CE
+
+- name:  Чувашская республика
+  code:  21
+  alias: chuvash
+  srcalias:  RU-CU
+
+- name:  Алтайский край
+  code:  22
+  alias: altayskiy
+  srcalias:  RU-ALT
+
+- name:  Краснодарский край
+  code:  23
+  alias: krasnodar
+  srcalias:  RU-KDA
+  onering: yes
+
+- name:  Красноярский край
+  code:  24
+  alias: krasnoyarsk
+  srcalias:  RU-KYA
+  keys:  --noshorelines --mp-header TreSize=4000
+
+- name:  Приморский край
+  code:  25
+  alias: prim
+  srcalias:  RU-PRI
+
+- name:  Ставропольский край
+  code:  26
+  alias: stavrop
+  srcalias:  RU-STA
+ 
+- name:  Хабаровский край
+  code:  27
+  alias: khabar
+  srcalias:  RU-KHA
+ 
+- name:  Амурская область
+  code:  28
+  alias: amur
+  srcalias:  RU-AMU
+
+- name:  Архангельская область
+  code:  29
+  alias: arkhan
+  srcalias:  RU-ARK
+  keys: --mp-header TreSize=2048
+
+- name:  Астраханская область
+  code:  30
+  alias: astrakhan
+  srcalias:  RU-AST
+
+- name:  Белгородская область
+  code:  31
+  alias: belgorod
+  srcalias:  RU-BEL
+
+- name:  Брянская область
+  code:  32
+  alias: bryansk
+  srcalias:  RU-BRY
+
+- name:  Владимирская область
+  code:  33
+  alias: vladimir
+  srcalias:  RU-VLA
+
+- name:  Волгоградская область
+  code:  34
+  alias: volgograd
+  srcalias:  RU-VGG
+
+- name:  Вологодская область
+  code:  35
+  alias: vologda
+  srcalias:  RU-VLG
+
+- name:  Воронежская область
+  code:  36
+  alias: voronezh
+  srcalias:  RU-VOR
+
+- name:  Ивановская область
+  code:  37
+  alias: ivanov
+  srcalias:  RU-IVA
+
+- name:  Иркутская область
+  code:  38
+  alias: irkutsk
+  srcalias:  RU-IRK
+
+- name:  Калининградская область
+  code:  39
+  alias: kalinin
+  srcalias:  RU-KGD
+
+- name:  Калужская область
+  code:  40
+  alias: kaluzh
+  srcalias:  RU-KLU
+
+- name:  Камчатский край
+  code:  41
+  alias: kamch
+  srcalias:  RU-KAM
+
+- name:  Кемеровская область
+  code:  42
+  alias: kemerovo
+  srcalias:  RU-KEM
+
+- name:  Кировская область
+  code:  43
+  alias: kirov
+  srcalias:  RU-KIR
+
+- name:  Костромская область
+  code:  44
+  alias: kostrom
+  srcalias:  RU-KOS
+
+- name:  Курганская область
+  code:  45
+  alias: kurgan
+  srcalias:  RU-KGN
+
+- name:  Курская область
+  code:  46
+  alias: kursk
+  srcalias:  RU-KRS
+
+- name:  Санкт-Петербург
+  code:  78
+  alias: stpeter
+  srcalias:  RU-SPE
+  onering: yes
+  fixmultipoly: yes
+ 
+
+- name:  Ленинградская область
+  code:  47
+  alias: leningrad
+  srcalias:  RU-LEN
+  onering: yes
+
+- name:  Липецкая область
+  code:  48
+  alias: lipetsk
+  srcalias:  RU-LIP
+
+- name:  Магаданская область
+  code:  49
+  alias: magadan
+  srcalias:  RU-MAG
+
+- name:  Московская область
+  code:  50
+  alias: mosobl
+  srcalias:  RU-MOS
+#  onering: yes
+
+- name:  Москва
+  code:  77
+  alias: moscow
+  srcalias:  RU-MOW
+#  onering: yes
+  srcurl: http://data.gis-lab.info/osm_dump/dump/latest/RU-MOS.osm.pbf
+
+- name:  Мурманская область
+  code:  51
+  alias: murmansk
+  srcalias:  RU-MUR
+
+- name:  Нижегородская область
+  code:  52
+  alias: nizhegorod
+  srcalias:  RU-NIZ
+
+- name:  Новгородская область
+  code:  53
+  alias: novgorod
+  srcalias:  RU-NGR
+
+- name:  Новосибирская область
+  code:  54
+  alias: novosib
+  srcalias:  RU-NSK
+
+- name:  Омская область
+  code:  55
+  alias: omsk
+  srcalias:  RU-OMS
+
+- name:  Оренбургская область
+  code:  56
+  alias: orenburg
+  srcalias:  RU-ORE
+
+- name:  Орловская область
+  code:  57
+  alias: orlovsk
+  srcalias:  RU-ORL
+
+- name:  Пензенская область
+  code:  58
+  alias: penz
+  srcalias:  RU-PNZ
+
+- name:  Пермский край
+  code:  59
+  alias: perm
+  srcalias:  RU-PER
+
+- name:  Псковская область
+  code:  60
+  alias: pskov
+  srcalias:  RU-PSK
+  fixmultipoly: yes
+ 
+- name:  Ростовская область
+  code:  61
+  alias: rostov
+  srcalias:  RU-ROS
+ 
+- name:  Рязанская область
+  code:  62
+  alias: ryazan
+  srcalias:  RU-RYA
+  onering: yes
+ 
+- name:  Самарская область
+  code:  63
+  alias: samar
+  srcalias:  RU-SAM
+ 
+- name:  Саратовская область
+  code:  64
+  alias: saratov
+  srcalias:  RU-SAR
+ 
+- name:  Сахалинская область
+  code:  65
+  alias: sakhalin
+  srcalias:  RU-SAK
+  keys:  --waterback
+  onering: yes
+ 
+- name:  Свердловская область
+  code:  66
+  alias: sverdl
+  srcalias:  RU-SVE
+ 
+- name:  Смоленская область
+  code:  67
+  alias: smol
+  srcalias:  RU-SMO
+ 
+- name:  Тамбовская область
+  code:  68
+  alias: tambov
+  srcalias:  RU-TAM
+ 
+- name:  Тверская область
+  code:  69
+  alias: tver
+  srcalias:  RU-TVE
+ 
+- name:  Томская область
+  code:  70
+  alias: tomsk
+  srcalias:  RU-TOM
+ 
+- name:  Тульская область
+  code:  71
+  alias: tul
+  srcalias:  RU-TUL
+ 
+- name:  Тюменская область
+  code:  72
+  alias: tumen
+  srcalias:  RU-TYU
+ 
+- name:  Ульяновская область
+  code:  73
+  alias: ulyan
+  srcalias:  RU-ULY
+ 
+- name:  Челябинская область
+  code:  74
+  alias: chel
+  srcalias:  RU-CHE
+ 
+- name:  Забайкальский край
+  code:  75
+  alias: zabaikal
+  srcalias:  RU-ZAB
+ 
+- name:  Ярославская область
+  code:  76
+  alias: yarosl
+  srcalias:  RU-YAR
+ 
+
+- name:  Еврейская АО
+  code:  79
+  alias: evrey
+  srcalias:  RU-YEV
+ 
+- name:  Ненецкий АО
+  code:  83
+  alias: nenec
+  srcalias:  RU-NEN
+ 
+- name:  Ханты-Мансийский АО (Югра)
+  code:  86
+  alias: khanty
+  srcalias:  RU-KHM
+
+- name:  Чукотский АО
+  code:  87
+  alias: chukot
+  srcalias:  RU-CHU
+
+- name:  Ямало-Ненецкий АО
+  code:  89
+  alias: yamal
+  srcalias:  RU-YAN
+  keys:  --noshorelines --mp-header TreSize=4000
+ 
+
