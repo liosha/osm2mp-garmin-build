@@ -112,7 +112,11 @@ if ( $settings->{update_config} && $update_cfg ) {
 my @blocks = (
     get_osm     => { sub => \&get_osm, },
     get_bound   => { sub => \&get_bound, },
-    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
+    build_mp    => {
+            sub => \&build_mp,
+            num_threads => $mp_threads_num,
+            post_sub => sub { logg( "Finished MP building" ) },
+        },
 #    build_img   => { sub => \&build_img, },
 #    build_mapset=> { sub => \&build_mapset, },
 
