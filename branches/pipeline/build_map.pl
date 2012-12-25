@@ -9,8 +9,6 @@ use utf8;
 
 use threads;
 
-use Getopt::Long qw{ :config pass_through };
-
 use threads::shared;
 use Thread::Queue::Any;
 
@@ -18,6 +16,8 @@ use Thread::Pipeline;
 
 use Encode;
 use Encode::Locale;
+
+use Getopt::Long qw{ :config pass_through };
 
 use IO::Handle;
 use POSIX;
@@ -112,7 +112,7 @@ if ( $settings->{update_config} && $update_cfg ) {
 my @blocks = (
     get_osm     => { sub => \&get_osm, },
     get_bound   => { sub => \&get_bound, },
-#    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
+    build_mp    => { sub => \&build_mp, num_threads => $mp_threads_num, },
 #    build_img   => { sub => \&build_img, },
 #    build_mapset=> { sub => \&build_mapset, },
 
@@ -135,12 +135,10 @@ $pipeline->get_results();
 
 # old code
 
-my $q_mp  = Thread::Queue::Any->new();
 my $q_img = Thread::Queue::Any->new();
 my $q_upl = Thread::Queue::Any->new();
 
 my @reglist :shared;
-my $active_mp_threads_num :shared = $mp_threads_num;
 
 =old
 
@@ -364,7 +362,7 @@ sub build_img {
 
 
 
-sub build_mp {
+sub _build_mp {
     my ($reg) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
@@ -418,6 +416,8 @@ sub build_mp {
 
     _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
     _qx( log2html => "$filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm" );
+
+=old
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
@@ -425,6 +425,7 @@ sub build_mp {
         file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm",
         delete  => 1,
     } );
+=cut
 
     logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
@@ -433,12 +434,14 @@ sub build_mp {
     _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full" );
     rmtree("$regdir_full");
 
+=old
     $q_upl->enqueue( { 
         code    => $reg->{code},
         alias   => $reg->{alias},
         role    => 'MP',
         file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z",
     } );
+=cut
 
     return; 
 } 
@@ -502,30 +505,23 @@ sub get_bound {
 }
 
 
-sub _mp_build_thread {
-    while ( my ($reg) = $q_mp->dequeue() ) {
-        last if !defined $reg;
+sub build_mp {
+    my ($reg) = @_;
 
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip building MP for '$reg->{alias}': already built" );
-        }
-        else {
-            logg ( "Building MP for '$reg->{alias}'" );
-            build_mp( $reg );
-        }
-            
-        $q_img->enqueue( $reg );
+    # ???
+    return if !defined $reg;
+
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip building MP for '$reg->{alias}': already built" );
+    }
+    else {
+        logg ( "Building MP for '$reg->{alias}'" );
+        _build_mp( $reg );
     }
 
-    $active_mp_threads_num --; 
-    if ( !$active_mp_threads_num ) {
-        logg( "All MP files have been built!" );
-        $q_img->enqueue( undef );
-    }
-
-    return;
-}    
+    return $reg;
+}
 
 
 sub _img_build_thread {
