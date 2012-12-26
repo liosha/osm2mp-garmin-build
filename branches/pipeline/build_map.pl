@@ -94,7 +94,7 @@ STDOUT->autoflush(1);
 
 
 logg( "Let's the fun begin!" );
-logg( "Start building'$settings->{filename}' mapset" );
+logg( "Start building '$settings->{filename}' mapset" );
 
 if ( $settings->{update_config} && $update_cfg ) {
     logg( "Updating configuration" );
@@ -110,15 +110,21 @@ if ( $settings->{update_config} && $update_cfg ) {
 # Main pipeline
 
 my @blocks = (
-    get_osm     => { sub => \&get_osm, },
-    get_bound   => { sub => \&get_bound, },
+    get_osm     => {
+        sub => \&get_osm,
+        post_sub => sub { logg( "All source files have been downloaded" ) },
+    },
+    get_bound   => {
+        sub => \&get_bound,
+        post_sub => sub { logg( "All boundaries have been downloaded" ) },
+    },
     build_mp    => {
-            sub => \&build_mp,
-            num_threads => $mp_threads_num,
-            post_sub => sub { logg( "Finished MP building" ) },
-        },
+        sub => \&build_mp,
+        num_threads => $mp_threads_num,
+        post_sub => sub { logg( "Finished MP building" ) },
+    },
 #    build_img   => { sub => \&build_img, },
-#    build_mapset=> { sub => \&build_mapset, },
+#    build_mapset=> { sub => \&build_mapset, need_finalize => 1 },
 
 #    upload      => { sub => \&upload },
 );
@@ -456,11 +462,6 @@ sub _build_mp {
 sub get_osm {
     my ($reg) = @_;
 
-    if ( !defined $reg ) {
-        logg( "All sources have been downloaded!" ) if !$skip_dl_src;
-        return;
-    }
-
     my $ext = 'osm.pbf';
     $reg->{srcalias} //= $reg->{alias};
     $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
@@ -484,11 +485,6 @@ sub get_osm {
 sub get_bound {
     my ($reg) = @_;
 
-    if ( !defined $reg ) {
-        logg( "All boundaries have been downloaded!" ) if !$skip_dl_bounds;
-        return;
-    }
-
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
 
@@ -511,9 +507,6 @@ sub get_bound {
 
 sub build_mp {
     my ($reg) = @_;
-
-    # ???
-    return if !defined $reg;
 
     my $filebase = "$basedir/$dirname/$reg->{mapid}";
     if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
@@ -574,4 +567,6 @@ sub _upload_thread {
 sub usage {
     say "Usage:  ./build_map.pl [--opts] build-config.yml";
     exit;
-} 
+}
+
+
