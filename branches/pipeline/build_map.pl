@@ -146,66 +146,8 @@ $pipeline->no_more_data();
 $pipeline->get_results();
 
 
-
-
-# old code
-
-
-=old
-
-if ( !$skip_img_build ) {
-    logg( "Indexing whole mapset" );
-
-    chdir $dirname;
-
-    my @files = map {"$_.img"} @reglist;
-    my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@files };
-    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
-
-    _qx( cpreview => "pv.txt -m > cpreview.log" );
-    logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
-
-    unlink "OSM.reg";
-#    unlink "$_.img.idx" for @reglist;
-
-    cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-    unlink $_ for qw/ OSM.mp OSM.img.idx wine.core /;
-
-    $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
-
-    if ( $settings->{typ} ) {
-        rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
-        _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
-    }
-
-    ren_lowercase("*.*");
-
-    logg( "Compressing mapset" );
-
-    my $mapdir = "$settings->{filename}_$settings->{today}";
-    mkdir $mapdir;
-    move $_ => $mapdir  for grep {-f} glob q{*};
-
-    unlink "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
-    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $mapdir" );
-    rmtree("$mapdir");
-
-    chdir $basedir;
-
-    if ( $settings->{serv} ) {
-        logg( "Uploading mapset" );
-        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-        _qx( curl => "--retry 100 $auth -T $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $settings->{serv}" );
-    }
-}
-
-
-rmtree $dirname;
-
-
-=cut
-
 logg( "That's all, folks!" );
+exit;
 
 
 ##############################
@@ -285,29 +227,26 @@ sub _build_img {
     unlink "$reg->{mapid}.mp";
     unlink "$reg->{mapid}-s.mp"     if $make_house_search;
 
-    if ( -f "$reg->{mapid}.img" ) {
-        my $mapid_s = $reg->{mapid} + 10000000;
+    my @files;
 
+    if ( -f "$reg->{mapid}.img" ) {
         logg( "Indexing mapset for '$reg->{alias}'" );
-        
-#        push @reglist, $reg->{mapid};
-#        push @reglist, $mapid_s   if $make_house_search;
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
 
-        my @files = ("$reg->{mapid}.img");
-        push @files, "$mapid_s.img"    if $make_house_search;
+        my @imgs = ( $reg->{mapid} );
+        push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
+        @files = map {"$_.img"} @imgs;
+
         my $vars = { settings => $settings, data => $reg, files => \@files };
         $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+        $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
         _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
         logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
         cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-
-        unlink $_ for qw/ OSM.reg  OSM.mp  OSM.img.idx /;
-
-        $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+        unlink $_ for qw/ OSM.reg  OSM.mp  OSM.img.idx  wine.core /;
 
         if ( $settings->{typ} ) {
             rcopy_glob("$basedir/$settings->{typ}" => "./osm$reg->{fid}.typ");
@@ -315,13 +254,11 @@ sub _build_img {
         }
                 
         ren_lowercase("*.*");
-        unlink "wine.core";
 
         logg( "Compressing mapset '$reg->{alias}'" );
 
         chdir "$basedir/$dirname";
-        rcopy_glob("$regdir/$reg->{mapid}.img*",".");
-        rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
+        rcopy_glob("$regdir/$_*" => q{.})  for @files;
 
         my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
         unlink $arc_file;
@@ -339,7 +276,7 @@ sub _build_img {
     }
 
     chdir $basedir;
-    return;
+    return @files;
 }
 
 
@@ -492,30 +429,73 @@ sub build_img {
 
     return if $skip_img_build;
 
+    my @imgs;
     my $filebase = "$basedir/$dirname/$reg->{mapid}";
     if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
         logg ( "Skip building IMG for '$reg->{alias}': already built" );
 
-#        push @reglist, $reg->{mapid};
-#        push @reglist, $reg->{mapid} + 10000000   if $make_house_search;
+        @imgs = ($reg->{mapid});
+        push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
     }
     else {
         logg ( "Building IMG for '$reg->{alias}'" );
-        my $result = _build_img( $reg, $pl );
-
-        # skip failed imgs
-        return if !$result;
+        @imgs = _build_img( $reg, $pl );
     }
 
-    return $reg;
+    return if !@imgs;
+    return \@imgs;
 }
 
 
 sub build_mapset {
+    my ($add_files) = @_;
+    state $files = [];
 
-    # to be implemented
+    if ( $add_files ) {
+        push @$files, @$add_files;
+        return;
+    }
 
-    return;
+    return if !@$files;
+
+    logg( "Indexing whole mapset" );
+
+    chdir $dirname;
+
+    my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@$files };
+    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+    $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+
+    _qx( cpreview => "pv.txt -m > cpreview.log" );
+    logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+
+    cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
+    unlink $_ for qw/ OSM.reg OSM.mp OSM.img.idx wine.core /;
+
+
+    if ( $settings->{typ} ) {
+        rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
+        _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
+    }
+
+    ren_lowercase("*.*");
+
+    logg( "Compressing mapset" );
+
+    my $mapdir = "$settings->{filename}_$settings->{today}";
+    mkdir $mapdir;
+    move $_ => $mapdir  for grep {-f} glob q{*};
+
+
+    my $arc_file = "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
+    unlink $arc_file;
+    _qx( arc => "a -y $arc_file $mapdir" );
+    rmtree("$mapdir");
+
+    chdir $basedir;
+    rmtree $dirname;
+
+    return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
 }
 
 
