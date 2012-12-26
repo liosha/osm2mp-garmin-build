@@ -106,27 +106,29 @@ if ( $settings->{update_config} && $update_cfg ) {
 
 
 
-# !!! draft
 # Main pipeline
 
 my @blocks = (
-    get_osm     => {
+    get_osm => {
         sub => \&get_osm,
         post_sub => sub { logg( "All source files have been downloaded" ) },
     },
-    get_bound   => {
+    get_bound => {
         sub => \&get_bound,
         post_sub => sub { logg( "All boundaries have been downloaded" ) },
     },
-    build_mp    => {
+    build_mp => {
         sub => \&build_mp,
         num_threads => $mp_threads_num,
         post_sub => sub { logg( "Finished MP building" ) },
     },
-#    build_img   => { sub => \&build_img, },
-#    build_mapset=> { sub => \&build_mapset, need_finalize => 1 },
+#    build_img => { sub => \&build_img, },
+    build_mapset => { sub => \&build_mapset, need_finalize => 1 },
 
-#    upload      => { sub => \&upload },
+    upload => {
+        sub => \&upload,
+        post_sub => sub { logg( "All files has been uploaded" ) if $settings->{serv} },
+    },
 );
 
 my $pipeline = Thread::Pipeline->new( \@blocks );
@@ -241,7 +243,7 @@ logg( "That's all, folks!" );
 
 sub logg {
     my @logs = @_;
-    printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), "@logs";
+    printf STDERR "%s: (%d)  @logs\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid();
     return;
 }
 
@@ -373,15 +375,11 @@ sub build_img {
 
 
 sub _build_mp {
-    my ($reg) = @_;
+    my ($reg, $pl) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
     my $regdir_full = "$basedir/$dirname/$regdir";
     mkdir "$regdir_full";
-
-    $reg->{keys} //= q{};
-
-#    $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
@@ -390,8 +388,8 @@ sub _build_mp {
         --bpoly $reg->{poly}
         --defaultcountry $settings->{countrycode}
         --defaultregion "$reg->{name}"
-        $settings->{keys}
-        $reg->{keys}
+        ${ \( $settings->{keys} // q{} ) }
+        ${ \( $reg->{keys} // q{} ) }
     ];
 
     my $filebase = "$regdir_full/$reg->{mapid}";
@@ -408,8 +406,8 @@ sub _build_mp {
             --bpoly $reg->{poly}
             --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
-            $settings->{keys}
-            $reg->{keys}
+            ${ \( $settings->{keys} // q{} ) }
+            ${ \( $reg->{keys} // q{} ) }
         ];
         _qx( osmconvert => qq[ "$reg->{source}" --out-osm
             | $basedir/getbrokenrelations.py
@@ -424,40 +422,36 @@ sub _build_mp {
     _qx( postprocess => "$filebase.mp" );
 
 
-    _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
-    _qx( log2html => "$filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm" );
+    if (1) {
+        my $err_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm";
+        _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
+        _qx( log2html => "$filebase.errors.log > $err_file" );
 
-=old
-    $q_upl->enqueue( { 
-        code    => $reg->{code},
-        alias   => $reg->{alias},
-        role    => 'error log',
-        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm",
-        delete  => 1,
-    } );
-=cut
+        $pl->enqueue(
+            { alias => $reg->{alias}, role => 'error log', file => $err_file, delete  => 1 },
+            block => 'upload',
+        );
+    }
 
     logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
     rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
-    unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
-    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full" );
+
+    my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
+    unlink $arc_file;
+    _qx( arc => "a -y $arc_file $regdir_full" );
     rmtree("$regdir_full");
 
-=old
-    $q_upl->enqueue( { 
-        code    => $reg->{code},
-        alias   => $reg->{alias},
-        role    => 'MP',
-        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z",
-    } );
-=cut
-
+    $pl->enqueue(
+        { alias => $reg->{alias}, role => 'MP', file => $arc_file },
+        block => 'upload',
+    );
+    
     return; 
 } 
 
 
-##  Thread routines
+##  Thread workers
 
 sub get_osm {
     my ($reg) = @_;
@@ -506,7 +500,7 @@ sub get_bound {
 
 
 sub build_mp {
-    my ($reg) = @_;
+    my ($reg, $pl) = @_;
 
     my $filebase = "$basedir/$dirname/$reg->{mapid}";
     if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
@@ -514,7 +508,7 @@ sub build_mp {
     }
     else {
         logg ( "Building MP for '$reg->{alias}'" );
-        _build_mp( $reg );
+        _build_mp( $reg, $pl );
     }
 
     return $reg;
@@ -543,22 +537,28 @@ sub _img_build_thread {
     logg( "All IMG files have been built!" );
 
     return;
-}    
+}
 
 
-sub _upload_thread {
+sub build_mapset {
+
+    # to be implemented
+
+    return;
+}
+
+
+sub upload {
+    my ($file) = @_;
+
     return if !$settings->{serv};
 
-    while ( my ($file) = $q_upl->dequeue() ) {
-        last if !defined $file;
+    logg( "Uploading $file->{role} for '$file->{alias}'" );
+    
+    my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
+    _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
+    unlink $file->{file}  if $file->{delete};
 
-        logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
-        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-        _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
-        unlink $file->{file}  if $file->{delete};
-    }
-
-    logg( "All files uploaded!" );
     return;
 }
 
