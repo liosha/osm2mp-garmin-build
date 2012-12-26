@@ -267,7 +267,7 @@ sub cgpsm_run {
 
 # !!! chdir!
 sub _build_img {
-    my ($reg) = @_;
+    my ($reg, $pl) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
     mkdir "$dirname/$regdir";
@@ -323,17 +323,15 @@ sub _build_img {
         rcopy_glob("$regdir/$reg->{mapid}.img*",".");
         rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
 
-        unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
-        _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir" );
-        rmtree("$regdir");
-=old
-        $q_upl->enqueue( { 
-            code    => $reg->{code},
-            alias   => $reg->{alias},
-            role    => 'mapset',
-            file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z",
-        } );
-=cut
+        my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
+        unlink $arc_file;
+        _qx( arc => "a -y $arc_file $regdir" );
+        rmtree( $regdir );
+
+        $pl->enqueue(
+            { alias => $reg->{alias}, role => 'IMG', file => $arc_file },
+            block => 'upload',
+        );
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
