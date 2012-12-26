@@ -122,7 +122,10 @@ my @blocks = (
         num_threads => $mp_threads_num,
         post_sub => sub { logg( "Finished MP building" ) },
     },
-#    build_img => { sub => \&build_img, },
+    build_img => {
+        sub => \&build_img,
+        post_sub => sub { logg( "Finished IMG building" ) },
+    },
     build_mapset => { sub => \&build_mapset, need_finalize => 1 },
 
     upload => {
@@ -147,9 +150,6 @@ $pipeline->get_results();
 
 # old code
 
-my $q_img = Thread::Queue::Any->new();
-
-my @reglist :shared;
 
 =old
 
@@ -266,7 +266,7 @@ sub cgpsm_run {
 
 
 # !!! chdir!
-sub build_img {
+sub _build_img {
     my ($reg) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
@@ -290,8 +290,8 @@ sub build_img {
 
         logg( "Indexing mapset for '$reg->{alias}'" );
         
-        push @reglist, $reg->{mapid};
-        push @reglist, $mapid_s   if $make_house_search;
+#        push @reglist, $reg->{mapid};
+#        push @reglist, $mapid_s   if $make_house_search;
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
 
@@ -489,28 +489,27 @@ sub build_mp {
 }
 
 
-sub _img_build_thread {
+sub build_img {
+    my ($reg, $pl) = @_;
+
     return if $skip_img_build;
 
-    while ( my ($reg) = $q_img->dequeue() ) {
-        last if !defined $reg;
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip building IMG for '$reg->{alias}': already built" );
 
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip building IMG for '$reg->{alias}': already built" );
+#        push @reglist, $reg->{mapid};
+#        push @reglist, $reg->{mapid} + 10000000   if $make_house_search;
+    }
+    else {
+        logg ( "Building IMG for '$reg->{alias}'" );
+        my $result = _build_img( $reg, $pl );
 
-            push @reglist, $reg->{mapid};
-            push @reglist, $reg->{mapid} + 10000000   if $make_house_search;
-        }
-        else {
-            logg ( "Building IMG for '$reg->{alias}'" );
-            build_img( $reg );
-        }
+        # skip failed imgs
+        return if !$result;
     }
 
-    logg( "All IMG files have been built!" );
-
-    return;
+    return $reg;
 }
 
 
