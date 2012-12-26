@@ -433,15 +433,16 @@ sub get_osm {
     $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
     $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
 
-    if ( !$skip_dl_src ) {
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip downloading '$reg->{alias} source': img exists" );
-        }
-        else {
-            logg( "Downloading source for '$reg->{alias}'" );
-            _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
-        }
+    return $reg if $skip_dl_src;
+
+
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip downloading '$reg->{alias} source': img exists" );
+    }
+    else {
+        logg( "Downloading source for '$reg->{alias}'" );
+        _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
     }
 
     return $reg;
@@ -454,17 +455,18 @@ sub get_bound {
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
 
-    if ( !$skip_dl_bounds ) {
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
-        }
-        else {
-            logg( "Downloading boundary for '$reg->{alias}'" );
-            my $onering = $reg->{onering} ? '--onering' : q{};
-            _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
-            logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
-        }
+    return $reg if $skip_dl_bounds;
+
+    
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
+    }
+    else {
+        logg( "Downloading boundary for '$reg->{alias}'" );
+        my $onering = $reg->{onering} ? '--onering' : q{};
+        _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
+        logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
     }
 
     return $reg;
