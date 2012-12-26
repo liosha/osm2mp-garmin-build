@@ -148,38 +148,10 @@ $pipeline->get_results();
 # old code
 
 my $q_img = Thread::Queue::Any->new();
-my $q_upl = Thread::Queue::Any->new();
 
 my @reglist :shared;
 
 =old
-
-my @build_threads = (
-    threads->create( \&_source_download_thread ),
-    threads->create( \&_boundary_download_thread ),
-    ( map { threads->create( \&_mp_build_thread ) } ( 1 .. $mp_threads_num ) ),
-    threads->create( \&_img_build_thread ),
-);
-
-my $t_upl = threads->create( \&_upload_thread ); 
-
-
-
-# Fill queue
-
-REGION:
-for my $reg ( @$regions ) {
-    $reg->{mapid} = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
-    $q_src->enqueue( $reg );
-}
-$q_src->enqueue( undef );
-
-
-# Wait for regions to build
-$_->join()  for @build_threads;
-
-$q_upl->enqueue( undef );
-
 
 if ( !$skip_img_build ) {
     logg( "Indexing whole mapset" );
@@ -230,7 +202,6 @@ if ( !$skip_img_build ) {
 
 rmtree $dirname;
 
-$t_upl->join();
 
 =cut
 
@@ -355,13 +326,14 @@ sub build_img {
         unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
         _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir" );
         rmtree("$regdir");
-
+=old
         $q_upl->enqueue( { 
             code    => $reg->{code},
             alias   => $reg->{alias},
             role    => 'mapset',
             file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z",
         } );
+=cut
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
