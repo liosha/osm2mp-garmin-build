@@ -8,10 +8,6 @@ use warnings;
 use utf8;
 
 use threads;
-
-use threads::shared;
-use Thread::Queue::Any;
-
 use Thread::Pipeline;
 
 use Encode;
@@ -81,9 +77,9 @@ $settings->{encoding} ||= "cp$settings->{codepage}";
 
 
 
-my $dirname = "$settings->{prefix}.temp";
-rmtree $dirname  if !$continue_mode;
-mkdir $_  for grep {!-d} ( $dirname, qw/ _src _bounds _rel / );
+my $mapset_dir = "$basedir/$settings->{prefix}.temp";
+rmtree $mapset_dir  if !$continue_mode;
+mkdir $_  for grep {!-d} ( $mapset_dir, qw/ _src _bounds _rel / );
 
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
@@ -130,14 +126,20 @@ my @blocks = (
 
     upload => {
         sub => \&upload,
-        post_sub => sub { logg( "All files has been uploaded" ) if $settings->{serv} },
+        post_sub => sub { logg( "All files have been uploaded" ) if $settings->{serv} },
     },
 );
 
 my $pipeline = Thread::Pipeline->new( \@blocks );
 
 for my $reg ( @$regions ) {
-    $reg->{mapid} = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
+    $reg->{mapid}       = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
+    $reg->{filebase}    = "$mapset_dir/$reg->{mapid}";
+    $reg->{filename}    //= "$settings->{prefix}.$reg->{alias}";
+
+    $reg->{skip_build} = -f "$reg->{filebase}.img" && -f "$reg->{filebase}.img.idx";
+    logg( "Skip building '$reg->{alias}': img exists" ) if $reg->{skip_build};
+
     $pipeline->enqueue( $reg );
 }
 
@@ -205,10 +207,10 @@ sub _build_img {
     my ($reg, $pl) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
-    mkdir "$dirname/$regdir";
-    chdir "$dirname/$regdir";
+    mkdir "$mapset_dir/$regdir";
+    chdir "$mapset_dir/$regdir";
 
-    move "$basedir/$dirname/$reg->{mapid}.mp" => ".";
+    move "$mapset_dir/$reg->{mapid}.mp" => ".";
 
     cgpsm_run("ac $reg->{mapid}.mp -e -l > $reg->{mapid}.cgpsmapper.log 2> $devnull","$reg->{mapid}.img");
 
@@ -232,7 +234,7 @@ sub _build_img {
         @files = map {"$_.img"} @imgs;
 
         my $vars = { settings => $settings, data => $reg, files => \@files };
-        $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+        $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
         $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
         _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
@@ -248,7 +250,7 @@ sub _build_img {
                 
         logg( "Compressing mapset '$reg->{alias}'" );
 
-        chdir "$basedir/$dirname";
+        chdir $mapset_dir;
         rcopy_glob("$regdir/$_*" => q{.})  for @files;
 
         my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
@@ -275,9 +277,8 @@ sub _build_img {
 sub _build_mp {
     my ($reg, $pl) = @_;
 
-    my $regdir = "$reg->{alias}_$settings->{today}";
-    my $regdir_full = "$basedir/$dirname/$regdir";
-    mkdir "$regdir_full";
+    my $regdir = "$mapset_dir/$reg->{alias}_$settings->{today}";
+    mkdir "$regdir";
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
@@ -290,7 +291,7 @@ sub _build_mp {
         ${ \( $reg->{keys} // q{} ) }
     ];
 
-    my $filebase = "$regdir_full/$reg->{mapid}";
+    my $filebase = "$regdir/$reg->{mapid}";
     _qx( osmconvert => qq[ "$reg->{source}" --out-osm
         | $CMD{osm2mp} $osm2mp_params - -o $filebase.mp
             2> $filebase.osm2mp.log
@@ -332,13 +333,13 @@ sub _build_mp {
     }
 
     logg( "Compressing MP for '$reg->{alias}'" );
-    rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
-    rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
+    rmove_glob("$mapset_dir/$reg->{mapid}.*" => $regdir);
+    rcopy_glob("$regdir/$reg->{mapid}.mp" => $mapset_dir);
 
     my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
     unlink $arc_file;
-    _qx( arc => "a -y $arc_file $regdir_full" );
-    rmtree("$regdir_full");
+    _qx( arc => "a -y $arc_file $regdir" );
+    rmtree("$regdir");
 
     $pl->enqueue(
         { alias => $reg->{alias}, role => 'MP', file => $arc_file },
@@ -354,22 +355,14 @@ sub _build_mp {
 sub get_osm {
     my ($reg) = @_;
 
-    my $ext = 'osm.pbf';
-    $reg->{srcalias} //= $reg->{alias};
-    $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
-    $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
+    $reg->{source} = "$basedir/_src/$reg->{filename}.osm.pbf";
 
-    return $reg if $skip_dl_src;
+    return $reg if $skip_dl_src || $reg->{skip_build};
 
-
-    my $filebase = "$basedir/$dirname/$reg->{mapid}";
-    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-        logg ( "Skip downloading '$reg->{alias} source': img exists" );
-    }
-    else {
-        logg( "Downloading source for '$reg->{alias}'" );
-        _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
-    }
+    logg( "Downloading source for '$reg->{alias}'" );
+    my $remote_fn = $reg->{srcalias} // $reg->{alias};
+    my $url = $reg->{srcurl} // "$settings->{url_base}/$remote_fn.osm.pbf";
+    _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
 
     return $reg;
 }
@@ -381,19 +374,12 @@ sub get_bound {
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
 
-    return $reg if $skip_dl_bounds;
+    return $reg if $skip_dl_bounds || $reg->{skip_build};
 
-    
-    my $filebase = "$basedir/$dirname/$reg->{mapid}";
-    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-        logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
-    }
-    else {
-        logg( "Downloading boundary for '$reg->{alias}'" );
-        my $onering = $reg->{onering} ? '--onering' : q{};
-        _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
-        logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
-    }
+    logg( "Downloading boundary for '$reg->{alias}'" );
+    my $keys = $reg->{onering} ? '--onering' : q{};
+    _qx( getbound => "$keys -o $reg->{poly} $reg->{bound} 2> $reg->{filebase}.getbound.log" );
+    logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
     return $reg;
 }
@@ -402,14 +388,10 @@ sub get_bound {
 sub build_mp {
     my ($reg, $pl) = @_;
 
-    my $filebase = "$basedir/$dirname/$reg->{mapid}";
-    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-        logg ( "Skip building MP for '$reg->{alias}': already built" );
-    }
-    else {
-        logg ( "Building MP for '$reg->{alias}'" );
-        _build_mp( $reg, $pl );
-    }
+    return $reg if $reg->{skip_build};
+
+    logg ( "Building MP for '$reg->{alias}'" );
+    _build_mp( $reg, $pl );
 
     return $reg;
 }
@@ -421,10 +403,7 @@ sub build_img {
     return if $skip_img_build;
 
     my @imgs;
-    my $filebase = "$basedir/$dirname/$reg->{mapid}";
-    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-        logg ( "Skip building IMG for '$reg->{alias}': already built" );
-
+    if ( $reg->{skip_build} ) {
         @imgs = ($reg->{mapid});
         push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
     }
@@ -451,10 +430,10 @@ sub build_mapset {
 
     logg( "Indexing whole mapset" );
 
-    chdir $dirname;
+    chdir $mapset_dir;
 
     my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@$files };
-    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+    $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
     $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
     _qx( cpreview => "pv.txt -m > cpreview.log" );
@@ -482,7 +461,7 @@ sub build_mapset {
     rmtree("$mapdir");
 
     chdir $basedir;
-    rmtree $dirname;
+    rmtree $mapset_dir;
 
     return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
 }
