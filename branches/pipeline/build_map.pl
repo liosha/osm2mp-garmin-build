@@ -111,11 +111,11 @@ if ( $settings->{update_config} && $update_cfg ) {
 my @blocks = (
     get_osm => {
         sub => \&get_osm,
-        post_sub => sub { logg( "All source files have been downloaded" ) },
+        post_sub => sub { logg( "All source files have been downloaded" ) if !$skip_dl_src },
     },
     get_bound => {
         sub => \&get_bound,
-        post_sub => sub { logg( "All boundaries have been downloaded" ) },
+        post_sub => sub { logg( "All boundaries have been downloaded" ) if !$skip_dl_bounds },
     },
     build_mp => {
         sub => \&build_mp,
@@ -124,7 +124,7 @@ my @blocks = (
     },
     build_img => {
         sub => \&build_img,
-        post_sub => sub { logg( "Finished IMG building" ) },
+        post_sub => sub { logg( "Finished IMG building" ) if !$skip_img_build },
     },
     build_mapset => { sub => \&build_mapset, need_finalize => 1 },
 
