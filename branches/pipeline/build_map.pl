@@ -160,13 +160,6 @@ sub logg {
     return;
 }
 
-sub ren_lowercase {
-    my ($mask) = @_;
-
-    move $_ => lc $_  for glob $mask;
-    return;
-}
-
 
 # locale-safe qx
 sub _qx {
@@ -245,16 +238,14 @@ sub _build_img {
         _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
         logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
-        cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-        unlink $_ for qw/ OSM.reg  OSM.mp  OSM.img.idx  wine.core /;
+        cgpsm_run("osm.mp 2> $devnull", "osm.img");
+        unlink $_ for qw/ osm.reg  osm.mp  osm.img.idx  wine.core /;
 
         if ( $settings->{typ} ) {
             rcopy_glob("$basedir/$settings->{typ}" => "./osm$reg->{fid}.typ");
             _qx( gmaptool => "-wy $reg->{fid} ./osm$reg->{fid}.typ" );
         }
                 
-        ren_lowercase("*.*");
-
         logg( "Compressing mapset '$reg->{alias}'" );
 
         chdir "$basedir/$dirname";
@@ -469,16 +460,14 @@ sub build_mapset {
     _qx( cpreview => "pv.txt -m > cpreview.log" );
     logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
 
-    cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-    unlink $_ for qw/ OSM.reg OSM.mp OSM.img.idx wine.core /;
+    cgpsm_run("osm.mp 2> $devnull", "osm.img");
+    unlink $_ for qw/ osm.reg osm.mp osm.img.idx wine.core /;
 
 
     if ( $settings->{typ} ) {
         rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
         _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
     }
-
-    ren_lowercase("*.*");
 
     logg( "Compressing mapset" );
 
