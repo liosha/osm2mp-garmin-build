@@ -7,14 +7,17 @@ use strict;
 use warnings;
 use utf8;
 
-use Getopt::Long qw{ :config pass_through };
-
 use threads;
+
 use threads::shared;
 use Thread::Queue::Any;
 
+use Thread::Pipeline;
+
 use Encode;
 use Encode::Locale;
+
+use Getopt::Long qw{ :config pass_through };
 
 use IO::Handle;
 use POSIX;
@@ -86,20 +89,12 @@ my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
 
 
 
-my $q_src = Thread::Queue::Any->new();
-my $q_bnd = Thread::Queue::Any->new();
-my $q_mp  = Thread::Queue::Any->new();
-my $q_img = Thread::Queue::Any->new();
-my $q_upl = Thread::Queue::Any->new();
-
-
-
 STDERR->autoflush(1);
 STDOUT->autoflush(1);
 
 
 logg( "Let's the fun begin!" );
-logg( "Start building'$settings->{filename}' mapset" );
+logg( "Start building '$settings->{filename}' mapset" );
 
 if ( $settings->{update_config} && $update_cfg ) {
     logg( "Updating configuration" );
@@ -110,89 +105,49 @@ if ( $settings->{update_config} && $update_cfg ) {
 }
 
 
-# Initializing thread pipeline
 
-my @reglist :shared;
-my $active_mp_threads_num :shared = $mp_threads_num;
+# Main pipeline
 
-my @build_threads = (
-    threads->create( \&_source_download_thread ),
-    threads->create( \&_boundary_download_thread ),
-    ( map { threads->create( \&_mp_build_thread ) } ( 1 .. $mp_threads_num ) ),
-    threads->create( \&_img_build_thread ),
+my @blocks = (
+    get_osm => {
+        sub => \&get_osm,
+        post_sub => sub { logg( "All source files have been downloaded" ) if !$skip_dl_src },
+    },
+    get_bound => {
+        sub => \&get_bound,
+        post_sub => sub { logg( "All boundaries have been downloaded" ) if !$skip_dl_bounds },
+    },
+    build_mp => {
+        sub => \&build_mp,
+        num_threads => $mp_threads_num,
+        post_sub => sub { logg( "Finished MP building" ) },
+    },
+    build_img => {
+        sub => \&build_img,
+        post_sub => sub { logg( "Finished IMG building" ) if !$skip_img_build },
+    },
+    build_mapset => { sub => \&build_mapset, need_finalize => 1 },
+
+    upload => {
+        sub => \&upload,
+        post_sub => sub { logg( "All files has been uploaded" ) if $settings->{serv} },
+    },
 );
 
-my $t_upl = threads->create( \&_upload_thread ); 
+my $pipeline = Thread::Pipeline->new( \@blocks );
 
-
-
-# Fill queue
-
-REGION:
 for my $reg ( @$regions ) {
     $reg->{mapid} = sprintf "%08d", $settings->{fid}*1000 + $reg->{code};
-    $q_src->enqueue( $reg );
-}
-$q_src->enqueue( undef );
-
-
-# Wait for regions to build
-$_->join()  for @build_threads;
-
-$q_upl->enqueue( undef );
-
-
-if ( !$skip_img_build ) {
-    logg( "Indexing whole mapset" );
-
-    chdir $dirname;
-
-    my @files = map {"$_.img"} @reglist;
-    my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@files };
-    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
-
-    _qx( cpreview => "pv.txt -m > cpreview.log" );
-    logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
-
-    unlink "OSM.reg";
-#    unlink "$_.img.idx" for @reglist;
-
-    cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-    unlink $_ for qw/ OSM.mp OSM.img.idx wine.core /;
-
-    $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
-
-    if ( $settings->{typ} ) {
-        rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
-        _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
-    }
-
-    ren_lowercase("*.*");
-
-    logg( "Compressing mapset" );
-
-    my $mapdir = "$settings->{filename}_$settings->{today}";
-    mkdir $mapdir;
-    move $_ => $mapdir  for grep {-f} glob q{*};
-
-    unlink "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
-    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $mapdir" );
-    rmtree("$mapdir");
-
-    chdir $basedir;
-
-    if ( $settings->{serv} ) {
-        logg( "Uploading mapset" );
-        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-        _qx( curl => "--retry 100 $auth -T $basedir/_rel/$settings->{prefix}.$settings->{filename}.7z $settings->{serv}" );
-    }
+    $pipeline->enqueue( $reg );
 }
 
+$pipeline->no_more_data();
 
-rmtree $dirname;
+$pipeline->get_results();
 
-$t_upl->join();
+
 logg( "That's all, folks!" );
+exit;
 
 
 ##############################
@@ -201,14 +156,7 @@ logg( "That's all, folks!" );
 
 sub logg {
     my @logs = @_;
-    printf STDERR "%s: (%d)  %s\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid(), "@logs";
-    return;
-}
-
-sub ren_lowercase {
-    my ($mask) = @_;
-
-    move $_ => lc $_  for glob $mask;
+    printf STDERR "%s: (%d)  @logs\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid();
     return;
 }
 
@@ -252,9 +200,9 @@ sub cgpsm_run {
 }
 
 
-# !!! cwd!
-sub build_img {
-    my ($reg) = @_;
+# !!! chdir!
+sub _build_img {
+    my ($reg, $pl) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
     mkdir "$dirname/$regdir";
@@ -272,54 +220,46 @@ sub build_img {
     unlink "$reg->{mapid}.mp";
     unlink "$reg->{mapid}-s.mp"     if $make_house_search;
 
-    if ( -f "$reg->{mapid}.img" ) {
-        my $mapid_s = $reg->{mapid} + 10000000;
+    my @files;
 
+    if ( -f "$reg->{mapid}.img" ) {
         logg( "Indexing mapset for '$reg->{alias}'" );
-        
-        push @reglist, $reg->{mapid};
-        push @reglist, $mapid_s   if $make_house_search;
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
 
-        my @files = ("$reg->{mapid}.img");
-        push @files, "$mapid_s.img"    if $make_house_search;
+        my @imgs = ( $reg->{mapid} );
+        push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
+        @files = map {"$_.img"} @imgs;
+
         my $vars = { settings => $settings, data => $reg, files => \@files };
         $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+        $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
         _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
         logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
-        cgpsm_run("OSM.mp 2> $devnull", "OSM.img");
-
-        unlink $_ for qw/ OSM.reg  OSM.mp  OSM.img.idx /;
-
-        $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+        cgpsm_run("osm.mp 2> $devnull", "osm.img");
+        unlink $_ for qw/ osm.reg  osm.mp  osm.img.idx  wine.core /;
 
         if ( $settings->{typ} ) {
             rcopy_glob("$basedir/$settings->{typ}" => "./osm$reg->{fid}.typ");
             _qx( gmaptool => "-wy $reg->{fid} ./osm$reg->{fid}.typ" );
         }
                 
-        ren_lowercase("*.*");
-        unlink "wine.core";
-
         logg( "Compressing mapset '$reg->{alias}'" );
 
         chdir "$basedir/$dirname";
-        rcopy_glob("$regdir/$reg->{mapid}.img*",".");
-        rcopy_glob("$regdir/$mapid_s.img*", ".")        if $make_house_search;
+        rcopy_glob("$regdir/$_*" => q{.})  for @files;
 
-        unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
-        _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.7z $regdir" );
-        rmtree("$regdir");
+        my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z";
+        unlink $arc_file;
+        _qx( arc => "a -y $arc_file $regdir" );
+        rmtree( $regdir );
 
-        $q_upl->enqueue( { 
-            code    => $reg->{code},
-            alias   => $reg->{alias},
-            role    => 'mapset',
-            file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.7z",
-        } );
+        $pl->enqueue(
+            { alias => $reg->{alias}, role => 'IMG', file => $arc_file },
+            block => 'upload',
+        );
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
@@ -327,21 +267,17 @@ sub build_img {
     }
 
     chdir $basedir;
-    return;
+    return @files;
 }
 
 
 
-sub build_mp {
-    my ($reg) = @_;
+sub _build_mp {
+    my ($reg, $pl) = @_;
 
     my $regdir = "$reg->{alias}_$settings->{today}";
     my $regdir_full = "$basedir/$dirname/$regdir";
     mkdir "$regdir_full";
-
-    $reg->{keys} //= q{};
-
-#    $osm2mp =~ s#/#\\#gxms  if $^O =~ /mswin/ix;
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
@@ -350,8 +286,8 @@ sub build_mp {
         --bpoly $reg->{poly}
         --defaultcountry $settings->{countrycode}
         --defaultregion "$reg->{name}"
-        $settings->{keys}
-        $reg->{keys}
+        ${ \( $settings->{keys} // q{} ) }
+        ${ \( $reg->{keys} // q{} ) }
     ];
 
     my $filebase = "$regdir_full/$reg->{mapid}";
@@ -368,8 +304,8 @@ sub build_mp {
             --bpoly $reg->{poly}
             --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
-            $settings->{keys}
-            $reg->{keys}
+            ${ \( $settings->{keys} // q{} ) }
+            ${ \( $reg->{keys} // q{} ) }
         ];
         _qx( osmconvert => qq[ "$reg->{source}" --out-osm
             | $basedir/getbrokenrelations.py
@@ -384,158 +320,185 @@ sub build_mp {
     _qx( postprocess => "$filebase.mp" );
 
 
-    _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
-    _qx( log2html => "$filebase.errors.log > $basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm" );
-    $q_upl->enqueue( { 
-        code    => $reg->{code},
-        alias   => $reg->{alias},
-        role    => 'error log',
-        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm",
-        delete  => 1,
-    } );
+    if (1) {
+        my $err_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm";
+        _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
+        _qx( log2html => "$filebase.errors.log > $err_file" );
+
+        $pl->enqueue(
+            { alias => $reg->{alias}, role => 'error log', file => $err_file, delete  => 1 },
+            block => 'upload',
+        );
+    }
 
     logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$basedir/$dirname/$reg->{mapid}.*", "$regdir_full");
     rcopy_glob("$regdir_full/$reg->{mapid}.mp","$basedir/$dirname");
-    unlink "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
-    _qx( arc => "a -y $basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z $regdir_full" );
+
+    my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
+    unlink $arc_file;
+    _qx( arc => "a -y $arc_file $regdir_full" );
     rmtree("$regdir_full");
 
-    $q_upl->enqueue( { 
-        code    => $reg->{code},
-        alias   => $reg->{alias},
-        role    => 'MP',
-        file    => "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z",
-    } );
-
+    $pl->enqueue(
+        { alias => $reg->{alias}, role => 'MP', file => $arc_file },
+        block => 'upload',
+    );
+    
     return; 
 } 
 
 
-##  Thread routines
+##  Thread workers
 
-sub _source_download_thread {
-    while ( my ($reg) = $q_src->dequeue() ) {
-        last if !defined $reg;
+sub get_osm {
+    my ($reg) = @_;
 
-        my $ext = 'osm.pbf';
-        $reg->{srcalias} //= $reg->{alias};
-        $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
-        $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
+    my $ext = 'osm.pbf';
+    $reg->{srcalias} //= $reg->{alias};
+    $reg->{srcurl} //= "$settings->{url_base}/$reg->{srcalias}.$ext";
+    $reg->{source} = "$basedir/_src/$settings->{prefix}.$reg->{alias}.$ext";
 
-        if ( !$skip_dl_src ) {
-            my $filebase = "$basedir/$dirname/$reg->{mapid}";
-            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-                logg ( "Skip downloading '$reg->{alias} source': img exists" );
-            }
-            else {
-                logg( "Downloading source for '$reg->{alias}'" );
-                _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
-            }
-        }
+    return $reg if $skip_dl_src;
 
-        $q_bnd->enqueue( $reg );
+
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip downloading '$reg->{alias} source': img exists" );
+    }
+    else {
+        logg( "Downloading source for '$reg->{alias}'" );
+        _qx( wget => "$reg->{srcurl} -O $reg->{source} -o $filebase.wget.log 2> $devnull" );
     }
 
-    logg( "All sources have been downloaded!" ) if !$skip_dl_src;
-    $q_bnd->enqueue( undef );
-    return;
+    return $reg;
 }
 
 
-sub _boundary_download_thread {
-    while ( my ($reg) = $q_bnd->dequeue() ) {
-        last if !defined $reg;
+sub get_bound {
+    my ($reg) = @_;
 
-        $reg->{bound} //= $reg->{alias};
-        $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
+    $reg->{bound} //= $reg->{alias};
+    $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
 
-        if ( !$skip_dl_bounds ) {
-            my $filebase = "$basedir/$dirname/$reg->{mapid}";
-            if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-                logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
-            }
-            else {
-                logg( "Downloading boundary for '$reg->{alias}'" );
-                my $onering = $reg->{onering} ? '--onering' : q{};
-                _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
-                logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
-            }
-        }
+    return $reg if $skip_dl_bounds;
 
-        $q_mp->enqueue( $reg );
+    
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip downloading '$reg->{alias}' boundary: img exists" );
+    }
+    else {
+        logg( "Downloading boundary for '$reg->{alias}'" );
+        my $onering = $reg->{onering} ? '--onering' : q{};
+        _qx( getbound => "-o $reg->{poly} $onering $reg->{bound}  2>  $filebase.getbound.log" );
+        logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
     }
 
-    logg( "All boundaries have been downloaded!" ) if !$skip_dl_bounds;
-    $q_mp->enqueue( undef )  for ( 1 .. $mp_threads_num );
-    return;
+    return $reg;
 }
 
 
-sub _mp_build_thread {
-    while ( my ($reg) = $q_mp->dequeue() ) {
-        last if !defined $reg;
+sub build_mp {
+    my ($reg, $pl) = @_;
 
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip building MP for '$reg->{alias}': already built" );
-        }
-        else {
-            logg ( "Building MP for '$reg->{alias}'" );
-            build_mp( $reg );
-        }
-            
-        $q_img->enqueue( $reg );
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip building MP for '$reg->{alias}': already built" );
+    }
+    else {
+        logg ( "Building MP for '$reg->{alias}'" );
+        _build_mp( $reg, $pl );
     }
 
-    $active_mp_threads_num --; 
-    if ( !$active_mp_threads_num ) {
-        logg( "All MP files have been built!" );
-        $q_img->enqueue( undef );
-    }
-
-    return;
-}    
+    return $reg;
+}
 
 
-sub _img_build_thread {
+sub build_img {
+    my ($reg, $pl) = @_;
+
     return if $skip_img_build;
 
-    while ( my ($reg) = $q_img->dequeue() ) {
-        last if !defined $reg;
+    my @imgs;
+    my $filebase = "$basedir/$dirname/$reg->{mapid}";
+    if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
+        logg ( "Skip building IMG for '$reg->{alias}': already built" );
 
-        my $filebase = "$basedir/$dirname/$reg->{mapid}";
-        if ( -f "$filebase.img"  &&  -f "$filebase.img.idx" ) {
-            logg ( "Skip building IMG for '$reg->{alias}': already built" );
-
-            push @reglist, $reg->{mapid};
-            push @reglist, $reg->{mapid} + 10000000   if $make_house_search;
-        }
-        else {
-            logg ( "Building IMG for '$reg->{alias}'" );
-            build_img( $reg );
-        }
+        @imgs = ($reg->{mapid});
+        push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
+    }
+    else {
+        logg ( "Building IMG for '$reg->{alias}'" );
+        @imgs = _build_img( $reg, $pl );
     }
 
-    logg( "All IMG files have been built!" );
+    return if !@imgs;
+    return \@imgs;
+}
 
-    return;
-}    
+
+sub build_mapset {
+    my ($add_files) = @_;
+    state $files = [];
+
+    if ( $add_files ) {
+        push @$files, @$add_files;
+        return;
+    }
+
+    return if !@$files;
+
+    logg( "Indexing whole mapset" );
+
+    chdir $dirname;
+
+    my $vars = { settings => $settings, data => { name => $settings->{countryname} }, files => \@$files };
+    $tt->process('osm_pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
+    $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
+
+    _qx( cpreview => "pv.txt -m > cpreview.log" );
+    logg("Error! Whole mapset - Indexing was not finished due to the cpreview fatal error") unless ($? == 0);
+
+    cgpsm_run("osm.mp 2> $devnull", "osm.img");
+    unlink $_ for qw/ osm.reg osm.mp osm.img.idx wine.core /;
 
 
-sub _upload_thread {
+    if ( $settings->{typ} ) {
+        rcopy_glob( "$basedir/$settings->{typ}" => "./osm$settings->{fid}.typ");
+        _qx( gmaptool => "-wy $settings->{fid} ./osm$settings->{fid}.typ" );
+    }
+
+    logg( "Compressing mapset" );
+
+    my $mapdir = "$settings->{filename}_$settings->{today}";
+    mkdir $mapdir;
+    move $_ => $mapdir  for grep {-f} glob q{*};
+
+
+    my $arc_file = "$basedir/_rel/$settings->{prefix}.$settings->{filename}.7z";
+    unlink $arc_file;
+    _qx( arc => "a -y $arc_file $mapdir" );
+    rmtree("$mapdir");
+
+    chdir $basedir;
+    rmtree $dirname;
+
+    return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
+}
+
+
+sub upload {
+    my ($file) = @_;
+
     return if !$settings->{serv};
 
-    while ( my ($file) = $q_upl->dequeue() ) {
-        last if !defined $file;
+    logg( "Uploading $file->{role} for '$file->{alias}'" );
+    
+    my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
+    _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
+    unlink $file->{file}  if $file->{delete};
 
-        logg( "$file->{code} $file->{alias} - uploading $file->{role}" );
-        my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-        _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
-        unlink $file->{file}  if $file->{delete};
-    }
-
-    logg( "All files uploaded!" );
     return;
 }
 
@@ -544,4 +507,6 @@ sub _upload_thread {
 sub usage {
     say "Usage:  ./build_map.pl [--opts] build-config.yml";
     exit;
-} 
+}
+
+
