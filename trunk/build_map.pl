@@ -16,7 +16,9 @@ use Encode::Locale;
 use Getopt::Long qw{ :config pass_through };
 
 use IO::Handle;
-use POSIX;
+use POSIX qw/ strftime /;
+use Cwd qw/ getcwd /; # one from POSIX is not thread-safe!
+
 use YAML;
 use Template;
 
@@ -174,6 +176,7 @@ sub _qx {
 
     my $program = $CMD{$cmd} || $cmd;
     my $run = encode locale => "$program $params";
+#    logg( $run );
 
     return `$run`;
 }
@@ -267,7 +270,8 @@ sub _build_mapset {
     my $vars = { settings => $settings, data => $reg, files => $files };
     $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
-    _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
+    my $cplog = ($reg->{mapid} // $reg->{alias}) . ".cpreview.log";
+    _qx( cpreview => "pv.txt -m > $cplog" );
     logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
     cgpsm_run("osm.mp 2> $devnull", "osm.img");
@@ -453,13 +457,18 @@ sub build_mapset {
         alias => $settings->{filename},
         fid => $settings->{fid},
         path => "$settings->{filename}_$settings->{today}",
+        filename => "$settings->{prefix}.$settings->{filename}",
     };
 
     chdir $mapset_dir;
     my $arc_file = _build_mapset( $map_info, $files );
     chdir $basedir;
 
-    return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
+    return {
+        alias => $settings->{filename},
+        role => 'main mapset',
+        file => $arc_file,
+    };
 }
 
 
