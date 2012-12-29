@@ -100,7 +100,7 @@ STDOUT->autoflush(1);
 logg( "Let's the fun begin!" );
 logg( "Start building '$settings->{filename}' mapset" );
 
-if ( $settings->{update_config} ) {
+if ( $settings->{update_cfg} ) {
     logg( "Updating configuration" );
     my $cfgdir = $settings->{config};
     $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
