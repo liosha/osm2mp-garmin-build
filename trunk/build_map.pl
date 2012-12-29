@@ -16,9 +16,7 @@ use Encode::Locale;
 use Getopt::Long qw{ :config pass_through };
 
 use IO::Handle;
-use POSIX qw/ strftime /;
-use Cwd qw/ getcwd /; # one from POSIX is not thread-safe!
-
+use POSIX;
 use YAML;
 use Template;
 
@@ -56,9 +54,9 @@ GetOptions(
 
     'house-search!' => \my $make_house_search,
 
-    'mp-threads=i'  => \( my $mp_threads_num = 1 ),
+    'mp-threads=i'  => \my $mp_threads_num,
 
-    'update-cfg!'       => \( my $update_cfg = 1 ),
+    'update-cfg!'       => \my $update_cfg,
     'skip-dl-src!'      => \my $skip_dl_src,
     'skip-dl-bounds!'   => \my $skip_dl_bounds,
     'skip-img!'         => \my $skip_img_build,
@@ -68,19 +66,27 @@ GetOptions(
 my $config_file = shift @ARGV  or usage();
 
 my ( $settings, $regions ) = YAML::LoadFile( $config_file );
-if ( $config_file_ftp ) {
-    my ($ftp) = YAML::LoadFile( $config_file_ftp );
-    $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
-}
 
 $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
 $settings->{encoding} ||= "cp$settings->{codepage}";
 
+$settings->{config_file_ftp} = $config_file_ftp || $settings->{config_file_ftp};
+$settings->{continue_mode} = $continue_mode || $settings->{continue_mode};
+$settings->{make_house_search} = $make_house_search || $settings->{make_house_search};
+$settings->{mp_threads_num} = $mp_threads_num || $settings->{mp_threads_num} || 1;
+$settings->{update_cfg} = $update_cfg || $settings->{update_cfg} || 1;
+$settings->{skip_dl_src} = $skip_dl_src || $settings->{skip_dl_src};
+$settings->{skip_dl_bounds} = $skip_dl_bounds || $settings->{skip_dl_bounds};
+$settings->{skip_img_build} = $skip_img_build || $settings->{skip_img_build};
 
+if ( $settings->{config_file_ftp} ) {
+    my ($ftp) = YAML::LoadFile( $settings->{config_file_ftp} );
+    $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
+}
 
 my $mapset_dir = "$basedir/$settings->{prefix}.temp";
-rmtree $mapset_dir  if !$continue_mode;
+rmtree $mapset_dir  if !$settings->{continue_mode};
 mkdir $_  for grep {!-d} ( $mapset_dir, qw/ _src _bounds _rel / );
 
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
@@ -94,7 +100,7 @@ STDOUT->autoflush(1);
 logg( "Let's the fun begin!" );
 logg( "Start building '$settings->{filename}' mapset" );
 
-if ( $settings->{update_config} && $update_cfg ) {
+if ( $settings->{update_config} ) {
     logg( "Updating configuration" );
     my $cfgdir = $settings->{config};
     $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
@@ -109,20 +115,20 @@ if ( $settings->{update_config} && $update_cfg ) {
 my @blocks = (
     get_osm => {
         sub => \&get_osm,
-        post_sub => sub { logg( "All source files have been downloaded" ) if !$skip_dl_src },
+        post_sub => sub { logg( "All source files have been downloaded" ) if !$settings->{skip_dl_src} },
     },
     get_bound => {
         sub => \&get_bound,
-        post_sub => sub { logg( "All boundaries have been downloaded" ) if !$skip_dl_bounds },
+        post_sub => sub { logg( "All boundaries have been downloaded" ) if !$settings->{skip_dl_bounds} },
     },
     build_mp => {
         sub => \&build_mp,
-        num_threads => $mp_threads_num,
+        num_threads => $settings->{mp_threads_num},
         post_sub => sub { logg( "Finished MP building" ) },
     },
     build_img => {
         sub => \&build_img,
-        post_sub => sub { logg( "Finished IMG building" ) if !$skip_img_build },
+        post_sub => sub { logg( "Finished IMG building" ) if !$settings->{skip_img_build} },
     },
     build_mapset => { sub => \&build_mapset, need_finalize => 1 },
 
@@ -176,7 +182,6 @@ sub _qx {
 
     my $program = $CMD{$cmd} || $cmd;
     my $run = encode locale => "$program $params";
-#    logg( $run );
 
     return `$run`;
 }
@@ -221,12 +226,14 @@ sub _build_img {
     cgpsm_run("ac $mp_file -e -l > $reg_path/$reg->{mapid}.cgpsmapper.log 2> $devnull", "$reg->{mapid}.img");
     my @imgs = ( $reg->{mapid} );
 
-    if ( $make_house_search ) {
+    if ( $settings->{make_house_search} ) {
         my $smp_file = "$reg->{mapid}-s.mp";
         _qx( housesearch => "$mp_file > $smp_file 2> $devnull" );
-        cgpsm_run("ac $smp_file -e -l >> $reg_path/$reg->{mapid}.cgpsmapper.log", "$reg->{mapid}.img");
+        my $mapids=$reg->{mapid} + 10000000;
+        cgpsm_run("ac $smp_file -e -l >> $reg_path/$reg->{mapid}-s.cgpsmapper.log 2> $devnull", "${mapids}.img");
         unlink $smp_file;
-        push @imgs, $reg->{mapid} + 10000000;
+        if ( -f "${mapids}.img" ) { push @imgs, ${mapids}; }
+        else { logg( "Warning! Housesearch IMG build failed for '$reg->{alias}'" ); }
     }
 
     unlink $mp_file;
@@ -270,8 +277,7 @@ sub _build_mapset {
     my $vars = { settings => $settings, data => $reg, files => $files };
     $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
-    my $cplog = ($reg->{mapid} // $reg->{alias}) . ".cpreview.log";
-    _qx( cpreview => "pv.txt -m > $cplog" );
+    _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
     logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
 
     cgpsm_run("osm.mp 2> $devnull", "osm.img");
@@ -381,11 +387,11 @@ sub get_osm {
 
     $reg->{source} = "$basedir/_src/$reg->{filename}.osm.pbf";
 
-    return $reg if $skip_dl_src || $reg->{skip_build};
+    return $reg if $settings->{skip_dl_src} || $reg->{skip_build};
 
     logg( "Downloading source for '$reg->{alias}'" );
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
-    my $url = $reg->{srcurl} // "$settings->{url_base}/$remote_fn.osm.pbf";
+    my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.pbf";
     _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
 
     return $reg;
@@ -398,7 +404,7 @@ sub get_bound {
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
 
-    return $reg if $skip_dl_bounds || $reg->{skip_build};
+    return $reg if $settings->{skip_dl_bounds} || $reg->{skip_build};
 
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
@@ -424,12 +430,12 @@ sub build_mp {
 sub build_img {
     my ($reg, $pl) = @_;
 
-    return if $skip_img_build;
+    return if $settings->{skip_img_build};
 
     my @imgs;
     if ( $reg->{skip_build} ) {
         @imgs = ($reg->{mapid});
-        push @imgs, $reg->{mapid} + 10000000   if $make_house_search;
+        push @imgs, $reg->{mapid} + 10000000   if $settings->{make_house_search};
     }
     else {
         logg ( "Building IMG for '$reg->{alias}'" );
@@ -455,20 +461,17 @@ sub build_mapset {
     my $map_info = {
         name => $settings->{countryname},
         alias => $settings->{filename},
+        filename => $settings->{filename},
+        mapid => $settings->{fid},
         fid => $settings->{fid},
         path => "$settings->{filename}_$settings->{today}",
-        filename => "$settings->{prefix}.$settings->{filename}",
     };
 
     chdir $mapset_dir;
     my $arc_file = _build_mapset( $map_info, $files );
     chdir $basedir;
 
-    return {
-        alias => $settings->{filename},
-        role => 'main mapset',
-        file => $arc_file,
-    };
+    return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
 }
 
 
