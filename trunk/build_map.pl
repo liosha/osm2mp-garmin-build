@@ -71,14 +71,24 @@ $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
 $settings->{encoding} ||= "cp$settings->{codepage}";
 
-$settings->{config_file_ftp} = $config_file_ftp || $settings->{config_file_ftp};
-$settings->{continue_mode} = $continue_mode || $settings->{continue_mode};
-$settings->{make_house_search} = $make_house_search || $settings->{make_house_search};
-$settings->{mp_threads_num} = $mp_threads_num || $settings->{mp_threads_num} || 1;
-$settings->{update_cfg} = $update_cfg || $settings->{update_cfg} || 1;
-$settings->{skip_dl_src} = $skip_dl_src || $settings->{skip_dl_src};
-$settings->{skip_dl_bounds} = $skip_dl_bounds || $settings->{skip_dl_bounds};
-$settings->{skip_img_build} = $skip_img_build || $settings->{skip_img_build};
+$settings->{config_file_ftp} =   defined($config_file_ftp)   ? $config_file_ftp   : $settings->{config_file_ftp};
+$settings->{continue_mode} =     defined($continue_mode)     ? $continue_mode     : $settings->{continue_mode};
+$settings->{make_house_search} = defined($make_house_search) ? $make_house_search : $settings->{make_house_search};
+if ( defined($mp_threads_num) ){
+    $settings->{mp_threads_num} = $mp_threads_num;
+}
+elsif ( not exists($settings->{mp_threads_num}) ) {
+    $settings->{mp_threads_num} = 1;
+}
+if ( defined($update_cfg) ){
+    $settings->{update_cfg}=$update_cfg;
+}
+elsif ( not exists($settings->{update_cfg}) ) {
+    $settings->{update_cfg}=1
+}
+$settings->{skip_dl_src} =    defined($skip_dl_src)    ? $skip_dl_src    : $settings->{skip_dl_src};
+$settings->{skip_dl_bounds} = defined($skip_dl_bounds) ? $skip_dl_bounds : $settings->{skip_dl_bounds};
+$settings->{skip_img_build} = defined($skip_img_build) ? $skip_img_build : $settings->{skip_img_build};
 
 if ( $settings->{config_file_ftp} ) {
     my ($ftp) = YAML::LoadFile( $settings->{config_file_ftp} );
@@ -225,6 +235,7 @@ sub _build_img {
     my $mp_file = "$reg->{mapid}.mp";
     cgpsm_run("ac $mp_file -e -l > $reg_path/$reg->{mapid}.cgpsmapper.log 2> $devnull", "$reg->{mapid}.img");
     my @imgs = ( $reg->{mapid} );
+    my @imgs_nohs = ( $reg->{mapid} ); 
 
     if ( $settings->{make_house_search} ) {
         my $smp_file = "$reg->{mapid}-s.mp";
@@ -239,10 +250,12 @@ sub _build_img {
     unlink $mp_file;
 
     my @files;
+    my @files_nohs; 
     if ( -f "$reg->{mapid}.img" ) {
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
         @files = map {"$_.img"} @imgs;
+        @files_nohs = map {"$_.img"} @imgs_nohs; 
 
         my $arc_file = _build_mapset( $reg, \@files );
 
@@ -257,6 +270,7 @@ sub _build_img {
     }
 
     chdir $start_dir;
+    return @files_nohs if ( $settings->{no_global_house_search} );
     return @files;
 }
 
@@ -461,7 +475,7 @@ sub build_mapset {
     my $map_info = {
         name => $settings->{countryname},
         alias => $settings->{filename},
-        filename => $settings->{filename},
+        filename => "$settings->{prefix}.$settings->{filename}",
         mapid => $settings->{fid},
         fid => $settings->{fid},
         path => "$settings->{filename}_$settings->{today}",
