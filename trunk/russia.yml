@@ -460,5 +460,122 @@ skip_img_build:    0
   alias: yamal
   srcalias:  RU-YAN
   keys:  --noshorelines --mp-header TreSize=4000
- 
 
+
+# Mapsets
+
+---
+
+
+- name: Центральный округ
+  fid: 410
+  filename: cfo
+  make_house_search: 1
+  parts:
+    - belgorod
+    - bryansk
+    - vladimir
+    - voronezh
+    - ivanov
+    - kaluzh
+    - kostrom
+    - kursk
+    - lipetsk
+    - moscow
+    - mosobl
+    - orlovsk
+    - ryazan
+    - smol
+    - tambov
+    - tver
+    - tul
+    - yarosl
+
+- name: Россия
+  fid: 400
+  filename: russia
+  make_house_search: 0
+  parts:
+    - adygeya
+    - bashkir
+    - buryat
+    - altay
+    - dagestan
+    - ingush
+    - kabardin
+    - kalmyk
+    - karach
+    - karel
+    - komi
+    - mariyel
+    - mordov
+    - yakut
+    - osetiya
+    - tatar
+    - tyva
+    - udmurt
+    - khakas
+    - chechen
+    - chuvash
+    - altayskiy
+    - krasnodar
+    - krasnoyarsk
+    - prim
+    - stavrop
+    - khabar
+    - amur
+    - arkhan
+    - astrakhan
+    - belgorod
+    - bryansk
+    - vladimir
+    - volgograd
+    - vologda
+    - voronezh
+    - ivanov
+    - irkutsk
+    - kalinin
+    - kaluzh
+    - kamch
+    - kemerovo
+    - kirov
+    - kostrom
+    - kurgan
+    - kursk
+    - stpeter
+    - leningrad
+    - lipetsk
+    - magadan
+    - mosobl
+    - moscow
+    - murmansk
+    - nizhegorod
+    - novgorod
+    - novosib
+    - omsk
+    - orenburg
+    - orlovsk
+    - penz
+    - perm
+    - pskov
+    - rostov
+    - ryazan
+    - samar
+    - saratov
+    - sakhalin
+    - sverdl
+    - smol
+    - tambov
+    - tver
+    - tomsk
+    - tul
+    - tumen
+    - ulyan
+    - chel
+    - zabaikal
+    - yarosl
+    - evrey
+    - nenec
+    - khanty
+    - chukot
+    - yamal

@@ -65,7 +65,7 @@ GetOptions(
 
 my $config_file = shift @ARGV  or usage();
 
-my ( $settings, $regions ) = YAML::LoadFile( $config_file );
+my ( $settings, $regions, $mapsets ) = YAML::LoadFile( $config_file );
 
 $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
@@ -140,7 +140,7 @@ my @blocks = (
         sub => \&build_img,
         post_sub => sub { logg( "Finished IMG building" ) if !$settings->{skip_img_build} },
     },
-    build_mapset => { sub => \&build_mapset, need_finalize => 1 },
+#    build_mapset => { sub => \&build_mapset, need_finalize => 1 },
 
     upload => {
         sub => \&upload,
@@ -162,9 +162,30 @@ for my $reg ( @$regions ) {
 }
 
 $pipeline->no_more_data();
-
 $pipeline->get_results();
 
+
+# Mapsets building pipeline 
+
+my @blocks_mapsets = (
+    build_mapset => {
+        sub => \&build_mapset,
+        post_sub => sub { logg( "Finished mapsets building" )  },
+    },
+
+    upload => {
+        sub => \&upload,
+        post_sub => sub { logg( "All files have been uploaded" ) if $settings->{serv} },
+    },
+);
+
+my $pipeline_mapsets = Thread::Pipeline->new( \@blocks_mapsets );
+
+for my $mapset ( @$mapsets ) {
+    $pipeline_mapsets->enqueue( $mapset );
+}
+$pipeline_mapsets->no_more_data();
+$pipeline_mapsets->get_results();
 
 logg( "That's all, folks!" );
 
@@ -235,7 +256,6 @@ sub _build_img {
     my $mp_file = "$reg->{mapid}.mp";
     cgpsm_run("ac $mp_file -e -l > $reg_path/$reg->{mapid}.cgpsmapper.log 2> $devnull", "$reg->{mapid}.img");
     my @imgs = ( $reg->{mapid} );
-    my @imgs_nohs = ( $reg->{mapid} ); 
 
     if ( $settings->{make_house_search} ) {
         my $smp_file = "$reg->{mapid}-s.mp";
@@ -250,12 +270,10 @@ sub _build_img {
     unlink $mp_file;
 
     my @files;
-    my @files_nohs; 
     if ( -f "$reg->{mapid}.img" ) {
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
         @files = map {"$_.img"} @imgs;
-        @files_nohs = map {"$_.img"} @imgs_nohs; 
 
         my $arc_file = _build_mapset( $reg, \@files );
 
@@ -270,7 +288,6 @@ sub _build_img {
     }
 
     chdir $start_dir;
-    return @files_nohs if ( $settings->{no_global_house_search} );
     return @files;
 }
 
@@ -462,30 +479,36 @@ sub build_img {
 
 
 sub build_mapset {
-    my ($add_files) = @_;
-    state $files = [];
+    my ($mapset, $pl) = @_;
+    my $house_search= $settings->{make_house_search} && $mapset->{make_house_search} ;
 
-    if ( $add_files ) {
-        push @$files, @$add_files;
-        return;
+    logg("Preparing mapset '$mapset->{filename}' (@{$mapset->{parts}})");
+    my %parts = map { $_ => 1 } @{$mapset->{parts}};
+    my @files;
+    for my $reg (@$regions){
+        if(exists($parts{$reg->{alias}})) { 
+    	    push @files, "$reg->{mapid}.img" if ( -f "$mapset_dir/$reg->{mapid}.img" );
+    	    if ($house_search) {
+    		my $mapids=$reg->{mapid} + 10000000;
+        	push @files, "${mapids}.img" if ( -f "$mapset_dir/${mapids}.img" );
+	    }
+        }
     }
-
-    return if !@$files;
-
+    
     my $map_info = {
-        name => $settings->{countryname},
-        alias => $settings->{filename},
-        filename => "$settings->{prefix}.$settings->{filename}",
-        mapid => $settings->{fid},
-        fid => $settings->{fid},
-        path => "$settings->{filename}_$settings->{today}",
+        name => $mapset->{name},
+        alias => $mapset->{filename},
+        filename => "$settings->{prefix}.$mapset->{filename}",
+        mapid => $mapset->{fid},
+        fid => $mapset->{fid},
+        path => "$mapset->{filename}_$settings->{today}",
     };
 
     chdir $mapset_dir;
-    my $arc_file = _build_mapset( $map_info, $files );
+    my $arc_file = _build_mapset( $map_info, \@files );
     chdir $basedir;
 
-    return { alias => $settings->{filename}, role => 'main mapset', file => $arc_file };
+    return { alias => $mapset->{filename}, role => 'mapset', file => $arc_file };
 }
 
 
