@@ -473,8 +473,9 @@ sub build_img {
         @imgs = _build_img( $reg, $pl );
     }
 
-    return if !@imgs;
-    return \@imgs;
+    #return if !@imgs;
+    #return \@imgs;
+    return;
 }
 
 
