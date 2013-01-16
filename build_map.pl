@@ -16,7 +16,9 @@ use Encode::Locale;
 use Getopt::Long qw{ :config pass_through };
 
 use IO::Handle;
-use POSIX;
+use POSIX qw/ strftime /;
+use Cwd qw/ getcwd /; # one from POSIX is not thread-safe!
+
 use YAML;
 use Template;
 
