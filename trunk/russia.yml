@@ -16,7 +16,6 @@ url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 continue_mode:     1
 make_house_search: 1
-no_global_house_search: 0
 mp_threads_num:    2
 update_cfg:        1
 skip_dl_src:       0
@@ -468,7 +467,7 @@ skip_img_build:    0
 
 
 - name: Центральный округ
-  fid: 410
+  fid: 501
   filename: cfo
   make_house_search: 1
   parts:
@@ -490,6 +489,113 @@ skip_img_build:    0
     - tver
     - tul
     - yarosl
+
+- name: Северо-Западный округ
+  fid: 502
+  filename: szfo
+  make_house_search: 1
+  parts:
+    - karel
+    - komi
+    - arkhan
+    - vologda
+    - kalinin
+    - leningrad
+    - murmansk
+    - novgorod
+    - pskov
+    - stpeter
+    - nenec
+
+- name: Южный округ
+  fid: 503
+  filename: ufo
+  make_house_search: 1
+  parts:
+    - adygeya
+    - kalmyk
+    - krasnodar
+    - astrakhan
+    - volgograd
+    - rostov
+
+- name: Дальневосточный округ
+  fid: 504
+  filename: dfo
+  make_house_search: 1
+  parts:
+    - yakut
+    - kamch
+    - prim
+    - khabar
+    - amur
+    - magadan
+    - sakhalin
+    - evrey
+    - chukot
+
+- name: Сибирский округ
+  fid: 505
+  filename: sfo
+  make_house_search: 1
+  parts:
+    - altay
+    - buryat
+    - tyva
+    - khakas
+    - altayskiy
+    - zabaikal
+    - krasnoyarsk
+    - irkutsk
+    - kemerovo
+    - novosib
+    - omsk
+    - tomsk
+
+- name: Уральский округ
+  fid: 506
+  filename: urfo
+  make_house_search: 1
+  parts:
+    - kurgan
+    - sverdl
+    - tumen
+    - chel
+    - khanty
+    - yamal
+
+- name: Приволжский округ
+  fid: 507
+  filename: pfo
+  make_house_search: 1
+  parts:
+    - bashkir
+    - mariyel
+    - mordov
+    - tatar
+    - udmurt
+    - chuvash
+    - kirov
+    - nizhegorod
+    - orenburg
+    - penz
+    - perm
+    - samar
+    - saratov
+    - ulyan
+
+- name: Северо-Кавказский округ
+  fid: 508
+  filename: skfo
+  make_house_search: 1
+  parts:
+    - dagestan
+    - ingush
+    - kabardin
+    - karach
+    - osetiya
+    - chechen
+    - stavrop
 
 - name: Россия
   fid: 400
