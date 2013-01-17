@@ -9,7 +9,7 @@ set KEY=HKLM\SOFTWARE\Garmin\MapSource
 :key_ok
 
 [%  fid = data.fid || settings.fid;
-    reg_key = "%KEY%\Families\FAMILY_" _ fid;
+    reg_key = "%KEY%\\Families\\FAMILY_" _ fid;
 
     USE format;
     xfid = (fid div 256) + 256 * (fid mod 256);
