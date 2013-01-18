@@ -10,6 +10,7 @@ use utf8;
 use threads;
 use Thread::Pipeline;
 
+use Carp;
 use Encode;
 use Encode::Locale;
 
@@ -36,7 +37,7 @@ my $basedir = getcwd();
 # external commands required for building
 my %CMD = (
     getbound    => "perl $basedir/getbound.pl",
-    osmconvert  => 'osmconvert',
+    osmconvert  => 'osmconvert --out-osm',
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
     housesearch => "perl $basedir/osm2mp/mp-housesearch.pl",
@@ -44,6 +45,7 @@ my %CMD = (
     cgpsmapper  => ( $^O ~~ 'MSWin32' ? 'cgpsmapper' : 'wine cgpsmapper.exe' ),
     gmaptool    => 'gmt',
     arc         => '7za',
+    bzcat       => 'bzip2 -dcq',
 );
 
 my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
@@ -86,7 +88,7 @@ if ( defined($update_cfg) ){
     $settings->{update_cfg}=$update_cfg;
 }
 elsif ( not exists($settings->{update_cfg}) ) {
-    $settings->{update_cfg}=1
+    $settings->{update_cfg}=0
 }
 $settings->{skip_dl_src} =    defined($skip_dl_src)    ? $skip_dl_src    : $settings->{skip_dl_src};
 $settings->{skip_dl_bounds} = defined($skip_dl_bounds) ? $skip_dl_bounds : $settings->{skip_dl_bounds};
@@ -343,6 +345,11 @@ sub _build_mp {
     my $regdir = "$mapset_dir/$reg->{alias}_$settings->{today}";
     mkdir "$regdir";
 
+    my $cat_cmd = 
+        $reg->{format} eq 'pbf' ? 'osmconvert' :
+        $reg->{format} eq 'bz2' ? 'bzcat' :
+        croak "Unknown format '$reg->{format}'";
+
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
         --mapid $reg->{mapid}
@@ -355,7 +362,7 @@ sub _build_mp {
     ];
 
     my $filebase = "$regdir/$reg->{mapid}";
-    _qx( osmconvert => qq[ "$reg->{source}" --out-osm
+    _qx( $cat_cmd => qq[ "$reg->{source}"
         | $CMD{osm2mp} $osm2mp_params - -o $filebase.mp
             2> $filebase.osm2mp.log
     ] );
@@ -371,7 +378,7 @@ sub _build_mp {
             ${ \( $settings->{keys} // q{} ) }
             ${ \( $reg->{keys} // q{} ) }
         ];
-        _qx( osmconvert => qq[ "$reg->{source}" --out-osm
+        _qx( $cat_cmd => qq[ "$reg->{source}"
             | $basedir/getbrokenrelations.py
                 2> "$filebase.getbrokenrelations.log"
             | $cmd_brokenmpoly -
@@ -418,13 +425,14 @@ sub _build_mp {
 sub get_osm {
     my ($reg) = @_;
 
-    $reg->{source} = "$basedir/_src/$reg->{filename}.osm.pbf";
+    $reg->{format} //= 'pbf';
+    $reg->{source} = "$basedir/_src/$reg->{filename}.osm.$reg->{format}";
 
     return $reg if $settings->{skip_dl_src} || $reg->{skip_build};
 
     logg( "Downloading source for '$reg->{alias}'" );
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
-    my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.pbf";
+    my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.$reg->{format}";
     _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
 
     return $reg;
@@ -490,11 +498,11 @@ sub build_mapset {
     my @files;
     for my $reg (@$regions){
         if(exists($parts{$reg->{alias}})) { 
-    	    push @files, "$reg->{mapid}.img" if ( -f "$mapset_dir/$reg->{mapid}.img" );
-    	    if ($house_search) {
-    		my $mapids=$reg->{mapid} + 10000000;
-        	push @files, "${mapids}.img" if ( -f "$mapset_dir/${mapids}.img" );
-	    }
+            push @files, "$reg->{mapid}.img" if ( -f "$mapset_dir/$reg->{mapid}.img" );
+            if ($house_search) {
+            my $mapids=$reg->{mapid} + 10000000;
+            push @files, "${mapids}.img" if ( -f "$mapset_dir/${mapids}.img" );
+        }
         }
     }
     
