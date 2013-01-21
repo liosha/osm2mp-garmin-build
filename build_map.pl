@@ -23,6 +23,7 @@ use Cwd qw/ getcwd /; # one from POSIX is not thread-safe!
 use YAML;
 use Template;
 
+use File::Basename;
 use File::Path;
 use File::Copy;
 use File::Copy::Recursive;
@@ -116,8 +117,8 @@ logg( "Start building '$settings->{filename}' mapset" );
 
 if ( $settings->{update_cfg} ) {
     logg( "Updating configuration" );
-    my $cfgdir = $settings->{config};
-    $cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
+    my $cfgdir = dirname($settings->{config});
+    #$cfgdir =~ s# [/\\] [-\w]+ $ ##xms;
     _qx( svn => "up $cfgdir" );
     logg( "svn info:\n" . _qx( svn => "info $cfgdir" ) );
 }
