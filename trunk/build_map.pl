@@ -314,7 +314,11 @@ sub _build_mapset {
     $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
     _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
-    logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
+    if ($?) {
+	logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
+	unlink $_ for map {"$start_dir/$_"} @$files;
+	unlink $_ for map {"$start_dir/$_.idx"} @$files;
+    }
 
     cgpsm_run("osm.mp 2> $devnull", "osm.img");
     unlink $_ for qw/ osm.reg  osm.mp  osm.img.idx  wine.core /;
