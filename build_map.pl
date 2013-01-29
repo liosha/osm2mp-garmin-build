@@ -112,7 +112,7 @@ STDERR->autoflush(1);
 STDOUT->autoflush(1);
 
 
-logg( "Let's the fun begin!" );
+logg( "Let the fun begin!" );
 logg( "Start building '$settings->{filename}' mapset" );
 
 if ( $settings->{update_cfg} ) {
@@ -430,15 +430,24 @@ sub _build_mp {
 sub get_osm {
     my ($reg) = @_;
 
+    state $got = {}; # :shared?
+
     $reg->{format} //= 'pbf';
     $reg->{source} = "$basedir/_src/$reg->{filename}.osm.$reg->{format}";
 
     return $reg if $settings->{skip_dl_src} || $reg->{skip_build};
 
-    logg( "Downloading source for '$reg->{alias}'" );
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
     my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.$reg->{format}";
-    _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+
+    if ( $got->{$url} ) {
+        logg( "Source for '$reg->{alias}' have already been downloaded" );
+    }
+    else {
+        logg( "Downloading source for '$reg->{alias}'" );
+        _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+        $got->{$url} = 1;
+    }
 
     return $reg;
 }
