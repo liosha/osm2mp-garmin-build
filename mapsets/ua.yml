@@ -1,0 +1,271 @@
+
+# Common settings
+
+---
+
+prefix:         full
+countrycode:    UA
+countryname:    Украина
+filename:       ukraine
+fid:            970
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=ru -dl=uk --lt-priority yatr_uk_ru=2 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+make_house_search: 1
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+
+
+# Regions
+
+---
+
+- name:  Винницкая область
+  code:  2
+  alias: vinnic
+  srcalias:  UA
+  bound: UA-05
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Волынская область
+  code:  7
+  alias: volyn
+  srcalias:  UA
+  bound: UA-07
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Луганская область
+  code:  44
+  alias: lugansk
+  srcalias:  UA
+  bound: UA-44
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Днепропетровская область
+  code:  12
+  alias: dnepro
+  srcalias:  UA
+  bound: UA-12
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецкая область
+  code:  14
+  alias: doneck
+  srcalias:  UA
+  bound: UA-14
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Житомирская область
+  code:  18
+  alias: gitomir
+  srcalias:  UA
+  bound: UA-18
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ровненская область
+  code:  56
+  alias: rovn
+  srcalias:  UA
+  bound: UA-56
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Закарпатская область
+  code:  21
+  alias: zakarpat
+  srcalias:  UA
+  bound: UA-21
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Запорожская область
+  code:  23
+  alias: zaporog
+  srcalias:  UA
+  bound: UA-23
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ивано-Франковская область
+  code:  26
+  alias: ivanofr
+  srcalias:  UA
+  bound: UA-26
+  pre_clip: 1
+  skip_mapset: 1
+
+# UA-30   Киев    город
+
+- name:  Киевская область
+  code:  32
+  alias: kiev
+  srcalias:  UA
+  bound: UA-32
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Кировоградская область
+  code:  35
+  alias: kirovogr
+  srcalias:  UA
+  bound: UA-35
+  pre_clip: 1
+  skip_mapset: 1
+
+# UA-40   Севастополь город
+
+- name:  Крым
+  code:  1
+  alias: krym
+  srcalias:  UA
+  bound: UA-01
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Львовская область
+  code:  46
+  alias: lvov
+  srcalias:  UA
+  bound: UA-46
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Львовская область
+  code:  46
+  alias: lvov
+  srcalias:  UA
+  bound: UA-46
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Николаевская область
+  code:  48
+  alias: nikolaev
+  srcalias:  UA
+  bound: UA-48
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Одесская область
+  code:  51
+  alias: odess
+  srcalias:  UA
+  bound: UA-51
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Полтавская область
+  code:  53
+  alias: poltav
+  srcalias:  UA
+  bound: UA-53
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Сумская область
+  code:  59
+  alias: sum
+  srcalias:  UA
+  bound: UA-59
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Тернопольская область
+  code:  61
+  alias: ternop
+  srcalias:  UA
+  bound: UA-61
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Харьковская область
+  code:  63
+  alias: harkov
+  srcalias:  UA
+  bound: UA-63
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Херсонская область
+  code:  65
+  alias: herson
+  srcalias:  UA
+  bound: UA-65
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Хмельницкая область
+  code:  68
+  alias: hmeln
+  srcalias:  UA
+  bound: UA-68
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Черкасская область
+  code:  71
+  alias: cherkas
+  srcalias:  UA
+  bound: UA-71
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Черниговская область
+  code:  74
+  alias: chernig
+  srcalias:  UA
+  bound: UA-74
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Черновицкая область
+  code:  73
+  alias: chernov
+  srcalias:  UA
+  bound: UA-73
+  pre_clip: 1
+  skip_mapset: 1
+
+
+
+# Mapsets
+
+---
+
+- name: Украина
+  fid: 970
+  filename: ukraine
+  make_house_search: 1
+  parts:
+    - vinnica
+    - volyn
+    - lugansk
+    - dnepro
+    - doneck
+    - gitomir
+    - rovn
+    - zakarpat
+    - zaporog
+    - ivanofr
+    - kiev
+    - kirovogr
+    - krym
+    - lvov
+    - nikolaev
+    - odess
+    - poltav
+    - sum
+    - ternop
+    - harkov
+    - herson
+    - hmeln
+    - cherkas
+    - chernig
+    - chernov
