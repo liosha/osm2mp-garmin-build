@@ -285,12 +285,15 @@ sub _build_img {
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
         @files = map {"$_.img"} @imgs;
 
-        my $arc_file = _build_mapset( $reg, \@files );
+        if ( !$reg->{skip_mapset} ) {
+            my $arc_file = _build_mapset( $reg, \@files );
 
-        $pl->enqueue(
-            { alias => $reg->{alias}, role => 'IMG', file => $arc_file },
-            block => 'upload',
-        );
+            $pl->enqueue(
+                { alias => $reg->{alias}, role => 'IMG', file => $arc_file },
+                block => 'upload',
+            );
+        }
+        rmtree( $reg->{path} );
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
@@ -451,11 +454,12 @@ sub get_osm {
 
     if ( $got->{$url} ) {
         logg( "Source for '$reg->{alias}' have already been downloaded" );
+        $reg->{source} = $got->{$url};
     }
     else {
         logg( "Downloading source for '$reg->{alias}'" );
         _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
-        $got->{$url} = 1;
+        $got->{$url} = $reg->{source};
     }
 
     return $reg;
