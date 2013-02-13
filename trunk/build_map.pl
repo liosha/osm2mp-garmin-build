@@ -33,6 +33,10 @@ BEGIN {
     *rmove_glob = *File::Copy::Recursive::rmove_glob;
 }
 
+our $DEBUG = 1;
+
+
+
 my $basedir = getcwd();
 
 # external commands required for building
@@ -217,6 +221,7 @@ sub _qx {
     $params =~ s/ ^ \s+ | \s+ $ //gxms;
 
     my $program = $CMD{$cmd} || $cmd;
+    logg("$program $params")  if $DEBUG;
     my $run = encode locale => "$program $params";
 
     return `$run`;
@@ -315,9 +320,9 @@ sub _build_mapset {
 
     _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
     if ($?) {
-	logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
-	unlink $_ for map {"$start_dir/$_"} @$files;
-	unlink $_ for map {"$start_dir/$_.idx"} @$files;
+    logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
+    unlink $_ for map {"$start_dir/$_"} @$files;
+    unlink $_ for map {"$start_dir/$_.idx"} @$files;
     }
 
     cgpsm_run("osm.mp 2> $devnull", "osm.img");
@@ -352,8 +357,12 @@ sub _build_mp {
 
     my $cat_cmd = 
         $reg->{format} eq 'pbf' ? 'osmconvert' :
-        $reg->{format} eq 'bz2' ? 'bzcat' :
+        $reg->{format} eq 'bz2' ? 'osmconvert' :
         croak "Unknown format '$reg->{format}'";
+
+    my $cat_params = $reg->{pre_clip}
+        ? "-B=$reg->{pre_poly}"  # --complete-ways
+        : q{};        
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
@@ -367,7 +376,7 @@ sub _build_mp {
     ];
 
     my $filebase = "$regdir/$reg->{mapid}";
-    _qx( $cat_cmd => qq[ "$reg->{source}"
+    _qx( $cat_cmd => qq[ $cat_params "$reg->{source}"
         | $CMD{osm2mp} $osm2mp_params - -o $filebase.mp
             2> $filebase.osm2mp.log
     ] );
@@ -465,6 +474,13 @@ sub get_bound {
     my $keys = $reg->{onering} ? '--onering' : q{};
     _qx( getbound => "$keys -o $reg->{poly} $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
+
+    if ( $reg->{pre_clip} ) {
+        logg( "Downloading pre-clip boundary for '$reg->{alias}'" );
+        $reg->{pre_poly} = "$basedir/_bounds/$reg->{bound}-buf.poly";
+        _qx( getbound => "-o $reg->{pre_poly} --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
+        logg( "Error! Failed to get pre-clip boundary for '$reg->{alias}'" )  if $?;
+    }
 
     return $reg;
 }
