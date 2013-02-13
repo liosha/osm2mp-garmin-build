@@ -1,0 +1,35 @@
+
+# Common settings
+
+---
+
+prefix:         full
+countrycode:    KG
+countryname:    Киргизия
+filename:       kyrgyzstan
+fid:            971
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=ru -dl=kg -lt-equal ru=kg --codepage=1251 --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+make_house_search: 1
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+
+
+# Regions
+
+---
+
+- name:  Киргизия
+  code:  1
+  alias: kyrgyzstan
+  srcalias:  KG
+
+
+
+# Mapsets
+
+---
+
+
