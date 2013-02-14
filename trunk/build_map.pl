@@ -221,7 +221,7 @@ sub _qx {
     $params =~ s/ ^ \s+ | \s+ $ //gxms;
 
     my $program = $CMD{$cmd} || $cmd;
-    logg("$program $params")  if $DEBUG;
+    logg(encode console_out => "$program $params")  if $DEBUG;
     my $run = encode locale => "$program $params";
 
     return `$run`;

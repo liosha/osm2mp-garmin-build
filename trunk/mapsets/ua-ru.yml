@@ -11,7 +11,8 @@ fid:            970
 config:         osm2mp/cfg/default.cfg
 keys:           -tl=ru -dl=uk --lt-priority yatr_uk_ru=2 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-mp_threads_num:    2
+# sqlite cache is not thread-compatible!
+mp_threads_num:    1
 make_house_search: 1
 skip_dl_src:       0
 skip_dl_bounds:    0
