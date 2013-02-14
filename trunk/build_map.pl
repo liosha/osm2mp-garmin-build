@@ -104,7 +104,7 @@ if ( $settings->{config_file_ftp} ) {
     $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
 }
 
-my $mapset_dir = "$basedir/$settings->{prefix}.temp";
+my $mapset_dir = "$basedir/$settings->{prefix}.$settings->{filename}.temp";
 rmtree $mapset_dir  if !$settings->{continue_mode};
 mkdir $_  for grep {!-d} ( $mapset_dir, qw/ _src _bounds _rel / );
 
@@ -407,18 +407,6 @@ sub _build_mp {
     logg( "Postprocessing MP for '$reg->{alias}'" );
     _qx( postprocess => "$filebase.mp" );
 
-
-    if (1) {
-        my $err_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.err.htm";
-        _qx( grep => "ERROR: $filebase.mp > $filebase.errors.log" );
-        _qx( log2html => "$filebase.errors.log > $err_file" );
-
-        $pl->enqueue(
-            { alias => $reg->{alias}, role => 'error log', file => $err_file, delete  => 1 },
-            block => 'upload',
-        );
-    }
-
     logg( "Compressing MP for '$reg->{alias}'" );
     rmove_glob("$mapset_dir/$reg->{mapid}.*" => $regdir);
     rcopy_glob("$regdir/$reg->{mapid}.mp" => $mapset_dir);
@@ -447,8 +435,6 @@ sub get_osm {
     $reg->{format} //= 'pbf';
     $reg->{source} = "$basedir/_src/$reg->{filename}.osm.$reg->{format}";
 
-    return $reg if $settings->{skip_dl_src} || $reg->{skip_build};
-
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
     my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.$reg->{format}";
 
@@ -457,8 +443,10 @@ sub get_osm {
         $reg->{source} = $got->{$url};
     }
     else {
-        logg( "Downloading source for '$reg->{alias}'" );
-        _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+        if ( !$settings->{skip_dl_src} && !$reg->{skip_build} ) {
+            logg( "Downloading source for '$reg->{alias}'" );
+            _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+        }
         $got->{$url} = $reg->{source};
     }
 
