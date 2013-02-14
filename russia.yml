@@ -317,7 +317,7 @@ skip_img_build:    0
 - name:  Новосибирская область
   code:  54
   alias: novosib
-  srcalias:  RU-NSK
+  srcalias:  RU-NVS
 
 - name:  Омская область
   code:  55
