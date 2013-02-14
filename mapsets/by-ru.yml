@@ -1,0 +1,88 @@
+
+# Common settings
+
+---
+
+prefix:         full
+countrycode:    BY
+countryname:    Беларусь
+filename:       belarus
+fid:            972
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+mp_threads_num:    2
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Брестская область
+  code:  1
+  alias: by-brest
+  srcalias:  BY
+  bound: BY-BR
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Витебская область
+  code:  2
+  alias: by-vitebsk
+  srcalias:  BY
+  bound: BY-VI
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Гомельская область
+  code:  3
+  alias: by-gomel
+  srcalias:  BY
+  bound: BY-HO
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Гродненская область
+  code:  4
+  alias: by-grodno
+  srcalias:  BY
+  bound: BY-HR
+  pre_clip: 1
+  skip_mapset: 1
+
+# BY-HM    Минск  город
+
+- name:  Минская область
+  code:  6
+  alias: by-minsk
+  srcalias:  BY
+  bound: BY-MI
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Могилёвская область
+  code:  7
+  alias: by-mogilev
+  srcalias:  BY
+  bound: BY-MA
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name: Беларусь
+  fid: 972
+  filename: belarus
+  make_house_search: 1
+  parts:
+    - by-brest
+    - by-vitebsk
+    - by-gomel
+    - by-grodno
+    - by-minsk
+    - by-mogilev
+

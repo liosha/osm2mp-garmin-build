@@ -14,9 +14,6 @@ url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 # sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
-skip_dl_src:       0
-skip_dl_bounds:    0
-skip_img_build:    0
 
 
 # Regions
@@ -25,7 +22,7 @@ skip_img_build:    0
 
 - name:  Крым
   code:  1
-  alias: krym
+  alias: ua-krym
   srcalias:  UA
   bound: UA-01
   pre_clip: 1
@@ -33,7 +30,7 @@ skip_img_build:    0
 
 - name:  Винницкая область
   code:  5
-  alias: vinnic
+  alias: ua-vinnic
   srcalias:  UA
   bound: UA-05
   pre_clip: 1
@@ -41,7 +38,7 @@ skip_img_build:    0
 
 - name:  Волынская область
   code:  7
-  alias: volyn
+  alias: ua-volyn
   srcalias:  UA
   bound: UA-07
   pre_clip: 1
@@ -49,7 +46,7 @@ skip_img_build:    0
 
 - name:  Днепропетровская область
   code:  12
-  alias: dnepro
+  alias: ua-dnepro
   srcalias:  UA
   bound: UA-12
   pre_clip: 1
@@ -57,7 +54,7 @@ skip_img_build:    0
 
 - name:  Донецкая область
   code:  14
-  alias: doneck
+  alias: ua-doneck
   srcalias:  UA
   bound: UA-14
   pre_clip: 1
@@ -65,7 +62,7 @@ skip_img_build:    0
 
 - name:  Житомирская область
   code:  18
-  alias: gitomir
+  alias: ua-gitomir
   srcalias:  UA
   bound: UA-18
   pre_clip: 1
@@ -73,7 +70,7 @@ skip_img_build:    0
 
 - name:  Закарпатская область
   code:  21
-  alias: zakarpat
+  alias: ua-zakarpat
   srcalias:  UA
   bound: UA-21
   pre_clip: 1
@@ -81,7 +78,7 @@ skip_img_build:    0
 
 - name:  Запорожская область
   code:  23
-  alias: zaporog
+  alias: ua-zaporog
   srcalias:  UA
   bound: UA-23
   pre_clip: 1
@@ -89,7 +86,7 @@ skip_img_build:    0
 
 - name:  Ивано-Франковская область
   code:  26
-  alias: ivanofr
+  alias: ua-ivanofr
   srcalias:  UA
   bound: UA-26
   pre_clip: 1
@@ -99,7 +96,7 @@ skip_img_build:    0
 
 - name:  Киевская область
   code:  32
-  alias: kiev
+  alias: ua-kiev
   srcalias:  UA
   bound: UA-32
   pre_clip: 1
@@ -107,7 +104,7 @@ skip_img_build:    0
 
 - name:  Кировоградская область
   code:  35
-  alias: kirovogr
+  alias: ua-kirovogr
   srcalias:  UA
   bound: UA-35
   pre_clip: 1
@@ -117,7 +114,7 @@ skip_img_build:    0
 
 - name:  Луганская область
   code:  44
-  alias: lugansk
+  alias: ua-lugansk
   srcalias:  UA
   bound: UA-44
   pre_clip: 1
@@ -125,7 +122,7 @@ skip_img_build:    0
 
 - name:  Львовская область
   code:  46
-  alias: lvov
+  alias: ua-lvov
   srcalias:  UA
   bound: UA-46
   pre_clip: 1
@@ -133,7 +130,7 @@ skip_img_build:    0
 
 - name:  Николаевская область
   code:  48
-  alias: nikolaev
+  alias: ua-nikolaev
   srcalias:  UA
   bound: UA-48
   pre_clip: 1
@@ -141,7 +138,7 @@ skip_img_build:    0
 
 - name:  Одесская область
   code:  51
-  alias: odess
+  alias: ua-odess
   srcalias:  UA
   bound: UA-51
   pre_clip: 1
@@ -149,7 +146,7 @@ skip_img_build:    0
 
 - name:  Полтавская область
   code:  53
-  alias: poltav
+  alias: ua-poltav
   srcalias:  UA
   bound: UA-53
   pre_clip: 1
@@ -157,7 +154,7 @@ skip_img_build:    0
 
 - name:  Ровненская область
   code:  56
-  alias: rovn
+  alias: ua-rovn
   srcalias:  UA
   bound: UA-56
   pre_clip: 1
@@ -165,7 +162,7 @@ skip_img_build:    0
 
 - name:  Сумская область
   code:  59
-  alias: sum
+  alias: ua-sum
   srcalias:  UA
   bound: UA-59
   pre_clip: 1
@@ -173,7 +170,7 @@ skip_img_build:    0
 
 - name:  Тернопольская область
   code:  61
-  alias: ternop
+  alias: ua-ternop
   srcalias:  UA
   bound: UA-61
   pre_clip: 1
@@ -181,7 +178,7 @@ skip_img_build:    0
 
 - name:  Харьковская область
   code:  63
-  alias: harkov
+  alias: ua-harkov
   srcalias:  UA
   bound: UA-63
   pre_clip: 1
@@ -189,7 +186,7 @@ skip_img_build:    0
 
 - name:  Херсонская область
   code:  65
-  alias: herson
+  alias: ua-herson
   srcalias:  UA
   bound: UA-65
   pre_clip: 1
@@ -197,7 +194,7 @@ skip_img_build:    0
 
 - name:  Хмельницкая область
   code:  68
-  alias: hmeln
+  alias: ua-hmeln
   srcalias:  UA
   bound: UA-68
   pre_clip: 1
@@ -205,7 +202,7 @@ skip_img_build:    0
 
 - name:  Черкасская область
   code:  71
-  alias: cherkas
+  alias: ua-cherkas
   srcalias:  UA
   bound: UA-71
   pre_clip: 1
@@ -213,7 +210,7 @@ skip_img_build:    0
 
 - name:  Черновицкая область
   code:  73
-  alias: chernov
+  alias: ua-chernov
   srcalias:  UA
   bound: UA-73
   pre_clip: 1
@@ -221,7 +218,7 @@ skip_img_build:    0
 
 - name:  Черниговская область
   code:  74
-  alias: chernig
+  alias: ua-chernig
   srcalias:  UA
   bound: UA-74
   pre_clip: 1
@@ -238,28 +235,28 @@ skip_img_build:    0
   filename: ukraine
   make_house_search: 1
   parts:
-    - vinnic
-    - volyn
-    - lugansk
-    - dnepro
-    - doneck
-    - gitomir
-    - rovn
-    - zakarpat
-    - zaporog
-    - ivanofr
-    - kiev
-    - kirovogr
-    - krym
-    - lvov
-    - nikolaev
-    - odess
-    - poltav
-    - sum
-    - ternop
-    - harkov
-    - herson
-    - hmeln
-    - cherkas
-    - chernig
-    - chernov
+    - ua-vinnic
+    - ua-volyn
+    - ua-lugansk
+    - ua-dnepro
+    - ua-doneck
+    - ua-gitomir
+    - ua-rovn
+    - ua-zakarpat
+    - ua-zaporog
+    - ua-ivanofr
+    - ua-kiev
+    - ua-kirovogr
+    - ua-krym
+    - ua-lvov
+    - ua-nikolaev
+    - ua-odess
+    - ua-poltav
+    - ua-sum
+    - ua-ternop
+    - ua-harkov
+    - ua-herson
+    - ua-hmeln
+    - ua-cherkas
+    - ua-chernig
+    - ua-chernov
