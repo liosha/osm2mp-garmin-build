@@ -11,6 +11,7 @@ fid:            970
 config:         osm2mp/cfg/default.cfg
 keys:           -tl=ru -dl=uk --lt-priority yatr_uk_ru=2 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+mp_threads_num:    2
 make_house_search: 1
 skip_dl_src:       0
 skip_dl_bounds:    0
@@ -21,8 +22,16 @@ skip_img_build:    0
 
 ---
 
+- name:  Крым
+  code:  1
+  alias: krym
+  srcalias:  UA
+  bound: UA-01
+  pre_clip: 1
+  skip_mapset: 1
+
 - name:  Винницкая область
-  code:  2
+  code:  5
   alias: vinnic
   srcalias:  UA
   bound: UA-05
@@ -34,14 +43,6 @@ skip_img_build:    0
   alias: volyn
   srcalias:  UA
   bound: UA-07
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Луганская область
-  code:  44
-  alias: lugansk
-  srcalias:  UA
-  bound: UA-44
   pre_clip: 1
   skip_mapset: 1
 
@@ -66,14 +67,6 @@ skip_img_build:    0
   alias: gitomir
   srcalias:  UA
   bound: UA-18
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Ровненская область
-  code:  56
-  alias: rovn
-  srcalias:  UA
-  bound: UA-56
   pre_clip: 1
   skip_mapset: 1
 
@@ -121,19 +114,11 @@ skip_img_build:    0
 
 # UA-40   Севастополь город
 
-- name:  Крым
-  code:  1
-  alias: krym
+- name:  Луганская область
+  code:  44
+  alias: lugansk
   srcalias:  UA
-  bound: UA-01
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Львовская область
-  code:  46
-  alias: lvov
-  srcalias:  UA
-  bound: UA-46
+  bound: UA-44
   pre_clip: 1
   skip_mapset: 1
 
@@ -166,6 +151,14 @@ skip_img_build:    0
   alias: poltav
   srcalias:  UA
   bound: UA-53
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ровненская область
+  code:  56
+  alias: rovn
+  srcalias:  UA
+  bound: UA-56
   pre_clip: 1
   skip_mapset: 1
 
@@ -217,19 +210,19 @@ skip_img_build:    0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Черниговская область
-  code:  74
-  alias: chernig
-  srcalias:  UA
-  bound: UA-74
-  pre_clip: 1
-  skip_mapset: 1
-
 - name:  Черновицкая область
   code:  73
   alias: chernov
   srcalias:  UA
   bound: UA-73
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Черниговская область
+  code:  74
+  alias: chernig
+  srcalias:  UA
+  bound: UA-74
   pre_clip: 1
   skip_mapset: 1
 
@@ -244,7 +237,7 @@ skip_img_build:    0
   filename: ukraine
   make_house_search: 1
   parts:
-    - vinnica
+    - vinnic
     - volyn
     - lugansk
     - dnepro
