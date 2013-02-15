@@ -1,0 +1,25 @@
+
+# Common settings
+
+---
+
+prefix:         full-ru
+countrycode:    EG
+countryname:    Египет
+filename:       egypt
+fid:            973
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=ru -dl=ar --codepage=1251 --textfilter PrepareCP1251
+url_base:       http://download.geofabrik.de/openstreetmap/africa/
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Египет
+  code:  1
+  alias: egypt
+
+

@@ -1,0 +1,25 @@
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    EG
+countryname:    Egypt
+filename:       egypt
+fid:            974
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=en -dl=ar --codepage=1252
+url_base:       http://download.geofabrik.de/openstreetmap/africa/
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Egypt
+  code:  1
+  alias: egypt
+
+
