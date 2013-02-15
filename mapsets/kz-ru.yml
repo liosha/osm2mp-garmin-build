@@ -1,0 +1,162 @@
+
+# Common settings
+
+---
+
+prefix:         full
+countrycode:    KZ
+countryname:    Казахстан
+filename:       kazakhstan
+fid:            973
+config:         osm2mp/cfg/default.cfg
+keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+mp_threads_num:    2
+make_house_search: 1
+
+
+# Regions
+
+---
+
+# KZ-AST  Астана  город
+
+- name:  Акмолинская область
+  code:  2
+  alias: kz-akmol
+  srcalias:  KZ
+  bound: KZ-AKM
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Актюбинская область
+  code:  3
+  alias: kz-aktub
+  srcalias:  KZ
+  bound: KZ-AKT
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Алматинская область
+  code:  4
+  alias: kz-almat
+  srcalias:  KZ
+  bound: KZ-ALM
+  pre_clip: 1
+  skip_mapset: 1
+
+# KZ-ALA  Алма Ата    город 
+
+- name:  Атырауская область
+  code:  6
+  alias: kz-atyr
+  srcalias:  KZ
+  bound: KZ-ATY
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Восточно-Казахстанская область
+  code:  7
+  alias: kz-vost
+  srcalias:  KZ
+  bound: KZ-VOS
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Жамбыльская область
+  code:  8
+  alias: kz-zhamb
+  srcalias:  KZ
+  bound: KZ-ZHA
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Западно-Казахстанская область
+  code:  9
+  alias: kz-zap
+  srcalias:  KZ
+  bound: KZ-ZAP
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Карагандинская область
+  code:  10
+  alias: kz-karag
+  srcalias:  KZ
+  bound: KZ-KAR
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Костанайская область
+  code:  11
+  alias: kz-kostan
+  srcalias:  KZ
+  bound: KZ-KUS
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Кызылординская область
+  code:  12
+  alias: kz-kyzyl
+  srcalias:  KZ
+  bound: KZ-KZY
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Мангистауская область
+  code:  13
+  alias: kz-mangis
+  srcalias:  KZ
+  bound: KZ-MAN
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Павлодарская область
+  code:  14
+  alias: kz-pavlo
+  srcalias:  KZ
+  bound: KZ-PAV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Северо-Казахстанская область
+  code:  15
+  alias: kz-sever
+  srcalias:  KZ
+  bound: KZ-SEV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Южно-Казахстанская область
+  code:  16
+  alias: kz-yuzh
+  srcalias:  KZ
+  bound: KZ-YUZ
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name: Казахстан
+  fid: 973
+  filename: kazakhstan
+  make_house_search: 1
+  parts:
+    - kz-akmol
+    - kz-aktub
+    - kz-almat
+    - kz-atyr
+    - kz-vost
+    - kz-zhamb
+    - kz-zap
+    - kz-karag
+    - kz-kostan
+    - kz-kyzyl
+    - kz-mangis
+    - kz-pavlo
+    - kz-sever
+    - kz-yuzh
+
