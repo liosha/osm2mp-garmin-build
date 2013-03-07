@@ -220,7 +220,7 @@ sub _qx {
     $params =~ s/ ^ \s+ | \s+ $ //gxms;
 
     my $program = $CMD{$cmd} || $cmd;
-    logg(encode console_out => "$program $params")  if $DEBUG;
+    logg(encode console_out => "Run: $program $params")  if $DEBUG;
     my $run = encode locale => "$program $params";
 
     return `$run`;
@@ -230,8 +230,6 @@ sub _qx {
 
 sub cgpsm_run {
     my ($params, $img_file) = @_;
-
-    logg("Run 'cgpsmapper $params'");
 
     my $max_retry = 5;
     for my $try ( 1 .. $max_retry ) {
