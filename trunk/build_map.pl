@@ -188,13 +188,12 @@ my @blocks_mapsets = (
     },
 );
 
-my $pipeline_mapsets = Thread::Pipeline->new( \@blocks_mapsets );
-
-for my $mapset ( @$mapsets ) {
-    $pipeline_mapsets->enqueue( $mapset );
+if ( !$skip_img_build ) {
+    my $pipeline_mapsets = Thread::Pipeline->new( \@blocks_mapsets );
+    $pipeline_mapsets->enqueue($_) for @$mapsets;
+    $pipeline_mapsets->no_more_data();
+    $pipeline_mapsets->get_results();
 }
-$pipeline_mapsets->no_more_data();
-$pipeline_mapsets->get_results();
 
 logg( "That's all, folks!" );
 
