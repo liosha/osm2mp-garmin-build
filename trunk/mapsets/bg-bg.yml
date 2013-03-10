@@ -13,6 +13,7 @@ keys:           -tl=bg --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1
 url_base:       http://download.geofabrik.de/openstreetmap/europe/
 mp_threads_num:    2
 make_house_search: 1
+typ:            open-cfg/osm.typ
 
 
 # Regions

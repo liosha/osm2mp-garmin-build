@@ -3,15 +3,15 @@
 
 ---
 
-prefix:         full-ru
+prefix:         full-en
 countrycode:    BY
-countryname:    Беларусь
+countryname:    Belarus
 filename:       belarus
-fid:            972
+fid:            977
 config:         osm2mp/cfg/default.cfg
-keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+keys:           -dl=ru -tl=en --lt-priority yatr_ru_en=3 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1252 --textfilter Unidecode
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-mp_threads_num:    2
+mp_threads_num:    1
 make_house_search: 1
 typ:            open-cfg/osm.typ
 
@@ -20,7 +20,7 @@ typ:            open-cfg/osm.typ
 
 ---
 
-- name:  Брестская область
+- name:  Brest
   code:  1
   alias: by-brest
   srcalias:  BY
@@ -28,7 +28,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Витебская область
+- name:  Vitebsk
   code:  2
   alias: by-vitebsk
   srcalias:  BY
@@ -36,7 +36,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Гомельская область
+- name:  Gomel
   code:  3
   alias: by-gomel
   srcalias:  BY
@@ -44,7 +44,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Гродненская область
+- name:  Grodno
   code:  4
   alias: by-grodno
   srcalias:  BY
@@ -52,9 +52,9 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-# BY-HM    Минск  город
+# BY-HM    Minsk city
 
-- name:  Минская область
+- name:  Minsk
   code:  6
   alias: by-minsk
   srcalias:  BY
@@ -62,7 +62,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Могилёвская область
+- name:  Mogilev
   code:  7
   alias: by-mogilev
   srcalias:  BY
@@ -75,7 +75,7 @@ typ:            open-cfg/osm.typ
 
 ---
 
-- name: Беларусь
+- name: Belarus
   fid: 972
   filename: belarus
   make_house_search: 1

@@ -3,16 +3,15 @@
 
 ---
 
-prefix:         full-ru
+prefix:         full-uk
 countrycode:    UA
-countryname:    Украина
+countryname:    Україна
 filename:       ukraine
-fid:            970
+fid:            975
 config:         osm2mp/cfg/default.cfg
-keys:           -tl=ru -dl=uk --lt-priority yatr_uk_ru=2 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+keys:           -tl=uk --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-# sqlite cache is not thread-compatible!
-mp_threads_num:    1
+mp_threads_num:    2
 make_house_search: 1
 typ:            open-cfg/osm.typ
 
@@ -21,7 +20,7 @@ typ:            open-cfg/osm.typ
 
 ---
 
-- name:  Крым
+- name:  Крим
   code:  1
   alias: ua-krym
   srcalias:  UA
@@ -29,7 +28,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Винницкая область
+- name:  Вінницька область
   code:  5
   alias: ua-vinnic
   srcalias:  UA
@@ -37,7 +36,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Волынская область
+- name:  Волинська область
   code:  7
   alias: ua-volyn
   srcalias:  UA
@@ -45,7 +44,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Днепропетровская область
+- name:  Дніпропетровська область
   code:  12
   alias: ua-dnepro
   srcalias:  UA
@@ -53,7 +52,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Донецкая область
+- name:  Донецька область
   code:  14
   alias: ua-doneck
   srcalias:  UA
@@ -61,7 +60,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Житомирская область
+- name:  Житомирська область
   code:  18
   alias: ua-gitomir
   srcalias:  UA
@@ -69,7 +68,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Закарпатская область
+- name:  Закарпатська область
   code:  21
   alias: ua-zakarpat
   srcalias:  UA
@@ -77,7 +76,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Запорожская область
+- name:  Запорізька область
   code:  23
   alias: ua-zaporog
   srcalias:  UA
@@ -85,7 +84,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Ивано-Франковская область
+- name:  Івано-Франківська область
   code:  26
   alias: ua-ivanofr
   srcalias:  UA
@@ -93,9 +92,9 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-# UA-30   Киев    город
+# UA-30   Київ
 
-- name:  Киевская область
+- name:  Київська область
   code:  32
   alias: ua-kiev
   srcalias:  UA
@@ -103,7 +102,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Кировоградская область
+- name:  Кіровоградська область
   code:  35
   alias: ua-kirovogr
   srcalias:  UA
@@ -111,9 +110,9 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-# UA-40   Севастополь город
+# UA-40   Севастополь
 
-- name:  Луганская область
+- name:  Луганська область
   code:  44
   alias: ua-lugansk
   srcalias:  UA
@@ -121,7 +120,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Львовская область
+- name:  Львівська область
   code:  46
   alias: ua-lvov
   srcalias:  UA
@@ -129,7 +128,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Николаевская область
+- name:  Миколаївська область
   code:  48
   alias: ua-nikolaev
   srcalias:  UA
@@ -137,7 +136,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Одесская область
+- name:  Одеська область
   code:  51
   alias: ua-odess
   srcalias:  UA
@@ -145,7 +144,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Полтавская область
+- name:  Полтавська область
   code:  53
   alias: ua-poltav
   srcalias:  UA
@@ -153,7 +152,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Ровненская область
+- name:  Рівненська область
   code:  56
   alias: ua-rovn
   srcalias:  UA
@@ -161,7 +160,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Сумская область
+- name:  Сумська область
   code:  59
   alias: ua-sum
   srcalias:  UA
@@ -169,7 +168,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Тернопольская область
+- name:  Тернопільська область
   code:  61
   alias: ua-ternop
   srcalias:  UA
@@ -177,7 +176,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Харьковская область
+- name:  Харківська область
   code:  63
   alias: ua-harkov
   srcalias:  UA
@@ -185,7 +184,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Херсонская область
+- name:  Херсонська область
   code:  65
   alias: ua-herson
   srcalias:  UA
@@ -193,7 +192,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Хмельницкая область
+- name:  Хмельницька область
   code:  68
   alias: ua-hmeln
   srcalias:  UA
@@ -201,7 +200,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Черкасская область
+- name:  Черкаська область
   code:  71
   alias: ua-cherkas
   srcalias:  UA
@@ -209,7 +208,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Черновицкая область
+- name:  Чернігівська область
   code:  73
   alias: ua-chernov
   srcalias:  UA
@@ -217,7 +216,7 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Черниговская область
+- name:  Чернівецька область
   code:  74
   alias: ua-chernig
   srcalias:  UA
@@ -231,8 +230,8 @@ typ:            open-cfg/osm.typ
 
 ---
 
-- name: Украина
-  fid: 970
+- name: Україна
+  fid: 975
   filename: ukraine
   make_house_search: 1
   parts:
