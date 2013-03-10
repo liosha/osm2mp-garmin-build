@@ -9,9 +9,11 @@ countryname:    Egypt
 filename:       egypt
 fid:            974
 config:         osm2mp/cfg/default.cfg
+codepage:       1252
 keys:           -tl=en -dl=ar --codepage=1252
 url_base:       http://download.geofabrik.de/openstreetmap/africa/
 make_house_search: 1
+typ:            open-cfg/osm.typ
 
 
 # Regions
