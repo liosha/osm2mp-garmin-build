@@ -1,0 +1,264 @@
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    UA
+countryname:    Ukraine
+filename:       ukraine
+fid:            976
+config:         osm2mp/cfg/default.cfg
+codepage:       1252
+keys:           -tl=en -dl=uk --lt-priority yatr_ru_en=3 --lt-priority yatr_uk_en=2 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1252 --textfilter Unidecode
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+# sqlite cache is not thread-compatible!
+mp_threads_num:    1
+make_house_search: 1
+typ:            open-cfg/osm.typ
+
+
+# Regions
+
+---
+
+- name:  Crimea
+  code:  1
+  alias: ua-krym
+  srcalias:  UA
+  bound: UA-01
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Vinnytsia Oblast
+  code:  5
+  alias: ua-vinnic
+  srcalias:  UA
+  bound: UA-05
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Volyn Oblast
+  code:  7
+  alias: ua-volyn
+  srcalias:  UA
+  bound: UA-07
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Dnipropetrovsk Oblast
+  code:  12
+  alias: ua-dnepro
+  srcalias:  UA
+  bound: UA-12
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Donetsk Oblast
+  code:  14
+  alias: ua-doneck
+  srcalias:  UA
+  bound: UA-14
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Zhytomyr Oblast
+  code:  18
+  alias: ua-gitomir
+  srcalias:  UA
+  bound: UA-18
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Zakarpattia Oblast
+  code:  21
+  alias: ua-zakarpat
+  srcalias:  UA
+  bound: UA-21
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Zaporizhia Oblast
+  code:  23
+  alias: ua-zaporog
+  srcalias:  UA
+  bound: UA-23
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ivano-Frankivsk Oblast
+  code:  26
+  alias: ua-ivanofr
+  srcalias:  UA
+  bound: UA-26
+  pre_clip: 1
+  skip_mapset: 1
+
+# UA-30   Kiev
+
+- name:  Kiev Oblast
+  code:  32
+  alias: ua-kiev
+  srcalias:  UA
+  bound: UA-32
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Kirovohrad Oblast
+  code:  35
+  alias: ua-kirovogr
+  srcalias:  UA
+  bound: UA-35
+  pre_clip: 1
+  skip_mapset: 1
+
+# UA-40   Севастополь город
+
+- name:  Luhansk Oblast
+  code:  44
+  alias: ua-lugansk
+  srcalias:  UA
+  bound: UA-44
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Lviv Oblast
+  code:  46
+  alias: ua-lvov
+  srcalias:  UA
+  bound: UA-46
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Mykolaiv Oblast
+  code:  48
+  alias: ua-nikolaev
+  srcalias:  UA
+  bound: UA-48
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Odessa Oblast
+  code:  51
+  alias: ua-odess
+  srcalias:  UA
+  bound: UA-51
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Poltava Oblast
+  code:  53
+  alias: ua-poltav
+  srcalias:  UA
+  bound: UA-53
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Rivne Oblast
+  code:  56
+  alias: ua-rovn
+  srcalias:  UA
+  bound: UA-56
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Sumy Oblast
+  code:  59
+  alias: ua-sum
+  srcalias:  UA
+  bound: UA-59
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ternopil Oblast
+  code:  61
+  alias: ua-ternop
+  srcalias:  UA
+  bound: UA-61
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Kharkiv Oblast
+  code:  63
+  alias: ua-harkov
+  srcalias:  UA
+  bound: UA-63
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Kherson Oblast
+  code:  65
+  alias: ua-herson
+  srcalias:  UA
+  bound: UA-65
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Khmelnytskyi Oblast
+  code:  68
+  alias: ua-hmeln
+  srcalias:  UA
+  bound: UA-68
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Cherkasy Oblast
+  code:  71
+  alias: ua-cherkas
+  srcalias:  UA
+  bound: UA-71
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Chernivtsi Oblast
+  code:  73
+  alias: ua-chernov
+  srcalias:  UA
+  bound: UA-73
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Chernihiv Oblast
+  code:  74
+  alias: ua-chernig
+  srcalias:  UA
+  bound: UA-74
+  pre_clip: 1
+  skip_mapset: 1
+
+
+
+# Mapsets
+
+---
+
+- name: Ukraine
+  fid: 976
+  filename: ukraine
+  make_house_search: 1
+  parts:
+    - ua-vinnic
+    - ua-volyn
+    - ua-lugansk
+    - ua-dnepro
+    - ua-doneck
+    - ua-gitomir
+    - ua-rovn
+    - ua-zakarpat
+    - ua-zaporog
+    - ua-ivanofr
+    - ua-kiev
+    - ua-kirovogr
+    - ua-krym
+    - ua-lvov
+    - ua-nikolaev
+    - ua-odess
+    - ua-poltav
+    - ua-sum
+    - ua-ternop
+    - ua-harkov
+    - ua-herson
+    - ua-hmeln
+    - ua-cherkas
+    - ua-chernig
+    - ua-chernov
