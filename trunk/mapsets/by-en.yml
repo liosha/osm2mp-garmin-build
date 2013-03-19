@@ -8,6 +8,7 @@ countrycode:    BY
 countryname:    Belarus
 filename:       belarus
 fid:            977
+codepage:       1252
 config:         osm2mp/cfg/default.cfg
 keys:           -dl=ru -tl=en --lt-priority yatr_ru_en=3 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1252 --textfilter Unidecode
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
@@ -76,7 +77,7 @@ typ:            open-cfg/osm.typ
 ---
 
 - name: Belarus
-  fid: 972
+  fid: 978
   filename: belarus
   make_house_search: 1
   parts:
