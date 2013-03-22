@@ -1,0 +1,100 @@
+
+# Common settings
+
+---
+
+prefix:         full-ru
+countrycode:    TR
+countryname:    Турция
+filename:       turkey
+fid:            980
+config:         osm2mp/cfg/default.cfg
+codepage:       1251
+keys:           -tl=ru -dl=tr --lt-priority yatr_tr_ru=3 --codepage=1251 --textfilter PrepareCP1251
+url_base:       http://download.geofabrik.de/europe/
+# sqlite cache is not thread-compatible!
+mp_threads_num:    1
+make_house_search: 1
+typ:            open-cfg/osm.typ
+
+
+# Regions
+
+---
+
+- name:  Эгейский регион
+  code:  1
+  alias: tr-aegean
+  srcalias:  turkey-latest
+  bound: 2094170
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Черноморский регион
+  code:  2
+  alias: tr-black
+  srcalias:  turkey-latest
+  bound: 1726294
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Центральная Анатолия
+  code: 3 
+  alias: tr-c-anat
+  srcalias:  turkey-latest
+  bound: 2094194
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Восточная Анатолия
+  code:  4
+  alias: tr-e-anat
+  srcalias:  turkey-latest
+  bound: 2094154
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Мраморноморский регион
+  code:  5
+  alias: tr-marmara
+  srcalias:  turkey-latest
+  bound: 2094193
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Средиземноморский регион
+  code:  6
+  alias: tr-mediter
+  srcalias:  turkey-latest
+  bound: 2092903
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Юго-Восточная Анатолия
+  code:  7
+  alias: tr-se-anat
+  srcalias:  turkey-latest
+  bound: 2094155
+  pre_clip: 1
+  skip_mapset: 1
+
+
+
+
+# Mapsets
+
+---
+
+- name: Турция
+  fid: 980
+  filename: turkey
+  make_house_search: 1
+  parts:
+    - tr-aegean
+    - tr-black
+    - tr-c-anat
+    - tr-e-anat
+    - tr-marmara
+    - tr-mediter
+    - tr-se-anat
+
