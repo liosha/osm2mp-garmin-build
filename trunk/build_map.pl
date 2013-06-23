@@ -294,7 +294,7 @@ sub _build_img {
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
-        rcopy_glob("$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
+        rcopy_glob("$reg_path/$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
     }
 
     chdir $start_dir;
