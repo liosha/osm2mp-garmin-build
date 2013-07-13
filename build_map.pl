@@ -33,7 +33,7 @@ BEGIN {
     *rmove_glob = *File::Copy::Recursive::rmove_glob;
 }
 
-our $DEBUG = 1;
+our $DEBUG = 0;
 
 
 
@@ -413,10 +413,14 @@ sub _build_mp {
     _qx( arc => "a -y $arc_file $regdir" );
     rmtree("$regdir");
 
-    $pl->enqueue(
-        { alias => $reg->{alias}, role => 'MP', file => $arc_file },
-        block => 'upload',
-    );
+    if ( exists($reg->{skip_mp_upload})
+	? (!$reg->{skip_mp_upload})
+	: (!$settings->{skip_mp_upload}) ){
+        $pl->enqueue(
+            { alias => $reg->{alias}, role => 'MP', file => $arc_file },
+            block => 'upload',
+        );
+    }
     
     return; 
 } 
@@ -456,18 +460,18 @@ sub get_bound {
 
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
+    $reg->{pre_poly} = "$basedir/_bounds/$reg->{bound}-buf.poly" if $reg->{pre_clip};
 
     return $reg if $settings->{skip_dl_bounds} || $reg->{skip_build};
 
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
-    _qx( getbound => "$keys -o $reg->{poly} $reg->{bound} 2> $reg->{filebase}.getbound.log" );
+    _qx( getbound => "$keys -api op_ru -o $reg->{poly} $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
     if ( $reg->{pre_clip} ) {
         logg( "Downloading pre-clip boundary for '$reg->{alias}'" );
-        $reg->{pre_poly} = "$basedir/_bounds/$reg->{bound}-buf.poly";
-        _qx( getbound => "-o $reg->{pre_poly} --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
+        _qx( getbound => "-api op_ru -o $reg->{pre_poly} --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
         logg( "Error! Failed to get pre-clip boundary for '$reg->{alias}'" )  if $?;
     }
 
