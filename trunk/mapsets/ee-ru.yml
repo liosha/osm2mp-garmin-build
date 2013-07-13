@@ -1,4 +1,7 @@
 
+# Estonia mapset (RU)
+# $Id$
+
 # Common settings
 
 ---
@@ -21,6 +24,7 @@ update_cfg:        0
 skip_dl_src:       0
 skip_dl_bounds:    0
 skip_img_build:    0
+skip_mp_upload:    1
 
 # Regions
 
