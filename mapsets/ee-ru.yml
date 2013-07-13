@@ -1,0 +1,181 @@
+
+# Common settings
+
+---
+
+prefix:         full-ru
+countrycode:    EE
+countryname:    Эстония
+filename:       estonia
+fid:            951
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
+keys:           --textfilter PrepareCP1251 --default-lang=et --lt-equal ru=en
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+
+# Regions
+
+---
+
+- name:  Уезд Валгамаа
+  code:  1
+  alias: ee-valga
+  srcalias:  EE
+  bound: EE-82
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Вильяндимаа
+  code:  2
+  alias: ee-viljandi
+  srcalias:  EE
+  bound: EE-84
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Вырумаа
+  code:  3
+  alias: ee-voru
+  srcalias:  EE
+  bound: EE-86
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Ида-Вирумаа
+  code:  4
+  alias: ee-idaviru
+  srcalias:  EE
+  bound: EE-44
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Уезд Йыгевамаа
+  code:  5
+  alias: ee-jogeva
+  srcalias:  EE
+  bound: EE-49
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Уезд Ляэне-Вирумаа
+  code:  6
+  alias: ee-laaneviru
+  srcalias:  EE
+  bound: EE-59
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Ляэнемаа
+  code:  7
+  alias: ee-laane
+  srcalias:  EE
+  bound: EE-57
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Пылвамаа
+  code:  8
+  alias: ee-polva
+  srcalias:  EE
+  bound: EE-65
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Уезд Пярнумаа
+  code:  9
+  alias: ee-parnu
+  srcalias:  EE
+  bound: EE-67
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Рапламаа
+  code:  10
+  alias: ee-rapla
+  srcalias:  EE
+  bound: EE-70
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Сааремаа
+  code:  11
+  alias: ee-saare
+  srcalias:  EE
+  bound: EE-74
+  pre_clip: 1
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Уезд Тартумаа
+  code:  12
+  alias: ee-tartu
+  srcalias:  EE
+  bound: EE-78
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Уезд Харьюмаа
+  code:  13
+  alias: ee-harju
+  srcalias:  EE
+  bound: EE-37
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Уезд Хийумаа
+  code:  14
+  alias: ee-hiiu
+  srcalias:  EE
+  bound: EE-39
+  pre_clip: 1
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Уезд Ярвамаа
+  code:  15
+  alias: ee-jarva
+  srcalias:  EE
+  bound: EE-51
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+
+- name: Эстония
+  fid: 951
+  filename: estonia
+  make_house_search: 1
+  parts:
+    - ee-valga
+    - ee-viljandi
+    - ee-voru
+    - ee-idaviru
+    - ee-jogeva
+    - ee-laaneviru
+    - ee-laane
+    - ee-polva
+    - ee-parnu
+    - ee-rapla
+    - ee-saare
+    - ee-tartu
+    - ee-harju
+    - ee-hiiu
+    - ee-jarva
+
