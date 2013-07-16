@@ -333,6 +333,9 @@ sub _build_mapset {
         copy "$basedir/$settings->{typ}" => $typ;
         _qx( gmaptool => "-wy $reg->{fid} $typ" );
     }
+    if ( $settings->{readme} ) {
+        copy "$basedir/$settings->{readme}" => ".";
+    }
 
     $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");
 
