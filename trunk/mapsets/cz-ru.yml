@@ -1,0 +1,154 @@
+
+# Common settings
+
+---
+
+prefix:         full-ru
+countrycode:    CZ
+countryname:    Чехия
+filename:       czech
+fid:            982
+config:         osm2mp/cfg/default.cfg
+keys:           -dl=cs -tl=ru --codepage=1251 --textfilter PrepareCP1251
+url_base:       http://download.geofabrik.de/openstreetmap/europe/
+mp_threads_num:    1
+make_house_search: 1
+typ:            open-cfg/osm.typ
+
+
+# Regions
+
+---
+
+- name:  Южночешский край
+  code:  1
+  alias: cz-jihoc
+  srcalias: czech-republic-latest
+  bound: CZ-JC
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Южноморавский край
+  code:  2
+  alias: cz-jihom
+  srcalias: czech-republic-latest
+  bound: CZ-JM
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Карловарский край
+  code:  3
+  alias: cz-karlo
+  srcalias: czech-republic-latest
+  bound: CZ-KA
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Краловеградецкий край
+  code:  4
+  alias: cz-kral
+  srcalias: czech-republic-latest
+  bound: CZ-KR
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Либерецкий край
+  code:  5
+  alias: cz-lib
+  srcalias: czech-republic-latest
+  bound: CZ-LI
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Моравскосилезский край
+  code:  6
+  alias: cz-morav
+  srcalias: czech-republic-latest
+  bound: CZ-MO
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Оломоуцкий край
+  code:  7
+  alias: cz-olom
+  srcalias: czech-republic-latest
+  bound: CZ-OL
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Пардубицкий край
+  code:  8
+  alias: cz-pard
+  srcalias: czech-republic-latest
+  bound: CZ-PA
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Пльзенский край
+  code:  9
+  alias: cz-plzen
+  srcalias: czech-republic-latest
+  bound: CZ-PL
+  pre_clip: 1
+  skip_mapset: 1
+
+# CZ-PR Praha
+
+- name:  Среднечешский край
+  code:  11
+  alias: cz-stred
+  srcalias: czech-republic-latest
+  bound: CZ-ST
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Устецкий край
+  code:  12
+  alias: cz-ust
+  srcalias: czech-republic-latest
+  bound: CZ-US
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Край Высочина
+  code:  13
+  alias: cz-vys
+  srcalias: czech-republic-latest
+  bound: CZ-VY
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Злинский край
+  code:  14
+  alias: cz-zlin
+  srcalias: czech-republic-latest
+  bound: CZ-ZL
+  pre_clip: 1
+  skip_mapset: 1
+
+
+
+# Mapsets
+
+---
+
+- name: Чехия
+  fid: 982
+  filename: czech
+  make_house_search: 1
+  parts:
+    - cz-jihoc
+    - cz-jihom
+    - cz-karlo
+    - cz-kral
+    - cz-lib
+    - cz-morav
+    - cz-olom
+    - cz-pard
+    - cz-plzen
+    - cz-stred
+    - cz-ust
+    - cz-vys
+    - cz-zlin
+
+
