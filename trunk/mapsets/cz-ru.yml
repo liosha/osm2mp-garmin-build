@@ -92,15 +92,111 @@ typ:            open-cfg/osm.typ
   pre_clip: 1
   skip_mapset: 1
 
-# CZ-PR Praha
-
-- name:  Среднечешский край
-  code:  11
-  alias: cz-stred
+- name:  Прага
+  code:  10
+  alias: cz-praha
   srcalias: czech-republic-latest
-  bound: CZ-ST
+  bound: CZ-PR
   pre_clip: 1
   skip_mapset: 1
+
+# CZ-ST splitted 
+- name:  Среднечешский край - Бенешов
+  code:  111
+  alias: cz-st-ben
+  srcalias: czech-republic-latest
+  bound: CZ-201
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Бероун
+  code:  112
+  alias: cz-st-ber
+  srcalias: czech-republic-latest
+  bound: CZ-202
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Кладно
+  code:  113
+  alias: cz-st-klad
+  srcalias: czech-republic-latest
+  bound: CZ-203
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Колин
+  code:  114
+  alias: cz-st-kol
+  srcalias: czech-republic-latest
+  bound: CZ-204
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Кутна-Гора
+  code:  115
+  alias: cz-st-kut
+  srcalias: czech-republic-latest
+  bound: CZ-205
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Мельник
+  code:  116
+  alias: cz-st-mel
+  srcalias: czech-republic-latest
+  bound: CZ-206
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Млада-Болеслав
+  code:  117
+  alias: cz-st-mlad
+  srcalias: czech-republic-latest
+  bound: CZ-207
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Нимбурк
+  code:  118
+  alias: cz-st-nim
+  srcalias: czech-republic-latest
+  bound: CZ-208
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Прага восточная
+  code:  119
+  alias: cz-st-pv
+  srcalias: czech-republic-latest
+  bound: CZ-209
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Прага западная
+  code:  120
+  alias: cz-st-pz
+  srcalias: czech-republic-latest
+  bound: CZ-20A
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Пршибрам
+  code:  121
+  alias: cz-st-prb
+  srcalias: czech-republic-latest
+  bound: CZ-20B
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Среднечешский край - Раковник
+  code:  122
+  alias: cz-st-rak
+  srcalias: czech-republic-latest
+  bound: CZ-20C
+  pre_clip: 1
+  skip_mapset: 1
+
 
 - name:  Устецкий край
   code:  12
@@ -146,7 +242,19 @@ typ:            open-cfg/osm.typ
     - cz-olom
     - cz-pard
     - cz-plzen
-    - cz-stred
+    - cz-praha
+    - cz-st-ben
+    - cz-st-ber
+    - cz-st-klad
+    - cz-st-kol
+    - cz-st-kut
+    - cz-st-mel
+    - cz-st-mlad
+    - cz-st-nim
+    - cz-st-pv
+    - cz-st-pz
+    - cz-st-prb
+    - cz-st-rak
     - cz-ust
     - cz-vys
     - cz-zlin
