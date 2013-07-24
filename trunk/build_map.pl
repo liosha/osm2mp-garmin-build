@@ -42,7 +42,7 @@ my $basedir = getcwd();
 # external commands required for building
 my %CMD = (
     getbound    => "perl $basedir/getbound/getbound.pl",
-    osmconvert  => 'osmconvert --out-osm',
+    osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
     housesearch => "perl $basedir/osm2mp/mp-housesearch.pl",
