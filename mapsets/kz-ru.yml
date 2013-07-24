@@ -1,5 +1,6 @@
 
-# Common settings
+# Kazakhstan (RU)
+# $Id$
 
 ---
 
@@ -8,12 +9,14 @@ countrycode:    KZ
 countryname:    Казахстан
 filename:       kazakhstan
 fid:            973
-config:         osm2mp/cfg/default.cfg
-keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-mp_threads_num:    2
-make_house_search: 1
+config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+keys:           -tl=ru --codepage=1251 --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+mp_threads_num:    1
+make_house_search: 1
+skip_mp_upload:    1
 
 
 # Regions
@@ -22,6 +25,14 @@ typ:            open-cfg/osm.typ
 
 # KZ-AST  Астана  город
 
+- name:  Астана
+  code:  1
+  alias: kz-astana
+  srcalias:  KZ
+  bound: KZ-AST
+  pre_clip: 1
+  skip_mapset: 1
+
 - name:  Акмолинская область
   code:  2
   alias: kz-akmol
@@ -29,6 +40,7 @@ typ:            open-cfg/osm.typ
   bound: KZ-AKM
   pre_clip: 1
   skip_mapset: 1
+  onering: yes
 
 - name:  Актюбинская область
   code:  3
@@ -146,6 +158,7 @@ typ:            open-cfg/osm.typ
   filename: kazakhstan
   make_house_search: 1
   parts:
+    - kz-astana
     - kz-akmol
     - kz-aktub
     - kz-almat
