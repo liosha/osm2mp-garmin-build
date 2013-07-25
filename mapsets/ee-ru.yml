@@ -127,7 +127,7 @@ skip_mp_upload:    1
   alias: ee-tartu
   srcalias:  EE
   bound: EE-78
-  pre_clip: 1
+  #pre_clip: 1
   skip_mapset: 1
   fixmultipoly: yes
 
