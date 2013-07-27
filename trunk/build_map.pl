@@ -49,7 +49,7 @@ my %CMD = (
     log2html    => "perl $basedir/log2html.pl",
     cgpsmapper  => ( $^O ~~ 'MSWin32' ? 'cgpsmapper' : 'wine cgpsmapper.exe' ),
     gmaptool    => 'gmt',
-    arc         => '7za',
+    arc         => "7za -bd -w$basedir/tmp",
     bzcat       => 'bzip2 -dcq',
 );
 
