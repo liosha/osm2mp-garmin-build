@@ -465,7 +465,7 @@ skip_img_build:    0
 - name: МО город Краснодар
   code: 201
   bound: 269701
-  alias: kda-krasn
+  alias: kda-krasnodar
   srcalias: RU-KDA
   pre_clip: 1
   skip_mapset: 1
@@ -483,7 +483,7 @@ skip_img_build:    0
 - name: Красноармейский район
   code: 203
   bound: 364123
-  alias: kda-krasn
+  alias: kda-krasnoarm
   srcalias: RU-KDA
   pre_clip: 1
   skip_mapset: 1
@@ -928,9 +928,9 @@ skip_img_build:    0
     - astrakhan
     - volgograd
     - rostov
-    - kda-krasn
+    - kda-krasnodar
     - kda-din
-    - kda-krasn
+    - kda-krasnoarm
     - kda-sever
     - kda-abin
     - kda-slav
@@ -1057,9 +1057,9 @@ skip_img_build:    0
   filename: krasnodar
   make_house_search: 1
   parts:
-    - kda-krasn
+    - kda-krasnodar
     - kda-din
-    - kda-krasn
+    - kda-krasnoarm
     - kda-sever
     - kda-abin
     - kda-slav
@@ -1191,9 +1191,9 @@ skip_img_build:    0
     - khanty
     - chukot
     - yamal
-    - kda-krasn
+    - kda-krasnodar
     - kda-din
-    - kda-krasn
+    - kda-krasnoarm
     - kda-sever
     - kda-abin
     - kda-slav
