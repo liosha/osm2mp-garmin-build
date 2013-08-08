@@ -27,11 +27,7 @@ use File::Basename;
 use File::Path;
 use File::Copy;
 use File::Copy::Recursive;
-BEGIN {
-    # not exportable in 0.38
-    *rcopy_glob = *File::Copy::Recursive::rcopy_glob;
-    *rmove_glob = *File::Copy::Recursive::rmove_glob;
-}
+use File::Glob ':bsd_glob';
 
 our $DEBUG = 0;
 
@@ -294,7 +290,8 @@ sub _build_img {
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
-        rcopy_glob("$reg_path/$reg->{mapid}.cgpsmapper.log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log");
+        my $cgpsmapper_log="$reg_path/$reg->{mapid}.cgpsmapper.log";
+        copy("$cgpsmapper_log","$basedir/_logs/$reg->{code}.cgpsmapper." . time() . ".log") if ( -f "$cgpsmapper_log");
     }
 
     chdir $start_dir;
@@ -345,7 +342,7 @@ sub _build_mapset {
 
     my $arc_file = "$basedir/_rel/$reg->{filename}.7z";
     unlink $arc_file;
-    _qx( arc => "a -y $arc_file $reg->{path}" );
+    _qx( arc => "a -y $arc_file $reg->{path} >$devnull 2>$devnull" );
     rmtree( $reg->{path} );
 
     return $arc_file;
@@ -408,12 +405,14 @@ sub _build_mp {
     _qx( postprocess => "$filebase.mp" );
 
     logg( "Compressing MP for '$reg->{alias}'" );
-    rmove_glob("$mapset_dir/$reg->{mapid}.*" => $regdir);
-    rcopy_glob("$regdir/$reg->{mapid}.mp" => $mapset_dir);
+    move_mask("$mapset_dir/$reg->{mapid}.*","$regdir");
+    copy_mask("$regdir/$reg->{mapid}.mp","$mapset_dir");
 
     my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
+    logg("unlink $arc_file") if $DEBUG;
     unlink $arc_file;
-    _qx( arc => "a -y $arc_file $regdir" );
+    logg("_qx arc a -y $arc_file $regdir >$devnull 2>$devnull") if $DEBUG;
+    _qx( arc => "a -y $arc_file $regdir >$devnull 2>$devnull" );
     rmtree("$regdir");
 
     if ( exists($reg->{skip_mp_upload})
@@ -571,3 +570,22 @@ sub usage {
 }
 
 
+sub move_mask {
+    my ($src_mask,$dst_dir)=@_;
+    logg("move_mask $src_mask $dst_dir") if $DEBUG;
+    die "move_mask: $dst_dir is not a directory" if (! -d $dst_dir);
+    for my $src_file (bsd_glob $src_mask) {
+	logg("move_mask $src_file") if $DEBUG;
+	move ("$src_file", "$dst_dir") or die $!;
+    }
+}
+
+sub copy_mask {
+    my ($src_mask,$dst_dir)=@_;
+    logg("copy_mask $src_mask $dst_dir") if $DEBUG;
+    die "copy_mask: $dst_dir is not a directory" if (! -d $dst_dir);
+    for my $src_file (bsd_glob $src_mask) {
+	logg("copy_mask $src_file") if $DEBUG;
+	copy ("$src_file", "$dst_dir") or die $!;
+    }
+}
