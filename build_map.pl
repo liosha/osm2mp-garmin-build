@@ -203,6 +203,9 @@ exit;
 
 sub logg {
     my @logs = @_;
+    if ( $settings->{auth} ) {
+	s/$settings->{auth}/***/g for @logs;
+    }
     printf STDERR "%s: (%d)  @logs\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid();
     return;
 }
