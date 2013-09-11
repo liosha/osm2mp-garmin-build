@@ -1,0 +1,30 @@
+# Israel mapset (EN)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    IL
+countryname:    Israel
+filename:       israel
+fid:            982
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+codepage:       1252
+keys:           -tl=en -dl=he --codepage=1252
+config_file_ftp:   ftp.yml
+make_house_search: 1
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+- name:  Israel
+  code:  1
+  alias: israel
+  srcurl: http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
+
