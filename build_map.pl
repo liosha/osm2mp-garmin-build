@@ -29,7 +29,7 @@ use File::Copy;
 use File::Copy::Recursive;
 use File::Glob ':bsd_glob';
 
-our $DEBUG = 0;
+our $DEBUG = 1;
 
 
 
@@ -369,6 +369,7 @@ sub _build_mp {
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
+        --codepage $settings->{codepage}
         --mapid $reg->{mapid}
         --mapname "$reg->{name}"
         --bpoly $reg->{poly}
@@ -389,6 +390,7 @@ sub _build_mp {
         my $cmd_brokenmpoly = qq[
             $CMD{osm2mp}
             --config $basedir/$settings->{config_brokenmpoly}
+            --codepage $settings->{codepage}
             --bpoly $reg->{poly}
             --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
