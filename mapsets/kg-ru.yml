@@ -25,6 +25,7 @@ make_house_search: 1
 ---
 
 - name:  Киргизия
+  code:  0
   alias: kyrgyzstan
   srcalias:  KG
 
