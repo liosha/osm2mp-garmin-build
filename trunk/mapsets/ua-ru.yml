@@ -9,11 +9,12 @@ prefix:         full-ru
 countrycode:    UA
 countryname:    Украина
 filename:       ukraine
-fid:            970
+fid:            15002
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+codepage:       1251
 readme:         readme/readme_ukraine.txt
-keys:           -tl=ru -dl=uk --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_uk_ru=2 --codepage=1251 --textfilter PrepareCP1251 
+keys:           -tl=ru -dl=uk --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_uk_ru=2 --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
@@ -237,7 +238,7 @@ skip_mp_upload:    1
 ---
 
 - name: Украина
-  fid: 970
+  fid: 15002
   filename: ukraine
   make_house_search: 1
   parts:

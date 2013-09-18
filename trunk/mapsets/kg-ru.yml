@@ -1,4 +1,7 @@
 
+# Kyrgyzstan (RU)
+# $Id$
+
 # Common settings
 
 ---
@@ -7,12 +10,14 @@ prefix:         full-ru
 countrycode:    KG
 countryname:    Киргизия
 filename:       kyrgyzstan
-fid:            971
-config:         osm2mp/cfg/default.cfg
-keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-make_house_search: 1
+fid:            15004
+config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+codepage:       1251
+keys:           -tl=ru --textfilter PrepareCP1251
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+make_house_search: 1
 
 
 # Regions
@@ -20,7 +25,6 @@ typ:            open-cfg/osm.typ
 ---
 
 - name:  Киргизия
-  code:  1
   alias: kyrgyzstan
   srcalias:  KG
 
