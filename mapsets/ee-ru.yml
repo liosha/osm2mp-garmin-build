@@ -10,7 +10,7 @@ prefix:         full-ru
 countrycode:    EE
 countryname:    Эстония
 filename:       estonia
-fid:            951
+fid:            15000
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
@@ -163,7 +163,7 @@ skip_mp_upload:    1
 
 
 - name: Эстония
-  fid: 951
+  fid: 15000
   filename: estonia
   make_house_search: 1
   parts:
