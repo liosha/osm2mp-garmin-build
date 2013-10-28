@@ -364,7 +364,7 @@ sub _build_mp {
         croak "Unknown format '$reg->{format}'";
 
     my $cat_params = $reg->{pre_clip}
-        ? "-B=$reg->{pre_poly}"  # --complete-ways
+        ? "-B=\"$reg->{pre_poly}\""  # --complete-ways
         : q{};        
 
     my $osm2mp_params = qq[
@@ -372,7 +372,7 @@ sub _build_mp {
         --codepage $settings->{codepage}
         --mapid $reg->{mapid}
         --mapname "$reg->{name}"
-        --bpoly $reg->{poly}
+        --bpoly "$reg->{poly}"
         --defaultcountry $settings->{countrycode}
         --defaultregion "$reg->{name}"
         ${ \( $settings->{keys} // q{} ) }
@@ -391,7 +391,7 @@ sub _build_mp {
             $CMD{osm2mp}
             --config $basedir/$settings->{config_brokenmpoly}
             --codepage $settings->{codepage}
-            --bpoly $reg->{poly}
+            --bpoly "$reg->{poly}"
             --defaultcountry $settings->{countrycode}
             --defaultregion "$reg->{name}"
             ${ \( $settings->{keys} // q{} ) }
@@ -473,12 +473,12 @@ sub get_bound {
 
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
-    _qx( getbound => "$keys -api op_ru -o $reg->{poly} $reg->{bound} 2> $reg->{filebase}.getbound.log" );
+    _qx( getbound => "$keys -api op_ru -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
     if ( $reg->{pre_clip} ) {
         logg( "Downloading pre-clip boundary for '$reg->{alias}'" );
-        _qx( getbound => "-api op_ru -o $reg->{pre_poly} --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
+        _qx( getbound => "-api op_ru -o \"$reg->{pre_poly}\" --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
         logg( "Error! Failed to get pre-clip boundary for '$reg->{alias}'" )  if $?;
     }
 
