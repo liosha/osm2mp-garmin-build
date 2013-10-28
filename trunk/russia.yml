@@ -83,6 +83,7 @@ skip_img_build:    0
   code:  11
   alias: komi
   srcalias:  RU-KO
+  keys:  --noshorelines --mp-header TreSize=4000
 
 - name:  Марий Эл
   code:  12
@@ -414,6 +415,7 @@ skip_img_build:    0
   code:  72
   alias: tumen
   srcalias:  RU-TYU
+  keys: --mp-header TreSize=2048
  
 - name:  Ульяновская область
   code:  73
@@ -462,21 +464,31 @@ skip_img_build:    0
   srcalias:  RU-YAN
   keys:  --noshorelines --mp-header TreSize=4000
 
-- name: МО город Краснодар
-  code: 201
-  bound: 269701
-  alias: kda-krasnodar
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
+#- name: МО город Краснодар
+#  code: 201
+#  bound: 269701
+#  alias: kda-krasnodar
+#  srcalias: RU-KDA
+#  pre_clip: 1
+#  skip_mapset: 1
+#  skip_mp_upload: 1
 
-- name: Динской район
-  code: 202
-  bound: 364116
-  alias: kda-din
+#- name: Динской район
+#  code: 202
+#  bound: 364116
+#  alias: kda-din
+#  srcalias: RU-KDA
+#  pre_clip: 1
+#  skip_mapset: 1
+#  skip_mp_upload: 1
+
+- name: МО город Краснодар, Динской район
+  code: 201
+  bound: 269701 364116
+  alias: kda-krasnodin
   srcalias: RU-KDA
   pre_clip: 1
+  onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
@@ -928,8 +940,9 @@ skip_img_build:    0
     - astrakhan
     - volgograd
     - rostov
-    - kda-krasnodar
-    - kda-din
+#    - kda-krasnodar
+#    - kda-din
+    - kda-krasnodin
     - kda-krasnoarm
     - kda-sever
     - kda-abin
@@ -1057,8 +1070,9 @@ skip_img_build:    0
   filename: krasnodar
   make_house_search: 1
   parts:
-    - kda-krasnodar
-    - kda-din
+#    - kda-krasnodar
+#    - kda-din
+    - kda-krasnodin
     - kda-krasnoarm
     - kda-sever
     - kda-abin
@@ -1191,8 +1205,9 @@ skip_img_build:    0
     - khanty
     - chukot
     - yamal
-    - kda-krasnodar
-    - kda-din
+#    - kda-krasnodar
+#    - kda-din
+    - kda-krasnodin
     - kda-krasnoarm
     - kda-sever
     - kda-abin
