@@ -7,7 +7,7 @@ prefix:         full-uk
 countrycode:    UA
 countryname:    Україна
 filename:       ukraine
-fid:            975
+fid:            5708
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 keys:           -tl=uk --codepage=1251 --textfilter PrepareCP1251 
