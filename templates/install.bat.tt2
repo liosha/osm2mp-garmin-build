@@ -1,12 +1,15 @@
 @echo off
 
-echo Adding registry keys.
+echo Adding registry keys (%PROCESSOR_ARCHITECTURE%).
 
-set KEY=HKLM\SOFTWARE\Wow6432Node\Garmin\MapSource
-reg QUERY %KEY% 2>NUL
-if not errorlevel 1 goto key_ok
-set KEY=HKLM\SOFTWARE\Garmin\MapSource
-:key_ok
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
+    set KEY=HKLM\SOFTWARE\Wow6432Node\Garmin\MapSource
+) else (
+    set KEY=HKLM\SOFTWARE\Garmin\MapSource
+)	
+echo Root key = %KEY%
+
+@echo on
 
 [%  fid = data.fid || settings.fid;
     reg_key = "%KEY%\\Families\\FAMILY_" _ fid;
