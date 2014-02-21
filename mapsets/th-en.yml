@@ -1,0 +1,85 @@
+
+# Thailand mapset (EN)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    TH
+countryname:    Thailand
+filename:       thailand
+fid:            5709
+config:         open-cfg/garmin-ru.cfg
+readme:         readme/readme_russia.txt
+typ:            open-cfg/osm.typ
+codepage:       1252
+keys:           -tl=en -dl=th --translit
+url_base:       http://download.geofabrik.de/asia/
+# sqlite cache is not thread-compatible!
+config_file_ftp:   ftp.yml
+mp_threads_num:    1
+make_house_search: 1
+skip_mp_upload:    1
+update_cfg:        0
+skip_dl_bounds:    0
+
+
+
+# Regions
+
+---
+
+- name:  Thailand northeast
+  code:  1
+  alias: th-ne
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Thailand northwest
+  code:  2
+  alias: th-nw
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Thailand centre
+  code:  3
+  alias: th-c
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Thailand south
+  code:  4
+  alias: th-s
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+# Mapsets
+
+---
+
+
+- name: Thailand
+  fid: 5709
+  filename: thailand
+  make_house_search: 1
+  parts:
+    - th-ne
+    - th-nw
+    - th-c
+    - th-s
+
+
