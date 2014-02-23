@@ -37,7 +37,7 @@ my $basedir = getcwd();
 
 # external commands required for building
 my %CMD = (
-    getbound    => "perl $basedir/getbound/getbound.pl",
+    getbound    => "perl $basedir/getbound/getbound.pl -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
     osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
@@ -364,7 +364,8 @@ sub _build_mp {
         croak "Unknown format '$reg->{format}'";
 
     my $cat_params = $reg->{pre_clip}
-        ? "-B=\"$reg->{pre_poly}\""  # --complete-ways
+        #? "-B=\"$reg->{pre_poly}\""  # --complete-ways
+        ? "-B=\"$reg->{pre_poly}\" --complex-ways"
         : q{};        
 
     my $osm2mp_params = qq[
@@ -473,6 +474,7 @@ sub get_bound {
 
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
+    $keys = $reg->{clipbound} ? $keys . ' --clip' : $keys;
     _qx( getbound => "$keys -api op_ru -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
