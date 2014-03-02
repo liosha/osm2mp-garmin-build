@@ -54,6 +54,7 @@ our %WRITER = (
 
 my $writer_name;
 GetOptions (
+    'h|help!'   => \my $show_help,
     'api=s'     => \$api_opt{api},
     'file=s'    => \my $filename,
     'o=s'       => \my $outfile,
@@ -68,14 +69,24 @@ GetOptions (
     'offset|buffer=f' => \my $offset,
 ) or die "Invalid options";
 
-if ( !@ARGV ) {
+if ( !@ARGV or $show_help) {
     print "Usage:  getbound.pl [options] <relation> [<relation> ...]\n\n";
     print "relation - id or alias\n\n";
     print "Available options:\n";
-    print "     -api <api>      - api to use (@{[ sort keys %App::OsmGetbound::OsmApiClient::API ]})\n";
-    print "     -o <file>       - output filename (default: STDOUT)\n";
-    print "     -proxy <host>   - use proxy\n";
-    print "     -onering        - merge rings\n\n";
+    print "     -h|help            - show this message\n";
+    print "     -api <api>         - api to use (@{[ sort keys %App::OsmGetbound::OsmApiClient::API ]})\n";
+    print "     -file <file>       - use local OSM dump as input\n";
+    print "     -o <file>          - output filename (default: STDOUT)\n";
+    print "     -onering           - merge rings (connect into one line)\n";
+    print "     -clip              - clip (union) rings\n";
+    print "     -noinner           - exclude inner rings from processing\n";
+    print "     -proxy <host>      - use proxy\n";
+    print "     -aliases <file>    - file, containing aliases for relation IDs\n";
+    print "                          (default: ./etc/osm-getbound-aliases.yml)\n";
+    print "     -aliasesdir <directory>\n                        - directory, containing alias files (*.yml)\n";
+    print "     -writer <name>     - writer to use\n";
+    print "     -om <output mode>  - something to do with writer\n";
+    print "     -offset|buffer <N> - enlarge resulting area by moving bound N degrees\n\n";
     exit 1;
 }
 
