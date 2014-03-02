@@ -2,7 +2,8 @@
 
 # ABSTRACT: save osm boundary to .poly file
 
-# $Id: getbound.pl 36 2013-11-07 10:16:38Z xliosha@gmail.com $
+# $Id$
+# Original: Id: getbound.pl 36 2013-11-07 10:16:38Z xliosha@gmail.com 
 
 
 use 5.010;
