@@ -93,7 +93,8 @@ my $alias = App::OsmGetbound::RelAlias->new($alias_config);
 if (defined $alias_dir){
     $log->notice("Processing aliases directory");
     opendir(DIR_ALIASES, $alias_dir) or die $!;
-    while (my $fl_alias = readdir(DIR_ALIASES) ){ 
+    my @files = sort readdir(DIR_ALIASES);
+    while (my $fl_alias = shift @files ){ 
         next if ( -d  $fl_alias);
         next unless ( $fl_alias =~ /\.yml$/);
         $log->notice("\t$fl_alias");
