@@ -1,5 +1,5 @@
 
-# Russia
+# Russia (RU)
 # $Id$
 
 ---
@@ -241,6 +241,7 @@ skip_img_build:    0
   code:  41
   alias: kamch
   srcalias:  RU-KAM
+  onering: yes
 
 - name:  Кемеровская область
   code:  42
@@ -486,17 +487,16 @@ skip_img_build:    0
 
 - name: МО город Краснодар, Динской район
   code: 201
-  bound: 269701 364116
   alias: kda-krasnodin
   srcalias: RU-KDA
   pre_clip: 1
   onering: yes
+  clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
 - name: Красноармейский район
   code: 203
-  bound: 364123
   alias: kda-krasnoarm
   srcalias: RU-KDA
   pre_clip: 1
@@ -505,7 +505,6 @@ skip_img_build:    0
 
 - name: Северский район
   code: 204
-  bound: 364150
   alias: kda-sever
   srcalias: RU-KDA
   pre_clip: 1
@@ -514,7 +513,6 @@ skip_img_build:    0
 
 - name: Абинский район
   code: 205
-  bound: 364156
   alias: kda-abin
   srcalias: RU-KDA
   pre_clip: 1
@@ -523,7 +521,6 @@ skip_img_build:    0
 
 - name: Славянский район
   code: 206
-  bound: 364165
   alias: kda-slav
   srcalias: RU-KDA
   pre_clip: 1
@@ -532,7 +529,6 @@ skip_img_build:    0
 
 - name: Крымский район
   code: 207
-  bound: 364169
   alias: kda-krym
   srcalias: RU-KDA
   pre_clip: 1
@@ -541,7 +537,6 @@ skip_img_build:    0
 
 - name: Темрюкский район
   code: 208
-  bound: 364171
   alias: kda-temr
   srcalias: RU-KDA
   pre_clip: 1
@@ -550,7 +545,6 @@ skip_img_build:    0
 
 - name: МО город-курорт Анапа
   code: 209
-  bound: 364543
   alias: kda-anapa
   srcalias: RU-KDA
   pre_clip: 1
@@ -559,7 +553,6 @@ skip_img_build:    0
 
 - name: МО город-герой Новороссийск
   code: 210
-  bound: 364545
   alias: kda-novor
   srcalias: RU-KDA
   pre_clip: 1
@@ -568,7 +561,6 @@ skip_img_build:    0
 
 - name: Город-курорт Геленджик
   code: 211
-  bound: 364548
   alias: kda-gelen
   srcalias: RU-KDA
   pre_clip: 1
@@ -577,7 +569,6 @@ skip_img_build:    0
 
 - name: МО город Горячий Ключ
   code: 212
-  bound: 365144
   alias: kda-gorkl
   srcalias: RU-KDA
   pre_clip: 1
@@ -586,7 +577,6 @@ skip_img_build:    0
 
 - name: Белореченский район
   code: 213
-  bound: 365147
   alias: kda-belor
   srcalias: RU-KDA
   pre_clip: 1
@@ -595,7 +585,6 @@ skip_img_build:    0
 
 - name: Апшеронский район
   code: 214
-  bound: 365168
   alias: kda-apsh
   srcalias: RU-KDA
   pre_clip: 1
@@ -604,7 +593,6 @@ skip_img_build:    0
 
 - name: Туапсинский район
   code: 215
-  bound: 365231
   alias: kda-tuap
   srcalias: RU-KDA
   pre_clip: 1
@@ -613,7 +601,6 @@ skip_img_build:    0
 
 - name: Мостовский район
   code: 216
-  bound: 365297
   alias: kda-most
   srcalias: RU-KDA
   pre_clip: 1
@@ -622,7 +609,6 @@ skip_img_build:    0
 
 - name: Ейский район
   code: 217
-  bound: 365299
   alias: kda-eysk
   srcalias: RU-KDA
   pre_clip: 1
@@ -631,7 +617,6 @@ skip_img_build:    0
 
 - name: Щербиновский район
   code: 218
-  bound: 365302
   alias: kda-scher
   srcalias: RU-KDA
   pre_clip: 1
@@ -640,7 +625,6 @@ skip_img_build:    0
 
 - name: Староминский район
   code: 219
-  bound: 365303
   alias: kda-star
   srcalias: RU-KDA
   pre_clip: 1
@@ -649,7 +633,6 @@ skip_img_build:    0
 
 - name: Приморско-Ахтарский район
   code: 220
-  bound: 365306
   alias: kda-prim
   srcalias: RU-KDA
   pre_clip: 1
@@ -658,7 +641,6 @@ skip_img_build:    0
 
 - name: Калининский район
   code: 221
-  bound: 365308
   alias: kda-kalin
   srcalias: RU-KDA
   pre_clip: 1
@@ -667,7 +649,6 @@ skip_img_build:    0
 
 - name: Тимашевский район
   code: 222
-  bound: 365309
   alias: kda-tima
   srcalias: RU-KDA
   pre_clip: 1
@@ -676,7 +657,6 @@ skip_img_build:    0
 
 - name: Брюховецкий район
   code: 223
-  bound: 365311
   alias: kda-bruh
   srcalias: RU-KDA
   pre_clip: 1
@@ -685,7 +665,6 @@ skip_img_build:    0
 
 - name: Кущёвский район
   code: 224
-  bound: 371552
   alias: kda-kusch
   srcalias: RU-KDA
   pre_clip: 1
@@ -694,7 +673,6 @@ skip_img_build:    0
 
 - name: Крыловский район
   code: 225
-  bound: 371556
   alias: kda-kryl
   srcalias: RU-KDA
   pre_clip: 1
@@ -703,7 +681,6 @@ skip_img_build:    0
 
 - name: Каневской район
   code: 226
-  bound: 371561
   alias: kda-kanev
   srcalias: RU-KDA
   pre_clip: 1
@@ -712,7 +689,6 @@ skip_img_build:    0
 
 - name: Ленинградский район
   code: 227
-  bound: 371571
   alias: kda-lenin
   srcalias: RU-KDA
   pre_clip: 1
@@ -721,7 +697,6 @@ skip_img_build:    0
 
 - name: Лабинский район
   code: 228
-  bound: 371579
   alias: kda-labin
   srcalias: RU-KDA
   pre_clip: 1
@@ -730,7 +705,6 @@ skip_img_build:    0
 
 - name: Отрадненский район
   code: 229
-  bound: 371580
   alias: kda-otradn
   srcalias: RU-KDA
   pre_clip: 1
@@ -739,7 +713,6 @@ skip_img_build:    0
 
 - name: Успенский район
   code: 230
-  bound: 371607
   alias: kda-uspen
   srcalias: RU-KDA
   pre_clip: 1
@@ -748,7 +721,6 @@ skip_img_build:    0
 
 - name: МО Город Армавир
   code: 231
-  bound: 371614
   alias: kda-armav
   srcalias: RU-KDA
   pre_clip: 1
@@ -758,7 +730,6 @@ skip_img_build:    0
 
 - name: Новокубанский район
   code: 232
-  bound: 371621
   alias: kda-novokub
   srcalias: RU-KDA
   pre_clip: 1
@@ -768,7 +739,6 @@ skip_img_build:    0
 
 - name: Курганинский район
   code: 233
-  bound: 918967
   alias: kda-kurg
   srcalias: RU-KDA
   pre_clip: 1
@@ -777,7 +747,6 @@ skip_img_build:    0
 
 - name: Гулькевичский район
   code: 234
-  bound: 918974
   alias: kda-gulk
   srcalias: RU-KDA
   pre_clip: 1
@@ -786,7 +755,6 @@ skip_img_build:    0
 
 - name: Кавказский район
   code: 235
-  bound: 918986
   alias: kda-kavk
   srcalias: RU-KDA
   pre_clip: 1
@@ -795,7 +763,6 @@ skip_img_build:    0
 
 - name: Белоглинский район
   code: 236
-  bound: 918989
   alias: kda-belog
   srcalias: RU-KDA
   pre_clip: 1
@@ -804,7 +771,6 @@ skip_img_build:    0
 
 - name: Новопокровский район
   code: 237
-  bound: 918994
   alias: kda-novopokr
   srcalias: RU-KDA
   pre_clip: 1
@@ -813,7 +779,6 @@ skip_img_build:    0
 
 - name: Павловский район
   code: 238
-  bound: 918995
   alias: kda-pavl
   srcalias: RU-KDA
   pre_clip: 1
@@ -822,7 +787,6 @@ skip_img_build:    0
 
 - name: Кореновский район
   code: 239
-  bound: 918999
   alias: kda-koren
   srcalias: RU-KDA
   pre_clip: 1
@@ -831,7 +795,6 @@ skip_img_build:    0
 
 - name: Тбилисский район
   code: 240
-  bound: 919000
   alias: kda-tbil
   srcalias: RU-KDA
   pre_clip: 1
@@ -840,7 +803,6 @@ skip_img_build:    0
 
 - name: Тихорецкий район
   code: 241
-  bound: 919004
   alias: kda-tihor
   srcalias: RU-KDA
   pre_clip: 1
@@ -849,7 +811,6 @@ skip_img_build:    0
 
 - name: Выселковский район
   code: 242
-  bound: 919005
   alias: kda-vysel
   srcalias: RU-KDA
   pre_clip: 1
@@ -858,7 +819,6 @@ skip_img_build:    0
 
 - name: Усть-Лабинский район
   code: 243
-  bound: 919011
   alias: kda-ustlab
   srcalias: RU-KDA
   pre_clip: 1
@@ -867,7 +827,6 @@ skip_img_build:    0
 
 - name: Сочи
   code: 244
-  bound: 365233
   alias: kda-sochi
   srcalias: RU-KDA
   pre_clip: 1
@@ -876,7 +835,6 @@ skip_img_build:    0
 
 - name: Краснодарский край (море)
   code: 245
-  bound: 2800681
   alias: kda-sea
   srcalias: RU-KDA
   pre_clip: 1
