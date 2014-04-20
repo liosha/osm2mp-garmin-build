@@ -13,7 +13,7 @@ fid:            5706
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 codepage:       1251
-readme:         readme/readme_turkey.txt
+readme:         readme/readme_t.txt
 keys:           -tl=ru -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml

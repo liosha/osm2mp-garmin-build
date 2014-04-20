@@ -10,9 +10,10 @@ prefix:         full-ru
 countrycode:    KG
 countryname:    Киргизия
 filename:       kyrgyzstan
-fid:            15004
+fid:            5704
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
 codepage:       1251
 keys:           -tl=ru --textfilter PrepareCP1251
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/

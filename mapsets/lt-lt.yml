@@ -10,10 +10,11 @@ prefix:         full-lt
 countrycode:    LT
 countryname:    Lietuva
 filename:       lithuania
-fid:            15003
+fid:            5703
 codepage:       1257
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
 keys:           -tl=lt 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
@@ -118,7 +119,7 @@ skip_mp_upload:    1
 
 
 - name: Lietuva
-  fid: 15003
+  fid: 5703
   filename: lithuania
   make_house_search: 1
   parts:

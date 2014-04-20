@@ -10,10 +10,11 @@ prefix:         full-fi
 countrycode:    FI
 countryname:    Suomi
 filename:       finland
-fid:            15005
+fid:            5705
 codepage:       1252
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
 keys:           -tl=fi
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
@@ -191,7 +192,7 @@ skip_mp_upload:    1
 
 
 - name: Suomi
-  fid: 15005
+  fid: 5705
   filename: finland
   make_house_search: 1
   parts:
