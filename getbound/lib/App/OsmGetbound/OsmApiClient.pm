@@ -144,7 +144,7 @@ sub _http_get {
     }
 
     if ( !$res->is_success() ) {
-        $log->warn('Download failed');
+        $log->warn("Download failed: ". ${res}->status_line());
         return;
     }
 
