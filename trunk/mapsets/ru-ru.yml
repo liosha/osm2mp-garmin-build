@@ -292,11 +292,29 @@ skip_img_build:    0
   alias: magadan
   srcalias:  RU-MAG
 
-- name:  Московская область
-  code:  50
-  alias: mosobl
+#- name:  Московская область
+#  code:  50
+#  alias: mosobl
+#  srcalias:  RU-MOS
+##  onering: yes
+
+- name:  Московская область (запад)
+  code:  250
+  alias: mosobl-west
   srcalias:  RU-MOS
-#  onering: yes
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (восток)
+  code:  251
+  alias: mosobl-east
+  srcalias:  RU-MOS
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
 - name:  Москва
   code:  77
@@ -304,6 +322,7 @@ skip_img_build:    0
   srcalias:  RU-MOW
 #  onering: yes
   srcurl: http://data.gis-lab.info/osm_dump/dump/latest/RU-MOS.osm.pbf
+  pre_clip: 1
 
 - name:  Мурманская область
   code:  51
@@ -863,7 +882,9 @@ skip_img_build:    0
     - kursk
     - lipetsk
     - moscow
-    - mosobl
+#    - mosobl
+    - mosobl-east
+    - mosobl-west
     - orlovsk
     - ryazan
     - smol
@@ -1077,6 +1098,14 @@ skip_img_build:    0
     - kda-sochi
     - kda-sea
 
+- name: Московская область
+  fid: 510
+  filename: mosobl
+  make_house_search: 1
+  parts:
+    - mosobl-west
+    - mosobl-east
+
 - name: Россия
   fid: 400
   filename: russia
@@ -1132,7 +1161,9 @@ skip_img_build:    0
     - leningrad
     - lipetsk
     - magadan
-    - mosobl
+#    - mosobl
+    - mosobl-east
+    - mosobl-west
     - moscow
     - murmansk
     - nizhegorod
@@ -1211,3 +1242,4 @@ skip_img_build:    0
     - kda-ustlab
     - kda-sochi
     - kda-sea
+
