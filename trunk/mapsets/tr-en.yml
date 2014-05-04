@@ -16,7 +16,7 @@ readme:         readme/readme_t.txt
 codepage:       1252
 keys:           -tl=en -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter Unidecode
 url_base:       http://download.geofabrik.de/europe/
-config_file_ftp:   ftp.yml
+#config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
@@ -31,7 +31,6 @@ skip_mp_upload:    1
   code:  1
   alias: tr-aegean
   srcalias:  turkey-latest
-  bound: 2094170
   pre_clip: 1
   skip_mapset: 1
 
@@ -39,7 +38,6 @@ skip_mp_upload:    1
   code:  2
   alias: tr-black
   srcalias:  turkey-latest
-  bound: 1726294
   pre_clip: 1
   skip_mapset: 1
 
@@ -47,7 +45,6 @@ skip_mp_upload:    1
   code: 3 
   alias: tr-c-anat
   srcalias:  turkey-latest
-  bound: 2094194
   pre_clip: 1
   skip_mapset: 1
 
@@ -55,7 +52,6 @@ skip_mp_upload:    1
   code:  4
   alias: tr-e-anat
   srcalias:  turkey-latest
-  bound: 2094154
   pre_clip: 1
   skip_mapset: 1
 
@@ -63,7 +59,6 @@ skip_mp_upload:    1
   code:  5
   alias: tr-marmara
   srcalias:  turkey-latest
-  bound: 2094193
   pre_clip: 1
   skip_mapset: 1
 
@@ -71,7 +66,6 @@ skip_mp_upload:    1
   code:  6
   alias: tr-mediter
   srcalias:  turkey-latest
-  bound: 2092903
   pre_clip: 1
   skip_mapset: 1
 
@@ -79,7 +73,6 @@ skip_mp_upload:    1
   code:  7
   alias: tr-se-anat
   srcalias:  turkey-latest
-  bound: 2094155
   pre_clip: 1
   skip_mapset: 1
 
