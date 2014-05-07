@@ -1,0 +1,187 @@
+
+# Estonia mapset (ET)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-et
+countrycode:    EE
+countryname:    Eesti
+filename:       estonia
+fid:            5710
+codepage:       1257
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
+keys:           -tl=et
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+skip_mp_upload:    1
+
+# Regions
+
+---
+
+- name:  Valga maakond
+  code:  1
+  alias: ee-valga
+  srcalias:  EE
+  bound: EE-82
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Viljandi maakond
+  code:  2
+  alias: ee-viljandi
+  srcalias:  EE
+  bound: EE-84
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Võru maakond
+  code:  3
+  alias: ee-voru
+  srcalias:  EE
+  bound: EE-86
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Ida-Viru maakond
+  code:  4
+  alias: ee-idaviru
+  srcalias:  EE
+  bound: EE-44
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Jõgeva maakond
+  code:  5
+  alias: ee-jogeva
+  srcalias:  EE
+  bound: EE-49
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Lääne-Viru maakond
+  code:  6
+  alias: ee-laaneviru
+  srcalias:  EE
+  bound: EE-59
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Lääne maakond
+  code:  7
+  alias: ee-laane
+  srcalias:  EE
+  bound: EE-57
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Põlva maakond
+  code:  8
+  alias: ee-polva
+  srcalias:  EE
+  bound: EE-65
+  pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Pärnu maakond
+  code:  9
+  alias: ee-parnu
+  srcalias:  EE
+  bound: EE-67
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Rapla maakond
+  code:  10
+  alias: ee-rapla
+  srcalias:  EE
+  bound: EE-70
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Saare maakond
+  code:  11
+  alias: ee-saare
+  srcalias:  EE
+  bound: EE-74
+  pre_clip: 1
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Tartu maakond
+  code:  12
+  alias: ee-tartu
+  srcalias:  EE
+  bound: EE-78
+  #pre_clip: 1
+  skip_mapset: 1
+  fixmultipoly: yes
+
+- name:  Harju maakond
+  code:  13
+  alias: ee-harju
+  srcalias:  EE
+  bound: EE-37
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Hiiu maakond
+  code:  14
+  alias: ee-hiiu
+  srcalias:  EE
+  bound: EE-39
+  pre_clip: 1
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Järva maakond
+  code:  15
+  alias: ee-jarva
+  srcalias:  EE
+  bound: EE-51
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+
+- name: Eesti
+  fid: 5710
+  filename: estonia
+  make_house_search: 1
+  parts:
+    - ee-valga
+    - ee-viljandi
+    - ee-voru
+    - ee-idaviru
+    - ee-jogeva
+    - ee-laaneviru
+    - ee-laane
+    - ee-polva
+    - ee-parnu
+    - ee-rapla
+    - ee-saare
+    - ee-tartu
+    - ee-harju
+    - ee-hiiu
+    - ee-jarva
+
