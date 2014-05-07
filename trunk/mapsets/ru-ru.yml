@@ -226,6 +226,7 @@ skip_img_build:    0
   code:  38
   alias: irkutsk
   srcalias:  RU-IRK
+  keys: --mp-header TreSize=2048
 
 - name:  Калининградская область
   code:  39
