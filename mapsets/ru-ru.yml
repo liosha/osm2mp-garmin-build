@@ -460,7 +460,6 @@ skip_img_build:    0
   alias: yarosl
   srcalias:  RU-YAR
  
-
 - name:  Еврейская АО
   code:  79
   alias: evrey
@@ -486,6 +485,18 @@ skip_img_build:    0
   alias: yamal
   srcalias:  RU-YAN
   keys:  --noshorelines --mp-header TreSize=4000
+
+- name:  Республика Крым
+  code:  82
+  alias: krym
+  srcalias: UA
+  pre_clip: 1
+
+- name:  Севастополь
+  code:  92
+  alias: sevastopol
+  srcalias: UA
+  pre_clip: 1
 
 #- name: МО город Краснодар
 #  code: 201
@@ -868,6 +879,66 @@ skip_img_build:    0
 ---
 
 
+- name: Краснодарский край
+  fid: 509
+  filename: krasnodar
+  make_house_search: 1
+  parts:
+#    - kda-krasnodar
+#    - kda-din
+    - kda-krasnodin
+    - kda-krasnoarm
+    - kda-sever
+    - kda-abin
+    - kda-slav
+    - kda-krym
+    - kda-temr
+    - kda-anapa
+    - kda-novor
+    - kda-gelen
+    - kda-gorkl
+    - kda-belor
+    - kda-apsh
+    - kda-tuap
+    - kda-most
+    - kda-eysk
+    - kda-scher
+    - kda-star
+    - kda-prim
+    - kda-kalin
+    - kda-tima
+    - kda-bruh
+    - kda-kusch
+    - kda-kryl
+    - kda-kanev
+    - kda-lenin
+    - kda-labin
+    - kda-otradn
+    - kda-uspen
+    - kda-armav
+    - kda-novokub
+    - kda-kurg
+    - kda-gulk
+    - kda-kavk
+    - kda-belog
+    - kda-novopokr
+    - kda-pavl
+    - kda-koren
+    - kda-tbil
+    - kda-tihor
+    - kda-vysel
+    - kda-ustlab
+    - kda-sochi
+    - kda-sea
+
+- name: Московская область
+  fid: 510
+  filename: mosobl
+  make_house_search: 1
+  parts:
+    - mosobl-west
+    - mosobl-east
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1047,65 +1118,13 @@ skip_img_build:    0
     - chechen
     - stavrop
 
-- name: Краснодарский край
-  fid: 509
-  filename: krasnodar
+- name: Крымский федеральный округ
+  fid: 511
+  filename: kfo 
   make_house_search: 1
   parts:
-#    - kda-krasnodar
-#    - kda-din
-    - kda-krasnodin
-    - kda-krasnoarm
-    - kda-sever
-    - kda-abin
-    - kda-slav
-    - kda-krym
-    - kda-temr
-    - kda-anapa
-    - kda-novor
-    - kda-gelen
-    - kda-gorkl
-    - kda-belor
-    - kda-apsh
-    - kda-tuap
-    - kda-most
-    - kda-eysk
-    - kda-scher
-    - kda-star
-    - kda-prim
-    - kda-kalin
-    - kda-tima
-    - kda-bruh
-    - kda-kusch
-    - kda-kryl
-    - kda-kanev
-    - kda-lenin
-    - kda-labin
-    - kda-otradn
-    - kda-uspen
-    - kda-armav
-    - kda-novokub
-    - kda-kurg
-    - kda-gulk
-    - kda-kavk
-    - kda-belog
-    - kda-novopokr
-    - kda-pavl
-    - kda-koren
-    - kda-tbil
-    - kda-tihor
-    - kda-vysel
-    - kda-ustlab
-    - kda-sochi
-    - kda-sea
-
-- name: Московская область
-  fid: 510
-  filename: mosobl
-  make_house_search: 1
-  parts:
-    - mosobl-west
-    - mosobl-east
+    - krym
+    - sevastopol
 
 - name: Россия
   fid: 400
@@ -1243,4 +1262,7 @@ skip_img_build:    0
     - kda-ustlab
     - kda-sochi
     - kda-sea
+    - krym
+    - sevastopol
+
 
