@@ -1,3 +1,5 @@
+# Bulgaria mapset (BG)
+# $Id$
 
 # Common settings
 
@@ -7,13 +9,17 @@ prefix:         full-bg
 countrycode:    BG
 countryname:    България
 filename:       bulgaria
-fid:            975
-config:         osm2mp/cfg/default.cfg
-keys:           -tl=bg --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
+fid:            5711
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1251
+keys:           -tl=bg --textfilter PrepareCP1251 
 url_base:       http://download.geofabrik.de/openstreetmap/europe/
+config_file_ftp:   ftp.yml
 mp_threads_num:    2
 make_house_search: 1
-typ:            open-cfg/osm.typ
+skip_mp_upload:    1
 
 
 # Regions
@@ -249,7 +255,7 @@ typ:            open-cfg/osm.typ
 ---
 
 - name: България
-  fid: 975
+  fid: 5711
   filename: bulgaria
   make_house_search: 1
   parts:
