@@ -37,7 +37,7 @@ my $basedir = getcwd();
 
 # external commands required for building
 my %CMD = (
-    getbound    => "perl $basedir/getbound/getbound.pl -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
+    getbound    => "perl $basedir/getbound/getbound.pl -api op_de -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
     osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
@@ -309,18 +309,22 @@ sub _build_mapset {
     logg( "Indexing mapset '$reg->{alias}'" );
 
     my $start_dir = getcwd();
+    logg( "working dir: " . getcwd() );
     mkdir $reg->{path};
 
     copy $_ => $reg->{path}  for map {( $_, "$_.idx" )} @$files;
 
     chdir $reg->{path};
+    logg( "working dir: " . getcwd() );
 
     my $vars = { settings => $settings, data => $reg, files => $files };
     $tt->process('pv.txt.tt2', $vars, 'pv.txt', binmode => ":encoding($settings->{encoding})");
 
+    logg( "working dir: " . getcwd() );
     _qx( cpreview => "pv.txt -m > $reg->{mapid}.cpreview.log" );
     if ($?) {
     logg("Error! Failed to create index for '$reg->{alias}'")  if $?;
+    logg( "working dir: " . getcwd() );
     unlink $_ for map {"$start_dir/$_"} @$files;
     unlink $_ for map {"$start_dir/$_.idx"} @$files;
     }
@@ -475,12 +479,12 @@ sub get_bound {
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
     $keys = $reg->{clipbound} ? $keys . ' --clip' : $keys;
-    _qx( getbound => "$keys -api op_ru -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
+    _qx( getbound => "$keys -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
     if ( $reg->{pre_clip} ) {
         logg( "Downloading pre-clip boundary for '$reg->{alias}'" );
-        _qx( getbound => "-api op_ru -o \"$reg->{pre_poly}\" --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
+        _qx( getbound => "-o \"$reg->{pre_poly}\" --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
         logg( "Error! Failed to get pre-clip boundary for '$reg->{alias}'" )  if $?;
     }
 
