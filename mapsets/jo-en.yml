@@ -1,4 +1,4 @@
-# Israel mapset (EN)
+# Jordan mapset (EN)
 # $Id$
 
 # Common settings
@@ -6,15 +6,15 @@
 ---
 
 prefix:         full-en
-countrycode:    IL
-countryname:    Israel
-filename:       israel
-fid:            5713
+countrycode:    JO
+countryname:    Jordan
+filename:       jordan
+fid:            5714
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:         readme/readme.txt
 codepage:       1252
-keys:           -tl=en -dl=he --codepage=1252
+keys:           -tl=en -dl=ar --codepage=1252
 config_file_ftp:   ftp.yml
 make_house_search: 1
 skip_mp_upload:    1
@@ -24,8 +24,9 @@ skip_mp_upload:    1
 
 ---
 
-- name:  Israel
+- name:  Jordan
   code:  0
-  alias: israel
-  srcurl: http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
+  alias: jordan
+  bound: jo
+  srcurl: http://download.geofabrik.de/asia/jordan-latest.osm.pbf
 
