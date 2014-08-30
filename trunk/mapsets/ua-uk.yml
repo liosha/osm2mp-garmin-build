@@ -237,7 +237,7 @@ update_cfg:        0
 ---
 
 - name: Україна
-  fid: 975
+  fid: 5708
   filename: ukraine
   make_house_search: 1
   parts:
