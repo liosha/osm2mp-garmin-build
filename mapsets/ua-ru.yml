@@ -28,14 +28,6 @@ update_cfg:        0
 
 ---
 
-- name:  Крым
-  code:  1
-  alias: ua-krym
-  srcalias:  UA
-  bound: UA-01
-  pre_clip: 1
-  skip_mapset: 1
-
 - name:  Винницкая область
   code:  5
   alias: ua-vinnic
@@ -118,7 +110,21 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-# UA-40   Севастополь город
+- name:  Севастополь
+  code:  40
+  alias: ua-sevastopol
+  srcalias:  UA
+  bound: UA-40
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Крым
+  code:  43
+  alias: ua-krym
+  srcalias:  UA
+  bound: UA-43
+  pre_clip: 1
+  skip_mapset: 1
 
 - name:  Луганская область
   code:  44
@@ -255,6 +261,7 @@ update_cfg:        0
     - ua-ivanofr
     - ua-kiev
     - ua-kirovogr
+    - ua-sevastopol
     - ua-krym
     - ua-lvov
     - ua-nikolaev
