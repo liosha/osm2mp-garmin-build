@@ -15,7 +15,7 @@ readme:         readme/readme.txt
 codepage:       1252
 keys:           -tl=ru --translit
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-#config_file_ftp:   ftp.yml
+config_file_ftp:   ftp.yml
 mp_threads_num:    1
 make_house_search: 1
 skip_mp_upload:    1
