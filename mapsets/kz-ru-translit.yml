@@ -1,0 +1,178 @@
+
+# Kazakhstan (RU.translit)
+# $Id$
+
+---
+
+prefix:         full-translit
+countrycode:    KZ
+countryname:    Kazakhstan
+filename:       kazakhstan
+fid:            5717
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=ru --translit
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+#config_file_ftp:   ftp.yml
+mp_threads_num:    1
+make_house_search: 1
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+# KZ-AST  Астана  город
+
+- name:  Astana
+  code:  1
+  alias: kz-astana
+  srcalias:  KZ
+  bound: KZ-AST
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Akmolinskaya oblast
+  code:  2
+  alias: kz-akmol
+  srcalias:  KZ
+  bound: KZ-AKM
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+
+- name:  Aktubinskaya oblast
+  code:  3
+  alias: kz-aktub
+  srcalias:  KZ
+  bound: KZ-AKT
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Almatinskaya oblast
+  code:  4
+  alias: kz-almat
+  srcalias:  KZ
+  bound: KZ-ALM
+  pre_clip: 1
+  skip_mapset: 1
+
+# KZ-ALA  Алма Ата    город 
+
+- name:  Atyrauskaya oblast
+  code:  6
+  alias: kz-atyr
+  srcalias:  KZ
+  bound: KZ-ATY
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Vostochno-Kazakhstanskaya oblast
+  code:  7
+  alias: kz-vost
+  srcalias:  KZ
+  bound: KZ-VOS
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Zhambylskaya oblast
+  code:  8
+  alias: kz-zhamb
+  srcalias:  KZ
+  bound: KZ-ZHA
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Zapadno-Kazakstanskaya oblast
+  code:  9
+  alias: kz-zap
+  srcalias:  KZ
+  bound: KZ-ZAP
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Karagandinskaya oblast
+  code:  10
+  alias: kz-karag
+  srcalias:  KZ
+  bound: KZ-KAR
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Kostanayskaya oblast
+  code:  11
+  alias: kz-kostan
+  srcalias:  KZ
+  bound: KZ-KUS
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Kyzylordinskaya oblast
+  code:  12
+  alias: kz-kyzyl
+  srcalias:  KZ
+  bound: KZ-KZY
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Mangistauskaya oblast
+  code:  13
+  alias: kz-mangis
+  srcalias:  KZ
+  bound: KZ-MAN
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Pavlodarstaya oblast
+  code:  14
+  alias: kz-pavlo
+  srcalias:  KZ
+  bound: KZ-PAV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Severo-Kazakhstanskaya oblast
+  code:  15
+  alias: kz-sever
+  srcalias:  KZ
+  bound: KZ-SEV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Uzhno-Kazakhstanskaya oblast
+  code:  16
+  alias: kz-yuzh
+  srcalias:  KZ
+  bound: KZ-YUZ
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name: Kazakhstan
+  fid: 5701
+  filename: kazakhstan
+  make_house_search: 1
+  parts:
+    - kz-astana
+    - kz-akmol
+    - kz-aktub
+    - kz-almat
+    - kz-atyr
+    - kz-vost
+    - kz-zhamb
+    - kz-zap
+    - kz-karag
+    - kz-kostan
+    - kz-kyzyl
+    - kz-mangis
+    - kz-pavlo
+    - kz-sever
+    - kz-yuzh
+
