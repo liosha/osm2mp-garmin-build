@@ -1,0 +1,8 @@
+﻿.TRANSLITERATION
+
+; Ossetian -> Cyrillic transliteration
+; $Id$
+
+.DATA
+æ	а
+Æ	А
