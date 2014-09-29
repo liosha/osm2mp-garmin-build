@@ -727,7 +727,7 @@ if ( $flags->{routing} ) {
                     if ( fix_close_nodes($nd1,$nd2) ) {
                         $fix_count_short++;
                         $fix_count++;
-                        print STDERR "\tfix short $roadid\n";
+#                        print STDERR "\tfix short $roadid\n";
                     }
                 }
                 if ( $count < 2 )  {
@@ -762,15 +762,15 @@ if ( $flags->{routing} ) {
                     my $nd=$tr->{node};
                     my $p=$tr->{$pos};
                     my $i=min($p,$#{$road{$wid}->{chain}})+1;
-                    print STDERR "\t$way $wid $pos $p i $i";
+#                    print STDERR "\t$way $wid $pos $p i $i";
                     while( --$i >= 0 ){
                         if ( $road{$wid}->{chain}->[$i] eq $nd ){
                             $tr->{$pos} = $i;
-                            print STDERR " new $i";
+#                            print STDERR " new $i";
                             last;
                         }
                     }
-                    print STDERR "\n";
+#                    print STDERR "\n";
                 }
             }
         }
@@ -1336,7 +1336,7 @@ sub write_turn_restriction {            # \%trest
     my ($tr) = @_;
 
     my $i = $tr->{fr_pos} - $tr->{fr_dir};
-    print STDERR "frp $tr->{fr_pos} frd $tr->{fr_dir} i $i frw $tr->{fr_way}}\n";
+#    print STDERR "frp $tr->{fr_pos} frd $tr->{fr_dir} i $i frw $tr->{fr_way}}\n";
     while ( !$nodid{ $road{$tr->{fr_way}}->{chain}->[$i] }  &&  $i >= 0  &&  $i < $#{$road{$tr->{fr_way}}->{chain}} ) {
         $i -= $tr->{fr_dir};
     }
@@ -2202,6 +2202,9 @@ sub _get_result_object_params {
                 $obj->{tag}->{ref},
                 @{ $road_ref{ $obj->{id} } || [] }
             );
+        for my $r (@refs) {
+            $r = name_from_list(ref => {ref => $r});
+        }
         $info{refs} = \@refs  if @refs;
     }
 
