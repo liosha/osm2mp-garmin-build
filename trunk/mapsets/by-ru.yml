@@ -1,4 +1,7 @@
 
+# Belarus (RU)
+# $Id$
+
 # Common settings
 
 ---
@@ -7,13 +10,18 @@ prefix:         full-ru
 countrycode:    BY
 countryname:    Беларусь
 filename:       belarus
-fid:            972
-config:         osm2mp/cfg/default.cfg
-keys:           -tl=ru --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1251 --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-mp_threads_num:    2
-make_house_search: 1
+fid:            5721
+codepage:       1251
+config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+keys:           -tl=ru --textfilter PrepareCP1251 
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+mp_threads_num:    1
+make_house_search: 1
+skip_mp_upload:    1   
+update_cfg:        0
 
 
 # Regions
@@ -76,7 +84,7 @@ typ:            open-cfg/osm.typ
 ---
 
 - name: Беларусь
-  fid: 972
+  fid: 5721
   filename: belarus
   make_house_search: 1
   parts:
@@ -86,4 +94,5 @@ typ:            open-cfg/osm.typ
     - by-grodno
     - by-minsk
     - by-mogilev
+
 
