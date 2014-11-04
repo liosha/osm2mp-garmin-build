@@ -1,0 +1,33 @@
+# Cyprus mapset (EN)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    CY
+countryname:    Republic of Cyprus
+filename:       cyprus
+fid:            5722
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=en -dl=el 
+config_file_ftp:   ftp.yml
+make_house_search: 1
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+- name:  Republic of Cyprus
+  code:  0
+  alias: cyprus
+  #bound: cy
+  srcurl: http://download.geofabrik.de/europe/cyprus-latest.osm.pbf
+  clipbound: yes
+
