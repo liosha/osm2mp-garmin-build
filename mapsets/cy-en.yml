@@ -30,4 +30,6 @@ skip_mp_upload:    1
   #bound: cy
   srcurl: http://download.geofabrik.de/europe/cyprus-latest.osm.pbf
   clipbound: yes
+  keys: --water-back
+
 
