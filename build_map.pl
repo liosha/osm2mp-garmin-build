@@ -417,7 +417,8 @@ sub _build_mp {
     logg( "Compressing MP for '$reg->{alias}'" );
     move_mask("$mapset_dir/$reg->{mapid}.*","$regdir");
     copy_mask("$regdir/$reg->{mapid}.mp","$mapset_dir");
-
+    copy_mask("$reg->{poly}","$regdir");
+    
     my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.mp.7z";
     logg("unlink $arc_file") if $DEBUG;
     unlink $arc_file;
@@ -436,6 +437,33 @@ sub _build_mp {
     
     return; 
 } 
+
+sub _arc_mp {
+    my ($alias, $parts, $pl) = @_;
+
+    logg( "Packing mapset '$alias'" );
+    my $arcdir = "$mapset_dir/${alias}_$settings->{today}";
+    mkdir("$arcdir");
+    my $arc_path = "$basedir/_rel/$settings->{prefix}.${alias}.mp.7z";
+    logg("unlink $arc_path") if $DEBUG;
+    unlink $arc_path;
+    
+    for my $part (@$parts){
+        my $part_path = "$basedir/_rel/$settings->{prefix}.${part}.mp.7z";
+        _qx( arc => "e $part_path -y -i!*/*.* -o$arcdir >$devnull 2>$devnull" );
+    }
+    _qx( arc => "a -y $arc_path $arcdir >$devnull 2>$devnull" );
+    logg("remove directory '$arcdir'") if $DEBUG;
+    rmtree("$arcdir");
+    
+    $pl->enqueue(
+        { alias => $alias, role => 'MP', file => $arc_path },
+        block => 'upload',
+    );
+
+    return;
+}
+
 
 
 ##  Thread workers
@@ -528,17 +556,21 @@ sub build_img {
 sub build_mapset {
     my ($mapset, $pl) = @_;
     my $house_search= $settings->{make_house_search} && $mapset->{make_house_search} ;
+    my $skip_mp_upload = exists($mapset->{skip_mp_upload}) ? ($mapset->{skip_mp_upload}) : ($settings->{skip_mp_upload}); 
 
-    logg("Preparing mapset '$mapset->{filename}' (@{$mapset->{parts}})");
+    logg("Mapset '$mapset->{filename}' (@{$mapset->{parts}})");
+    _arc_mp($mapset->{filename},\@{$mapset->{parts}}, $pl) unless $skip_mp_upload; 
+
+    logg("Preparing mapset '$mapset->{filename}'");
     my %parts = map { $_ => 1 } @{$mapset->{parts}};
     my @files;
     for my $reg (@$regions){
         if(exists($parts{$reg->{alias}})) { 
             push @files, "$reg->{mapid}.img" if ( -f "$mapset_dir/$reg->{mapid}.img" );
             if ($house_search) {
-            my $mapids=$reg->{mapid} + 10000000;
-            push @files, "${mapids}.img" if ( -f "$mapset_dir/${mapids}.img" );
-        }
+                my $mapids=$reg->{mapid} + 10000000;
+                push @files, "${mapids}.img" if ( -f "$mapset_dir/${mapids}.img" );
+            }
         }
     }
     

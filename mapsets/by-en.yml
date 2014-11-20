@@ -80,6 +80,7 @@ typ:            open-cfg/osm.typ
   fid: 978
   filename: belarus
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - by-brest
     - by-vitebsk

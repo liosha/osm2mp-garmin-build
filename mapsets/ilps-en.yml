@@ -30,5 +30,4 @@ skip_dl_bounds:    0
   alias: israel-palestine
   srcurl: http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
   bound: il-ps
-  clipbound: yes
 
