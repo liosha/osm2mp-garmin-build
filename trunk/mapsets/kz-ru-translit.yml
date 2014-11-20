@@ -159,6 +159,7 @@ skip_mp_upload:    1
   fid: 5717
   filename: kazakhstan
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - kz-astana
     - kz-akmol

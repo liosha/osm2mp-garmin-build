@@ -168,6 +168,7 @@ skip_mp_upload:    1
   fid: 5710
   filename: estonia
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - ee-valga
     - ee-viljandi

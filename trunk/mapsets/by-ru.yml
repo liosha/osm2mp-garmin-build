@@ -87,6 +87,7 @@ update_cfg:        0
   fid: 5721
   filename: belarus
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - by-brest
     - by-vitebsk

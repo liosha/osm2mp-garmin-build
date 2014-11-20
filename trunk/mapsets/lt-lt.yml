@@ -122,6 +122,7 @@ skip_mp_upload:    1
   fid: 5703
   filename: lithuania
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - lt-alytaus
     - lt-kauno

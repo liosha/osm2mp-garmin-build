@@ -67,6 +67,7 @@ skip_dl_bounds:    0
   fid: 5719
   filename: georgia
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - georgia-ka
     - abkhazia

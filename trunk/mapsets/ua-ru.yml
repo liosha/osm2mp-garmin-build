@@ -248,6 +248,7 @@ update_cfg:        0
   fid: 5702
   filename: ukraine
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - ua-vinnic
     - ua-volyn

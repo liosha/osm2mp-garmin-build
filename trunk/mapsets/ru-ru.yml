@@ -498,443 +498,64 @@ skip_img_build:    0
   srcalias: UA
   pre_clip: 1
 
-#- name: МО город Краснодар
-#  code: 201
-#  bound: 269701
-#  alias: kda-krasnodar
-#  srcalias: RU-KDA
-#  pre_clip: 1
-#  skip_mapset: 1
-#  skip_mp_upload: 1
-
-#- name: Динской район
-#  code: 202
-#  bound: 364116
-#  alias: kda-din
-#  srcalias: RU-KDA
-#  pre_clip: 1
-#  skip_mapset: 1
-#  skip_mp_upload: 1
-
-- name: МО город Краснодар, Динской район
-  code: 201
-  alias: kda-krasnodin
-  srcalias: RU-KDA
+- name:  Краснодарский край (1)
+  code:  201
+  alias: kda-1
+  srcalias:  RU-KDA
   pre_clip: 1
-  onering: yes
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name: Красноармейский район
-  code: 203
-  alias: kda-krasnoarm
-  srcalias: RU-KDA
+- name:  Краснодарский край (21)
+  code:  202
+  alias: kda-21
+  srcalias:  RU-KDA
   pre_clip: 1
+  clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name: Северский район
-  code: 204
-  alias: kda-sever
-  srcalias: RU-KDA
+- name:  Краснодарский край (22)
+  code:  203
+  alias: kda-22
+  srcalias:  RU-KDA
   pre_clip: 1
+  clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name: Абинский район
-  code: 205
-  alias: kda-abin
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Славянский район
-  code: 206
-  alias: kda-slav
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Крымский район
-  code: 207
-  alias: kda-krym
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Темрюкский район
-  code: 208
-  alias: kda-temr
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: МО город-курорт Анапа
-  code: 209
-  alias: kda-anapa
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: МО город-герой Новороссийск
-  code: 210
-  alias: kda-novor
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Город-курорт Геленджик
-  code: 211
-  alias: kda-gelen
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: МО город Горячий Ключ
-  code: 212
-  alias: kda-gorkl
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Белореченский район
-  code: 213
-  alias: kda-belor
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Апшеронский район
-  code: 214
-  alias: kda-apsh
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Туапсинский район
-  code: 215
-  alias: kda-tuap
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Мостовский район
-  code: 216
-  alias: kda-most
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Ейский район
-  code: 217
-  alias: kda-eysk
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Щербиновский район
-  code: 218
-  alias: kda-scher
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Староминский район
-  code: 219
-  alias: kda-star
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Приморско-Ахтарский район
-  code: 220
-  alias: kda-prim
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Калининский район
-  code: 221
-  alias: kda-kalin
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Тимашевский район
-  code: 222
-  alias: kda-tima
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Брюховецкий район
-  code: 223
-  alias: kda-bruh
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Кущёвский район
-  code: 224
-  alias: kda-kusch
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Крыловский район
-  code: 225
-  alias: kda-kryl
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Каневской район
-  code: 226
-  alias: kda-kanev
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Ленинградский район
-  code: 227
-  alias: kda-lenin
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Лабинский район
-  code: 228
-  alias: kda-labin
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Отрадненский район
-  code: 229
-  alias: kda-otradn
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Успенский район
-  code: 230
-  alias: kda-uspen
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: МО Город Армавир
-  code: 231
-  alias: kda-armav
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-  onering: yes
-
-- name: Новокубанский район
-  code: 232
-  alias: kda-novokub
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-  onering: yes
-
-- name: Курганинский район
-  code: 233
-  alias: kda-kurg
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Гулькевичский район
-  code: 234
-  alias: kda-gulk
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Кавказский район
-  code: 235
-  alias: kda-kavk
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Белоглинский район
-  code: 236
-  alias: kda-belog
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Новопокровский район
-  code: 237
-  alias: kda-novopokr
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Павловский район
-  code: 238
-  alias: kda-pavl
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Кореновский район
-  code: 239
-  alias: kda-koren
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Тбилисский район
-  code: 240
-  alias: kda-tbil
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Тихорецкий район
-  code: 241
-  alias: kda-tihor
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Выселковский район
-  code: 242
-  alias: kda-vysel
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Усть-Лабинский район
-  code: 243
-  alias: kda-ustlab
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Сочи
-  code: 244
-  alias: kda-sochi
-  srcalias: RU-KDA
-  pre_clip: 1
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name: Краснодарский край (море)
-  code: 245
+- name:  Краснодарский край (море)
+  code:  204
   alias: kda-sea
-  srcalias: RU-KDA
+  srcalias:  RU-KDA
   pre_clip: 1
   skip_mapset: 1
   skip_mp_upload: 1
   keys: --water-back
 
 
+
 # Mapsets
 
 ---
-
 
 - name: Краснодарский край
   fid: 509
   filename: krasnodar
   make_house_search: 1
+  skip_mp_upload: 0
   parts:
-#    - kda-krasnodar
-#    - kda-din
-    - kda-krasnodin
-    - kda-krasnoarm
-    - kda-sever
-    - kda-abin
-    - kda-slav
-    - kda-krym
-    - kda-temr
-    - kda-anapa
-    - kda-novor
-    - kda-gelen
-    - kda-gorkl
-    - kda-belor
-    - kda-apsh
-    - kda-tuap
-    - kda-most
-    - kda-eysk
-    - kda-scher
-    - kda-star
-    - kda-prim
-    - kda-kalin
-    - kda-tima
-    - kda-bruh
-    - kda-kusch
-    - kda-kryl
-    - kda-kanev
-    - kda-lenin
-    - kda-labin
-    - kda-otradn
-    - kda-uspen
-    - kda-armav
-    - kda-novokub
-    - kda-kurg
-    - kda-gulk
-    - kda-kavk
-    - kda-belog
-    - kda-novopokr
-    - kda-pavl
-    - kda-koren
-    - kda-tbil
-    - kda-tihor
-    - kda-vysel
-    - kda-ustlab
-    - kda-sochi
+    - kda-1
+    - kda-21
+    - kda-22
     - kda-sea
 
 - name: Московская область
   fid: 510
   filename: mosobl
   make_house_search: 1
+  skip_mp_upload: 0
   parts:
     - mosobl-west
     - mosobl-east
@@ -943,6 +564,7 @@ skip_img_build:    0
   fid: 501
   filename: cfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - belgorod
     - bryansk
@@ -969,6 +591,7 @@ skip_img_build:    0
   fid: 502
   filename: szfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - karel
     - komi
@@ -986,6 +609,7 @@ skip_img_build:    0
   fid: 503
   filename: ufo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - adygeya
     - kalmyk
@@ -993,57 +617,16 @@ skip_img_build:    0
     - astrakhan
     - volgograd
     - rostov
-#    - kda-krasnodar
-#    - kda-din
-    - kda-krasnodin
-    - kda-krasnoarm
-    - kda-sever
-    - kda-abin
-    - kda-slav
-    - kda-krym
-    - kda-temr
-    - kda-anapa
-    - kda-novor
-    - kda-gelen
-    - kda-gorkl
-    - kda-belor
-    - kda-apsh
-    - kda-tuap
-    - kda-most
-    - kda-eysk
-    - kda-scher
-    - kda-star
-    - kda-prim
-    - kda-kalin
-    - kda-tima
-    - kda-bruh
-    - kda-kusch
-    - kda-kryl
-    - kda-kanev
-    - kda-lenin
-    - kda-labin
-    - kda-otradn
-    - kda-uspen
-    - kda-armav
-    - kda-novokub
-    - kda-kurg
-    - kda-gulk
-    - kda-kavk
-    - kda-belog
-    - kda-novopokr
-    - kda-pavl
-    - kda-koren
-    - kda-tbil
-    - kda-tihor
-    - kda-vysel
-    - kda-ustlab
-    - kda-sochi
+    - kda-1
+    - kda-21
+    - kda-22
     - kda-sea
 
 - name: Дальневосточный округ
   fid: 504
   filename: dfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - yakut
     - kamch
@@ -1059,6 +642,7 @@ skip_img_build:    0
   fid: 505
   filename: sfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - altay
     - buryat
@@ -1077,6 +661,7 @@ skip_img_build:    0
   fid: 506
   filename: urfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - kurgan
     - sverdl
@@ -1089,6 +674,7 @@ skip_img_build:    0
   fid: 507
   filename: pfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - bashkir
     - mariyel
@@ -1109,6 +695,7 @@ skip_img_build:    0
   fid: 508
   filename: skfo
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - dagestan
     - ingush
@@ -1122,6 +709,7 @@ skip_img_build:    0
   fid: 511
   filename: kfo 
   make_house_search: 1
+  skip_mp_upload: 1
   parts:
     - krym
     - sevastopol
@@ -1130,6 +718,7 @@ skip_img_build:    0
   fid: 400
   filename: russia
   make_house_search: 0
+  skip_mp_upload: 1
   parts:
     - adygeya
     - bashkir
@@ -1216,53 +805,10 @@ skip_img_build:    0
     - khanty
     - chukot
     - yamal
-#    - kda-krasnodar
-#    - kda-din
-    - kda-krasnodin
-    - kda-krasnoarm
-    - kda-sever
-    - kda-abin
-    - kda-slav
-    - kda-krym
-    - kda-temr
-    - kda-anapa
-    - kda-novor
-    - kda-gelen
-    - kda-gorkl
-    - kda-belor
-    - kda-apsh
-    - kda-tuap
-    - kda-most
-    - kda-eysk
-    - kda-scher
-    - kda-star
-    - kda-prim
-    - kda-kalin
-    - kda-tima
-    - kda-bruh
-    - kda-kusch
-    - kda-kryl
-    - kda-kanev
-    - kda-lenin
-    - kda-labin
-    - kda-otradn
-    - kda-uspen
-    - kda-armav
-    - kda-novokub
-    - kda-kurg
-    - kda-gulk
-    - kda-kavk
-    - kda-belog
-    - kda-novopokr
-    - kda-pavl
-    - kda-koren
-    - kda-tbil
-    - kda-tihor
-    - kda-vysel
-    - kda-ustlab
-    - kda-sochi
+    - kda-1
+    - kda-21
+    - kda-22
     - kda-sea
     - krym
     - sevastopol
-
 
