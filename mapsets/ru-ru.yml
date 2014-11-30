@@ -100,7 +100,9 @@ skip_img_build:    0
   code:  14
   alias: yakut
   srcalias:  RU-SA
-  keys:  --noshorelines --mp-header TreSize=4000
+  onering: yes
+  #keys:  --noshorelines --mp-header TreSize=4000
+  keys:  --mp-header TreSize=4000
 
 - name:  Северная Осетия
   code:  15
@@ -153,7 +155,9 @@ skip_img_build:    0
   code:  24
   alias: krasnoyarsk
   srcalias:  RU-KYA
-  keys:  --noshorelines --mp-header TreSize=4000
+  onering: yes
+  #keys:  --noshorelines --mp-header TreSize=4000
+  keys:  --mp-header TreSize=4000
 
 - name:  Приморский край
   code:  25
@@ -180,6 +184,7 @@ skip_img_build:    0
   code:  29
   alias: arkhan
   srcalias:  RU-ARK
+  onering: yes
   keys: --mp-header TreSize=2048
 
 - name:  Астраханская область
@@ -299,24 +304,6 @@ skip_img_build:    0
 #  srcalias:  RU-MOS
 ##  onering: yes
 
-- name:  Московская область (запад)
-  code:  250
-  alias: mosobl-west
-  srcalias:  RU-MOS
-  pre_clip: 1
-  clipbound: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Московская область (восток)
-  code:  251
-  alias: mosobl-east
-  srcalias:  RU-MOS
-  pre_clip: 1
-  clipbound: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
 - name:  Москва
   code:  77
   alias: moscow
@@ -397,13 +384,14 @@ skip_img_build:    0
   alias: saratov
   srcalias:  RU-SAR
  
-- name:  Сахалинская область
-  code:  65
-  alias: sakhalin
-  srcalias:  RU-SAK
-  keys:  --waterback
-  onering: yes
- 
+# preview map hides islands, when region is built as one piece
+#- name:  Сахалинская область
+#  code:  65
+#  alias: sakhalin
+#  srcalias:  RU-SAK
+#  keys:  --waterback
+#  onering: yes
+
 - name:  Свердловская область
   code:  66
   alias: sverdl
@@ -468,6 +456,7 @@ skip_img_build:    0
 - name:  Ненецкий АО
   code:  83
   alias: nenec
+  onering: yes
   srcalias:  RU-NEN
  
 - name:  Ханты-Мансийский АО (Югра)
@@ -478,13 +467,16 @@ skip_img_build:    0
 - name:  Чукотский АО
   code:  87
   alias: chukot
+  onering: yes
   srcalias:  RU-CHU
+  keys:  --mp-header TreSize=4000
 
 - name:  Ямало-Ненецкий АО
   code:  89
   alias: yamal
   srcalias:  RU-YAN
-  keys:  --noshorelines --mp-header TreSize=4000
+  #keys:  --noshorelines --mp-header TreSize=4000
+  keys:  --mp-header TreSize=4000
 
 - name:  Республика Крым
   code:  82
@@ -534,6 +526,54 @@ skip_img_build:    0
   skip_mp_upload: 1
   keys: --water-back
 
+- name:  Московская область (запад)
+  code:  250
+  alias: mosobl-west
+  srcalias:  RU-MOS
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (восток)
+  code:  251
+  alias: mosobl-east
+  srcalias:  RU-MOS
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Остров Сахалин
+  code:  211
+  alias: sakhalin-island
+  srcalias:  RU-SAK
+  keys:  --waterback
+  onering: yes
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Южные Курилы
+  code:  212
+  alias: sakhalin-uzkur
+  srcalias:  RU-SAK
+  keys:  --waterback
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Северные Курилы
+  code:  213
+  alias: sakhalin-sevkur
+  srcalias:  RU-SAK
+  keys:  --waterback
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
 
 # Mapsets
@@ -559,6 +599,17 @@ skip_img_build:    0
   parts:
     - mosobl-west
     - mosobl-east
+
+- name: Сахалинская область
+  fid: 512
+  filename: sakhalin
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - sakhalin-island
+    - sakhalin-uzkur
+    - sakhalin-sevkur
+
 
 - name: Центральный округ
   fid: 501
@@ -634,7 +685,10 @@ skip_img_build:    0
     - khabar
     - amur
     - magadan
-    - sakhalin
+#    - sakhalin
+    - sakhalin-island
+    - sakhalin-uzkur
+    - sakhalin-sevkur
     - evrey
     - chukot
 
@@ -788,7 +842,10 @@ skip_img_build:    0
     - ryazan
     - samar
     - saratov
-    - sakhalin
+#    - sakhalin
+    - sakhalin-island
+    - sakhalin-uzkur
+    - sakhalin-sevkur
     - sverdl
     - smol
     - tambov
