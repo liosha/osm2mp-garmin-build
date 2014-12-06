@@ -467,7 +467,7 @@ skip_img_build:    0
 - name:  Чукотский АО
   code:  87
   alias: chukot
-  onering: yes
+  #onering: yes
   srcalias:  RU-CHU
   keys:  --mp-header TreSize=4000
 
