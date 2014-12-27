@@ -87,6 +87,7 @@ skip_mp_upload:    1
   fid: 5706
   filename: turkey
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - tr-aegean
     - tr-black
