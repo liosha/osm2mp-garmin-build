@@ -16,7 +16,7 @@ readme:         readme/readme_t.txt
 codepage:       1252
 keys:           -tl=en -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter Unidecode
 url_base:       http://download.geofabrik.de/europe/
-#config_file_ftp:   ftp.yml
+config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
@@ -87,6 +87,7 @@ skip_mp_upload:    1
   fid: 5707
   filename: turkey
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - tr-aegean
     - tr-black
