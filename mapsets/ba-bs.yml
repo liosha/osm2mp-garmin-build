@@ -1,0 +1,39 @@
+
+# Bosnia and Herzegovina (BS)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-bs
+countrycode:    BA
+countryname:    Bosna i Hercegovina
+filename:       bosnia-herzegovina
+fid:            5724
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1250
+keys:           -tl=bs -dl=bs --textfilter PrepareCP1250
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Bosna i Hercegovina
+  code:  0
+  alias: bosnia-herzegovina
+  srcalias:  bosnia-herzegovina-latest
+
+
+
+# Mapsets
+
+---
+
+
