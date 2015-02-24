@@ -1,0 +1,39 @@
+
+# Serbia (SR)
+# $Id$
+
+# Common settings
+
+---
+
+prefix:         full-sr
+countrycode:    RS
+countryname:    Србија
+filename:       serbia
+fid:            5726
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1251
+keys:           -tl=sr -dl=sr --textfilter PrepareCP1251
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Србија
+  code:  0
+  alias: serbia
+  srcalias:  serbia-latest
+
+
+
+# Mapsets
+
+---
+
+

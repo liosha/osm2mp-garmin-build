@@ -21,6 +21,22 @@
 	- Выделить карту (именно выделить, а не просто щелкнуть)
 	- Нажать кнопку "Отправить на устройство" на панели инструментов
 
+УСТАНОВКА НА OSX
+
+вариант А
+	- Установить карту на ПК с Windows
+	- Преобразовать карту с помощью MapConverter от Garmin
+	  http://www8.garmin.com/support/download_details.jsp?id=3897
+	- Загрузить на ПК с OSX программой Map Manager
+	  http://www8.garmin.com/osx/
+
+вариант Б
+	- Загрузить утилиту, любезно предоставленной пользователем kilex:
+	  http://cl.ly/ZJnw 
+	- Распаковать архив с картой
+	- Скопировать утилиту в папку с картой и запустить
+	  http://forum.openstreetmap.org/viewtopic.php?pid=487666#p487666
+
 ПОДДЕРЖКА
 
 	http://forum.openstreetmap.org/viewtopic.php?id=2367

@@ -1,7 +1,8 @@
+#$Id$
 ---
 
 #geofabrik
-bosnia-herzegovina: 214908
+bosnia-herzegovina: 2528142
 bulgaria: 186382
 croatia: 214885
 greece: 192307
@@ -13,7 +14,7 @@ macedonia: 53293
 moldova: 58974
 montenegro: 53296
 romania: 90689
-serbia: 53294
+serbia: 1741311
 slovenia: 218657
 
 # gis-lab (deprecated, use iso codes instead)
