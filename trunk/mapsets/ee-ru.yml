@@ -17,7 +17,7 @@ readme:         readme/readme.txt
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
 keys:           --textfilter PrepareCP1251 --default-lang=et --lt-equal ru=en
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
-#config_file_ftp:   ftp.yml
+config_file_ftp:   ftp.yml
 continue_mode:     1
 make_house_search: 1
 mp_threads_num:    1
@@ -167,6 +167,7 @@ skip_mp_upload:    1
   fid: 5700
   filename: estonia
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - ee-valga
     - ee-viljandi
