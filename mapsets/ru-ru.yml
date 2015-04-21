@@ -1,6 +1,5 @@
 
 # Russia (RU)
-# $Id$
 
 ---
 
@@ -68,6 +67,7 @@ skip_img_build:    0
   code:  8
   alias: kalmyk
   srcalias:  RU-KL
+  keys:  --mp-header TreSize=2048
   
 - name:  Карачаево-Черкесия
   code:  9
@@ -282,11 +282,11 @@ skip_img_build:    0
   fixmultipoly: yes
  
 
-- name:  Ленинградская область
-  code:  47
-  alias: leningrad
-  srcalias:  RU-LEN
-  onering: yes
+#- name:  Ленинградская область
+#  code:  47
+#  alias: leningrad
+#  srcalias:  RU-LEN
+#  onering: yes
 
 - name:  Липецкая область
   code:  48
@@ -447,6 +447,7 @@ skip_img_build:    0
   code:  76
   alias: yarosl
   srcalias:  RU-YAR
+  fixmultipoly: yes
  
 - name:  Еврейская АО
   code:  79
@@ -575,6 +576,24 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Ленинградская область (запад)
+  code:  214
+  alias: leningrad-west
+  srcalias:  RU-LEN
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ленинградская область (восток)
+  code:  215
+  alias: leningrad-east
+  srcalias:  RU-LEN
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -590,6 +609,15 @@ skip_img_build:    0
     - kda-21
     - kda-22
     - kda-sea
+
+- name: Ленинградская область
+  fid: 513
+  filename: leningrad
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - leningrad-west
+    - leningrad-east
 
 - name: Московская область
   fid: 510
@@ -649,7 +677,9 @@ skip_img_build:    0
     - arkhan
     - vologda
     - kalinin
-    - leningrad
+#    - leningrad
+    - leningrad-east
+    - leningrad-west
     - murmansk
     - novgorod
     - pskov
@@ -821,7 +851,9 @@ skip_img_build:    0
     - kurgan
     - kursk
     - stpeter
-    - leningrad
+#    - leningrad
+    - leningrad-east
+    - leningrad-west
     - lipetsk
     - magadan
 #    - mosobl
