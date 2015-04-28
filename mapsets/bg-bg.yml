@@ -1,5 +1,4 @@
 # Bulgaria mapset (BG)
-# $Id$
 
 # Common settings
 
@@ -15,7 +14,7 @@ typ:            open-cfg/osm.typ
 readme:         readme/readme.txt
 codepage:       1251
 keys:           -tl=bg --textfilter PrepareCP1251 
-url_base:       http://download.geofabrik.de/openstreetmap/europe/
+url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 mp_threads_num:    2
 make_house_search: 1
@@ -29,7 +28,7 @@ skip_mp_upload:    1
 - name:  Благоевград
   code:  1
   alias: bg-blagoe
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-01
   pre_clip: 1
   skip_mapset: 1
@@ -37,7 +36,7 @@ skip_mp_upload:    1
 - name:  Бургас
   code:  2
   alias: bg-burgas
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-02
   pre_clip: 1
   skip_mapset: 1
@@ -45,7 +44,7 @@ skip_mp_upload:    1
 - name:  Варна
   code:  3
   alias: bg-varna
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-03
   pre_clip: 1
   skip_mapset: 1
@@ -53,7 +52,7 @@ skip_mp_upload:    1
 - name:  Велико Търново
   code:  4
   alias: bg-velter
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-04
   pre_clip: 1
   skip_mapset: 1
@@ -61,7 +60,7 @@ skip_mp_upload:    1
 - name:  Видин
   code:  5
   alias: bg-vidin
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-05
   pre_clip: 1
   skip_mapset: 1
@@ -69,7 +68,7 @@ skip_mp_upload:    1
 - name:  Враца
   code:  6
   alias: bg-vraca
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-06
   pre_clip: 1
   skip_mapset: 1
@@ -77,7 +76,7 @@ skip_mp_upload:    1
 - name:  Габрово
   code:  7
   alias: bg-gabrov
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-07
   pre_clip: 1
   skip_mapset: 1
@@ -85,7 +84,7 @@ skip_mp_upload:    1
 - name:  Добрич
   code:  8
   alias: bg-dobric
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-08
   pre_clip: 1
   skip_mapset: 1
@@ -93,7 +92,7 @@ skip_mp_upload:    1
 - name:  Кърджали
   code:  9
   alias: bg-krjal
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-09
   pre_clip: 1
   skip_mapset: 1
@@ -101,7 +100,7 @@ skip_mp_upload:    1
 - name:  Кюстендил
   code:  10
   alias: bg-kusten
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-10
   pre_clip: 1
   skip_mapset: 1
@@ -109,7 +108,7 @@ skip_mp_upload:    1
 - name:  Ловеч
   code:  11
   alias: bg-lovec
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-11
   pre_clip: 1
   skip_mapset: 1
@@ -117,7 +116,7 @@ skip_mp_upload:    1
 - name:  Монтана
   code:  12
   alias: bg-montan
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-12
   pre_clip: 1
   skip_mapset: 1
@@ -125,7 +124,7 @@ skip_mp_upload:    1
 - name:  Пазарджик
   code:  13
   alias: bg-pazar
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-13
   pre_clip: 1
   skip_mapset: 1
@@ -133,7 +132,7 @@ skip_mp_upload:    1
 - name:  Перник
   code:  14
   alias: bg-pernik
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-14
   pre_clip: 1
   skip_mapset: 1
@@ -141,7 +140,7 @@ skip_mp_upload:    1
 - name:  Плевен
   code:  15
   alias: bg-pleven
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-15
   pre_clip: 1
   skip_mapset: 1
@@ -149,7 +148,7 @@ skip_mp_upload:    1
 - name:  Пловдив
   code:  16
   alias: bg-plov
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-16
   pre_clip: 1
   skip_mapset: 1
@@ -157,7 +156,7 @@ skip_mp_upload:    1
 - name:  Разград
   code:  17
   alias: bg-razgr
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-17
   pre_clip: 1
   skip_mapset: 1
@@ -165,7 +164,7 @@ skip_mp_upload:    1
 - name:  Русе
   code:  18
   alias: bg-ruse
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-18
   pre_clip: 1
   skip_mapset: 1
@@ -173,7 +172,7 @@ skip_mp_upload:    1
 - name:  Силистра
   code:  19
   alias: bg-selist
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-19
   pre_clip: 1
   skip_mapset: 1
@@ -181,7 +180,7 @@ skip_mp_upload:    1
 - name:  Сливен
   code:  20
   alias: bg-sliven
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-20
   pre_clip: 1
   skip_mapset: 1
@@ -189,7 +188,7 @@ skip_mp_upload:    1
 - name:  Смолян
   code:  21
   alias: bg-smolan
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-21
   pre_clip: 1
   skip_mapset: 1
@@ -197,7 +196,7 @@ skip_mp_upload:    1
 - name:  София
   code:  22
   alias: bg-sofia
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-22
   pre_clip: 1
   skip_mapset: 1
@@ -205,7 +204,7 @@ skip_mp_upload:    1
 - name:  София-град
   code:  23
   alias: bg-sofiag
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-23
   pre_clip: 1
   skip_mapset: 1
@@ -213,7 +212,7 @@ skip_mp_upload:    1
 - name:  Стара Загора
   code:  24
   alias: bg-zagora
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-24
   pre_clip: 1
   skip_mapset: 1
@@ -221,7 +220,7 @@ skip_mp_upload:    1
 - name:  Търговище
   code:  25
   alias: bg-trgov
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-25
   pre_clip: 1
   skip_mapset: 1
@@ -229,7 +228,7 @@ skip_mp_upload:    1
 - name:  Хасково
   code:  26
   alias: bg-haskov
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-26
   pre_clip: 1
   skip_mapset: 1
@@ -237,7 +236,7 @@ skip_mp_upload:    1
 - name:  Шумен
   code:  27
   alias: bg-shumen
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-27
   pre_clip: 1
   skip_mapset: 1
@@ -245,7 +244,7 @@ skip_mp_upload:    1
 - name:  Ямбол
   code:  28
   alias: bg-yambol
-  srcalias: bulgaria
+  srcalias: bulgaria-latest
   bound: BG-28
   pre_clip: 1
   skip_mapset: 1
