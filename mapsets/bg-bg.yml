@@ -257,6 +257,7 @@ skip_mp_upload:    1
   fid: 5711
   filename: bulgaria
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - bg-blagoe
     - bg-burgas
