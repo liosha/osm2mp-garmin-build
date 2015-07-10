@@ -174,6 +174,7 @@ skip_img_build:    0
   alias: khabar
   srcalias:  RU-KHA
   keys: --mp-header TreSize=2048
+  fixmultipoly: yes
  
 - name:  Амурская область
   code:  28
@@ -453,6 +454,7 @@ skip_img_build:    0
   code:  79
   alias: evrey
   srcalias:  RU-YEV
+  fixmultipoly: yes
  
 - name:  Ненецкий АО
   code:  83
