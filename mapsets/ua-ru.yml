@@ -1,5 +1,5 @@
 # Ukraine mapset (RU,ya.translate)
-# $Id$
+# $Id: ua-ru.yml 143 2014-11-20 16:34:05Z gryphon.osm@gmail.com $
 
 # Common settings
 
@@ -20,6 +20,7 @@ config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
+skip_dl_bounds:    1
 skip_mp_upload:    1
 update_cfg:        0
 

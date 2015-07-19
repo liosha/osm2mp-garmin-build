@@ -1,6 +1,6 @@
 
 # Estonia mapset (RU)
-# $Id$
+# $Id: ee-ru.yml 149 2015-03-05 12:58:51Z gryphon.osm@gmail.com $
 
 # Common settings
 
@@ -23,7 +23,7 @@ make_house_search: 1
 mp_threads_num:    1
 update_cfg:        0
 skip_dl_src:       0
-skip_dl_bounds:    0
+skip_dl_bounds:    1
 skip_img_build:    0
 skip_mp_upload:    1
 

@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 
-# $Id$
+# $Id: build_map.pl 143 2014-11-20 16:34:05Z gryphon.osm@gmail.com $
 
 use 5.010;
 use strict;
@@ -37,7 +37,7 @@ my $basedir = getcwd();
 
 # external commands required for building
 my %CMD = (
-    getbound    => "perl $basedir/getbound/getbound.pl -api op_de -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
+    getbound    => "perl $basedir/getbound/getbound.pl -api op_ru -singlerequest -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
     osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
@@ -501,18 +501,19 @@ sub get_bound {
     $reg->{bound} //= $reg->{alias};
     $reg->{poly} = "$basedir/_bounds/$reg->{bound}.poly";
     $reg->{pre_poly} = "$basedir/_bounds/$reg->{bound}-buf.poly" if $reg->{pre_clip};
+    my $srcfile = "$basedir/_bounds/$reg->{bound}.osm";
 
     return $reg if $settings->{skip_dl_bounds} || $reg->{skip_build};
 
     logg( "Downloading boundary for '$reg->{alias}'" );
     my $keys = $reg->{onering} ? '--onering' : q{};
     $keys = $reg->{clipbound} ? $keys . ' --clip' : $keys;
-    _qx( getbound => "$keys -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
+    _qx( getbound => "$keys -srcout \"$srcfile\" -o \"$reg->{poly}\" $reg->{bound} 2> $reg->{filebase}.getbound.log" );
     logg( "Error! Failed to get boundary for '$reg->{alias}'" )  if $?;
 
     if ( $reg->{pre_clip} ) {
-        logg( "Downloading pre-clip boundary for '$reg->{alias}'" );
-        _qx( getbound => "-o \"$reg->{pre_poly}\" --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
+        logg( "Creating pre-clip boundary for '$reg->{alias}'" );
+        _qx( getbound => "-file \"$srcfile\" -o \"$reg->{pre_poly}\" --offset 0.1 $reg->{bound} 2>> $reg->{filebase}.getbound.log" );
         logg( "Error! Failed to get pre-clip boundary for '$reg->{alias}'" )  if $?;
     }
 
