@@ -487,6 +487,8 @@ sub get_osm {
         if ( !$settings->{skip_dl_src} && !$reg->{skip_build} ) {
             logg( "Downloading source for '$reg->{alias}'" );
             _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+            my $ret_code = $?;
+            logg("Error! Can't download source for $remote_fn") if ( $ret_code ne 0 );
         }
         $got->{$url} = $reg->{source};
     }
