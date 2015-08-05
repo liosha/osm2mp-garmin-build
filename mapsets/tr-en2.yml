@@ -1,19 +1,19 @@
-# Turkey mapset (RU,ya.translate)
+# Turkey mapset (EN)
 
 # Common settings
 
 ---
 
-prefix:         full-ru
+prefix:         full-en
 countrycode:    TR
-countryname:    Турция
+countryname:    Turkey
 filename:       turkey
-fid:            5706
+fid:            5707
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-codepage:       1251
-readme:         readme/readme_t.txt
-keys:           -tl=ru -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter PrepareCP1251
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=en -dl=tr 
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
@@ -26,49 +26,49 @@ skip_mp_upload:    1
 
 ---
 
-- name:  Эгейский регион
+- name:  Aegean
   code:  1
   alias: tr-aegean
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Черноморский регион
+- name:  Black Sea
   code:  2
   alias: tr-black
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Центральная Анатолия
+- name:  Central Anatolia
   code: 3 
   alias: tr-c-anat
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Восточная Анатолия
+- name:  Eastern Anatolia
   code:  4
   alias: tr-e-anat
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Мраморноморский регион
+- name:  Marmara
   code:  5
   alias: tr-marmara
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Средиземноморский регион
+- name:  Mediterranean
   code:  6
   alias: tr-mediter
   srcalias:  turkey-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Юго-Восточная Анатолия
+- name:  Southeastern Anatolia
   code:  7
   alias: tr-se-anat
   srcalias:  turkey-latest
@@ -82,8 +82,8 @@ skip_mp_upload:    1
 
 ---
 
-- name: Турция
-  fid: 5706
+- name: Turkey
+  fid: 5707
   filename: turkey
   make_house_search: 1
   skip_mp_upload:    0

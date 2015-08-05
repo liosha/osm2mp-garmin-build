@@ -1,5 +1,6 @@
-
 # Russia (RU)
+
+# Common settings
 
 ---
 
@@ -174,11 +175,13 @@ skip_img_build:    0
   alias: khabar
   srcalias:  RU-KHA
   keys: --mp-header TreSize=2048
+  fixmultipoly: yes
  
 - name:  Амурская область
   code:  28
   alias: amur
   srcalias:  RU-AMU
+  fixmultipoly: yes
 
 - name:  Архангельская область
   code:  29
@@ -442,6 +445,7 @@ skip_img_build:    0
   code:  75
   alias: zabaikal
   srcalias:  RU-ZAB
+  fixmultipoly: yes
  
 - name:  Ярославская область
   code:  76
@@ -453,6 +457,7 @@ skip_img_build:    0
   code:  79
   alias: evrey
   srcalias:  RU-YEV
+  fixmultipoly: yes
  
 - name:  Ненецкий АО
   code:  83
