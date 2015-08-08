@@ -1,0 +1,38 @@
+# Cuba (ES)
+
+# Common settings
+
+---
+
+prefix:         full-es
+countrycode:    CU
+countryname:    Cuba
+filename:       cuba
+fid:            5728
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=es 
+url_base:       http://download.geofabrik.de/central-america/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+
+
+# Regions
+
+---
+
+- name:  Cuba
+  code:  0
+  alias: cuba
+  bound: cu
+  srcalias:  cuba-latest
+
+
+
+# Mapsets
+
+---
+
+
