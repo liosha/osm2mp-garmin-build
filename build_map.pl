@@ -25,6 +25,7 @@ use Template;
 
 use File::Basename;
 use File::Path;
+use File::Path::Tiny;
 use File::Copy;
 use File::Copy::Recursive;
 use File::Glob ':bsd_glob';
@@ -101,7 +102,8 @@ if ( $settings->{config_file_ftp} ) {
 }
 
 my $mapset_dir = "$basedir/$settings->{prefix}.$settings->{filename}.temp";
-rmtree $mapset_dir  if !$settings->{continue_mode};
+#rmtree $mapset_dir  if !$settings->{continue_mode};
+File::Path::Tiny::rm $mapset_dir  if !$settings->{continue_mode};
 mkdir $_  for grep {!-d} ( $mapset_dir, qw/ _src _bounds _rel / );
 
 my $tt = Template->new( INCLUDE_PATH => "$basedir/templates" );
@@ -193,7 +195,8 @@ if ( !$skip_img_build ) {
 
 logg( "That's all, folks!" );
 
-rmtree $mapset_dir;
+#rmtree $mapset_dir;
+File::Path::Tiny::rm $mapset_dir;
 exit;
 
 
@@ -289,7 +292,8 @@ sub _build_img {
                 block => 'upload',
             );
         }
-        rmtree( $reg->{path} );
+        #rmtree( $reg->{path} );
+        File::Path::Tiny::rm( $reg->{path} );
     }
     else {
         logg( "Error! IMG build failed for '$reg->{alias}'" );
@@ -350,7 +354,8 @@ sub _build_mapset {
     my $arc_file = "$basedir/_rel/$reg->{filename}.7z";
     unlink $arc_file;
     _qx( arc => "a -y $arc_file $reg->{path} >$devnull 2>$devnull" );
-    rmtree( $reg->{path} );
+    #rmtree( $reg->{path} );
+    File::Path::Tiny::rm( $reg->{path} );
 
     return $arc_file;
 }
@@ -424,7 +429,8 @@ sub _build_mp {
     unlink $arc_file;
     logg("_qx arc a -y $arc_file $regdir >$devnull 2>$devnull") if $DEBUG;
     _qx( arc => "a -y $arc_file $regdir >$devnull 2>$devnull" );
-    rmtree("$regdir");
+    #rmtree("$regdir");
+    File::Path::Tiny::rm("$regdir");
 
     if ( exists($reg->{skip_mp_upload})
 	? (!$reg->{skip_mp_upload})
@@ -454,7 +460,8 @@ sub _arc_mp {
     }
     _qx( arc => "a -y $arc_path $arcdir >$devnull 2>$devnull" );
     logg("remove directory '$arcdir'") if $DEBUG;
-    rmtree("$arcdir");
+    #rmtree("$arcdir");
+    File::Path::Tiny::rm("$arcdir");
     
     $pl->enqueue(
         { alias => $alias, role => 'MP', file => $arc_path },
