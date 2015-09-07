@@ -14,6 +14,7 @@ keys:           -tl=ru -dl=ar --codepage=1251 --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/openstreetmap/africa/
 make_house_search: 1
 typ:            open-cfg/osm.typ
+update_cfg:        0
 
 
 # Regions

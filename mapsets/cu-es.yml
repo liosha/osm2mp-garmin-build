@@ -17,6 +17,7 @@ keys:           -tl=es
 url_base:       http://download.geofabrik.de/central-america/
 config_file_ftp:   ftp.yml
 make_house_search: 1
+update_cfg:        0
 
 
 # Regions

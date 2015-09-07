@@ -17,6 +17,7 @@ keys:           -tl=en -dl=ar --codepage=1252
 config_file_ftp:   ftp.yml
 make_house_search: 1
 skip_mp_upload:    1
+update_cfg:        0
 
 
 # Regions
