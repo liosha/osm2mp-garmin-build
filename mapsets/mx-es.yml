@@ -1,0 +1,110 @@
+# Mexico (ES)
+
+# Common settings
+
+---
+
+prefix:         full-es
+countrycode:    MX
+countryname:    México
+filename:       mexico
+fid:            5730
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=es -dl=es
+url_base:       http://download.geofabrik.de/north-america/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+update_cfg:        0
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+- name:  Mexico(1)
+  code:  1
+  alias: mexico-1
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  Mexico(2)
+  code:  2
+  alias: mexico-2
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Mexico(31)
+  code:  3
+  alias: mexico-32
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Mexico(32)
+  code:  4
+  alias: mexico-32
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Mexico(41)
+  code:  5
+  alias: mexico-41
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Mexico(421)
+  code:  6
+  alias: mexico-421
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Mexico(422)
+  code:  7
+  alias: mexico-422
+  srcalias:  mexico-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+
+# Mapsets
+
+---
+
+- name: México
+  fid: 5730
+  filename: mexico
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - mexico-1
+    - mexico-2
+    - mexico-31
+    - mexico-32
+    - mexico-41
+    - mexico-421
+    - mexico-422
+
