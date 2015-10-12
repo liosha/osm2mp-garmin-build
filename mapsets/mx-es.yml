@@ -46,7 +46,7 @@ skip_mp_upload:    1
 
 - name:  Mexico(31)
   code:  3
-  alias: mexico-32
+  alias: mexico-31
   srcalias:  mexico-latest
   pre_clip: 1
   skip_mapset: 1
