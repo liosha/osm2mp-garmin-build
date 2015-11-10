@@ -1,0 +1,201 @@
+# India (EN)
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    IN
+countryname:    India
+filename:       india
+fid:            5733
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme.txt
+codepage:       1252
+keys:           -tl=en -dl=hi
+url_base:       http://download.geofabrik.de/asia/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+update_cfg:        0
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+- name:  India(11)
+  code:  11
+  alias: india-11
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  India(12)
+  code:  12
+  alias: india-12
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(2)
+  code:  2
+  alias: india-2
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  India(3)
+  code:  3
+  alias: india-3
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  India(4)
+  code:  4
+  alias: india-4
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  India(5)
+  code:  5
+  alias: india-5
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(61)
+  code:  61
+  alias: india-61
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(62)
+  code:  62
+  alias: india-62
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(711)
+  code:  711
+  alias: india-711
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(712)
+  code:  712
+  alias: india-712
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(72)
+  code:  72
+  alias: india-72
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(73)
+  code:  73
+  alias: india-73
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+
+- name:  India(81)
+  code:  81
+  alias: india-81
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+- name:  India(82)
+  code:  82
+  alias: india-82
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+
+- name:  India(9)
+  code:  9
+  alias: india-9
+  srcalias:  india-latest
+  pre_clip: 1
+  skip_mapset: 1
+  onering: yes
+  clipbound: yes
+  keys: --water-back
+
+
+# Mapsets
+
+---
+
+- name: India
+  fid: 5733
+  filename: india
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - india-11
+    - india-12
+    - india-2
+    - india-3
+    - india-4
+    - india-5
+    - india-61
+    - india-62
+    - india-711
+    - india-712
+    - india-72
+    - india-73
+    - india-81
+    - india-82
+    - india-9
+
