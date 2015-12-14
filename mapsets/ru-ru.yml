@@ -469,6 +469,7 @@ skip_img_build:    0
   code:  86
   alias: khanty
   srcalias:  RU-KHM
+  keys:  --mp-header TreSize=2048
 
 - name:  Чукотский АО
   code:  87
