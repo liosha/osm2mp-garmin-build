@@ -8,14 +8,17 @@ prefix:         full-en
 countrycode:    BY
 countryname:    Belarus
 filename:       belarus
-fid:            977
+fid:            5734
 codepage:       1252
-config:         osm2mp/cfg/default.cfg
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:         readme/readme_en_t.txt
 keys:           -dl=ru -tl=en --lt-priority yatr_ru_en=3 --load-settings osm2mp/cfg/addressing-ru.yml --codepage=1252 --textfilter Unidecode
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
 mp_threads_num:    1
 make_house_search: 1
-typ:            open-cfg/osm.typ
+skip_mp_upload:    1   
 update_cfg:        0
 
 
@@ -79,7 +82,7 @@ update_cfg:        0
 ---
 
 - name: Belarus
-  fid: 978
+  fid: 5734
   filename: belarus
   make_house_search: 1
   skip_mp_upload:    0
@@ -90,4 +93,5 @@ update_cfg:        0
     - by-grodno
     - by-minsk
     - by-mogilev
+
 
