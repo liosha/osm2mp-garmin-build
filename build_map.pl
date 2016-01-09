@@ -1,7 +1,5 @@
 #! /usr/bin/perl
 
-# $Id: build_map.pl 143 2014-11-20 16:34:05Z gryphon.osm@gmail.com $
-
 use 5.010;
 use strict;
 use warnings;
