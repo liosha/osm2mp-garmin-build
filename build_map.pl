@@ -594,7 +594,13 @@ sub build_mapset {
     };
 
     chdir $mapset_dir;
-    my $arc_file = _build_mapset( $map_info, \@files );
+    my $arc_file;
+    if ( scalar @files > 0 ) {
+        $arc_file = _build_mapset( $map_info, \@files );
+    }
+    else {
+        logg( "Error! Empty mapset '$mapset->{filename}'" );
+    }
     chdir $basedir;
 
     return { alias => $mapset->{filename}, role => 'mapset', file => $arc_file };
@@ -607,6 +613,10 @@ sub upload {
     return if !$settings->{serv};
 
     logg( "Uploading $file->{role} for '$file->{alias}'" );
+    unless ( defined $file->{file} and -f $file->{file} ){
+        logg("Nothing to upload, skip");
+        return;
+    }
     
     my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
     _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
