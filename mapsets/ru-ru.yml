@@ -488,13 +488,13 @@ skip_img_build:    0
 - name:  Республика Крым
   code:  82
   alias: krym
-  srcalias: UA
+  srcalias: RU-CR
   pre_clip: 1
 
 - name:  Севастополь
   code:  92
   alias: sevastopol
-  srcalias: UA
+  srcalias: RU-CR
   pre_clip: 1
 
 - name:  Краснодарский край (1)
