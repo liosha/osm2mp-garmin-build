@@ -88,7 +88,7 @@ skip_mp_upload:    1
   srcalias:  india-latest
   pre_clip: 1
   skip_mapset: 1
-  onering: yes
+  #onering: yes
   clipbound: yes
   keys: --water-back
 
@@ -98,7 +98,7 @@ skip_mp_upload:    1
   srcalias:  india-latest
   pre_clip: 1
   skip_mapset: 1
-  onering: yes
+  #onering: yes
   clipbound: yes
   keys: --water-back
 
@@ -128,7 +128,7 @@ skip_mp_upload:    1
   srcalias:  india-latest
   pre_clip: 1
   skip_mapset: 1
-  onering: yes
+  #onering: yes
   clipbound: yes
   keys: --water-back
 

@@ -214,6 +214,7 @@ skip_img_build:    0
   code:  34
   alias: volgograd
   srcalias:  RU-VGG
+  fixmultipoly: yes
 
 - name:  Вологодская область
   code:  35

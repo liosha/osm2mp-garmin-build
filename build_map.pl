@@ -367,7 +367,7 @@ sub _build_mp {
 
     my $cat_cmd = 
         $reg->{format} eq 'pbf' ? 'osmconvert' :
-        $reg->{format} eq 'bz2' ? 'osmconvert' :
+        $reg->{format} eq 'bz2' ? 'bzcat' :
         croak "Unknown format '$reg->{format}'";
 
     my $cat_params = $reg->{pre_clip}
