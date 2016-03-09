@@ -396,10 +396,10 @@ skip_img_build:    0
 #  keys:  --waterback
 #  onering: yes
 
-- name:  Свердловская область
-  code:  66
-  alias: sverdl
-  srcalias:  RU-SVE
+#- name:  Свердловская область
+#  code:  66
+#  alias: sverdl
+#  srcalias:  RU-SVE
  
 - name:  Смоленская область
   code:  67
@@ -601,6 +601,24 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Свердловская область (1)
+  code:  216
+  alias: sverdl-1
+  srcalias:  RU-SVE
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Свердловская область (2)
+  code:  217
+  alias: sverdl-2
+  srcalias:  RU-SVE
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -644,6 +662,16 @@ skip_img_build:    0
     - sakhalin-island
     - sakhalin-uzkur
     - sakhalin-sevkur
+
+- name: Свердловская область
+  fid: 514
+  filename: sverdl
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - sverdl-1
+    - sverdl-2
+
 
 
 - name: Центральный округ
@@ -755,7 +783,8 @@ skip_img_build:    0
   skip_mp_upload: 1
   parts:
     - kurgan
-    - sverdl
+    - sverdl-1
+    - sverdl-2
     - tumen
     - chel
     - khanty
@@ -885,7 +914,8 @@ skip_img_build:    0
     - sakhalin-island
     - sakhalin-uzkur
     - sakhalin-sevkur
-    - sverdl
+    - sverdl-1
+    - sverdl-2
     - smol
     - tambov
     - tver
