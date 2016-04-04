@@ -11,7 +11,9 @@ filename:       india
 fid:            5733
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1252
 keys:           -tl=en -dl=hi
 url_base:       http://download.geofabrik.de/asia/

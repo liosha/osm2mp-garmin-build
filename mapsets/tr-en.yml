@@ -11,7 +11,9 @@ filename:       turkey
 fid:            5707
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme_t.txt
+readme:
+  - readme/readme_en_t.txt
+  - readme/readme_ru_t.txt
 codepage:       1252
 keys:           -tl=en -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter Unidecode
 url_base:       http://download.geofabrik.de/europe/

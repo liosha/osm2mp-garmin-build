@@ -11,7 +11,9 @@ filename:       serbia
 fid:            5726
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1251
 keys:           -tl=sr -dl=sr --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/europe/

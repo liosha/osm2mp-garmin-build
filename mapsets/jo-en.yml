@@ -11,7 +11,9 @@ filename:       jordan
 fid:            5714
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1252
 keys:           -tl=en -dl=ar --codepage=1252
 config_file_ftp:   ftp.yml

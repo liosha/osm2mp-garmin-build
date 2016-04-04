@@ -11,12 +11,14 @@ filename:       cyprus
 fid:            5722
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1252
 keys:           -tl=en -dl=el 
 config_file_ftp:   ftp.yml
 make_house_search: 1
-skip_mp_upload:    1
+skip_mp_upload:    0
 update_cfg:        0
 
 
@@ -24,7 +26,7 @@ update_cfg:        0
 
 ---
 
-- name:  Republic of Cyprus
+- name:  Cyprus
   code:  0
   alias: cyprus
   #bound: cy

@@ -11,7 +11,7 @@ filename:       estonia
 fid:            5700
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:         readme/readme_ru.txt
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
 keys:           --textfilter PrepareCP1251 --default-lang=et --lt-equal ru=en
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/

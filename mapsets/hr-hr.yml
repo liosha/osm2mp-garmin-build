@@ -11,7 +11,9 @@ filename:       croatia
 fid:            5725
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1250
 keys:           -tl=hr -dl=hr --textfilter PrepareCP1250
 url_base:       http://download.geofabrik.de/europe/

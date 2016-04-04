@@ -12,7 +12,9 @@ fid:            5710
 codepage:       1257
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
 keys:           -tl=et
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/

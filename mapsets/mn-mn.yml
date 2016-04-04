@@ -11,7 +11,9 @@ filename:       mongolia
 fid:            5735
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme_en.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1251
 keys:           -dl=mn -tl=mn_cyr --lt-gme mn-mn_cyr:/data/garmin/gme-translit/mn-mn_cyr.dat --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/asia/

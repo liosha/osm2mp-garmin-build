@@ -12,7 +12,9 @@ fid:            5705
 codepage:       1252
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 keys:           -tl=fi
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml

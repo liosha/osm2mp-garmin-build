@@ -339,8 +339,12 @@ sub _build_mapset {
         copy "$basedir/$settings->{typ}" => $typ;
         _qx( gmaptool => "-wy $reg->{fid} $typ" );
     }
-    if ( $settings->{readme} ) {
-        copy "$basedir/$settings->{readme}" => ".";
+    my @readme ;
+    if ( exists($settings->{readme}) ){
+        @readme = ref $settings->{readme} ? @{$settings->{readme}} : ($settings->{readme});
+        foreach ( @readme ) {
+            copy "$basedir/$_" => ".";
+        }
     }
 
     $tt->process('install.bat.tt2', $vars, 'install.bat', binmode => ":crlf");

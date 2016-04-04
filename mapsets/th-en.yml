@@ -10,7 +10,9 @@ countryname:    Thailand
 filename:       thailand
 fid:            5709
 config:         open-cfg/garmin-ru.cfg
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 typ:            open-cfg/osm.typ
 codepage:       1252
 keys:           -tl=en -dl=th --translit

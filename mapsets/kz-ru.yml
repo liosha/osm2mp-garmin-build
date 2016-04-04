@@ -11,7 +11,7 @@ filename:       kazakhstan
 fid:            5701
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:         readme/readme_ru.txt
 codepage:       1251
 keys:           -tl=ru --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/

@@ -11,7 +11,9 @@ filename:       ukraine
 fid:            5716
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme_t.txt
+readme:
+  - readme/readme_en_t.txt
+  - readme/readme_ru_t.txt
 codepage:       1252
 keys:           -tl=en -dl=uk --lt-yatr-key=@/data/garmin/yatr.key --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_ru_en=3 --lt-priority yatr_uk_en=2 --codepage=1252 --textfilter Unidecode 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/

@@ -11,7 +11,9 @@ filename:       montenegro
 fid:            5723
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1250
 #keys:           -tl=me -dl=none --lt-equal me=sr-Latn,en,none --lt-priority equal_sr-Latn_me=3 --lt-priority equal_en_me=2 --textfilter PrepareCP1250
 keys:           -tl=me -dl=none --lt-equal me=sr-Latn,en --lt-priority equal_sr-Latn_me=3 --lt-priority equal_en_me=2 --textfilter PrepareCP1250

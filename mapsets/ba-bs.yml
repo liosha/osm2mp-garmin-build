@@ -12,7 +12,9 @@ filename:       bosnia-herzegovina
 fid:            5724
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1250
 keys:           -tl=bs -dl=bs --textfilter PrepareCP1250
 url_base:       http://download.geofabrik.de/europe/

@@ -1,4 +1,4 @@
-# Egypt (RU,ya.translate)
+# Egypt (RU)
 
 # Common settings
 
@@ -12,7 +12,7 @@ fid:            5732
 codepage:       1251
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
-readme:         readme/readme.txt
+readme:         readme/readme_ru.txt
 keys:           -tl=ru -dl=ar --codepage=1251 --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/africa/
 config_file_ftp:   ftp.yml
