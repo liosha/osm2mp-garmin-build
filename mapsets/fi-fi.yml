@@ -33,11 +33,38 @@ skip_mp_upload:    1
 
 
 
-- name:  Uusimaa
-  code:  1
-  alias: fi-uusimaa
+#- name:  Uusimaa
+#  code:  1
+#  alias: fi-uusimaa
+#  srcalias:  finland-latest
+#  pre_clip: 1
+#  skip_mapset: 1
+
+- name:  Raaseporin seutukunta
+  code:  101
+  alias: fi-raaseporin
   srcalias:  finland-latest
-  bound: 37355
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Helsingin seutukunta
+  code:  102
+  alias: fi-helsingin
+  srcalias:  finland-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Porvoon seutukunta
+  code:  103
+  alias: fi-porvoon
+  srcalias:  finland-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Loviisan seutukunta
+  code:  104
+  alias: fi-loviisan
+  srcalias:  finland-latest
   pre_clip: 1
   skip_mapset: 1
 
@@ -45,7 +72,6 @@ skip_mp_upload:    1
   code:  2
   alias: fi-varsinais
   srcalias:  finland-latest
-  bound: 38092
   pre_clip: 1
   skip_mapset: 1
 
@@ -53,7 +79,6 @@ skip_mp_upload:    1
   code:  3
   alias: fi-etelasavo
   srcalias:  finland-latest
-  bound: 918897
   pre_clip: 1
   skip_mapset: 1
 
@@ -61,7 +86,6 @@ skip_mp_upload:    1
   code:  4
   alias: fi-pohjsavo
   srcalias:  finland-latest
-  bound: 918898
   pre_clip: 1
   skip_mapset: 1
 
@@ -69,7 +93,6 @@ skip_mp_upload:    1
   code:  5
   alias: fi-kanta
   srcalias:  finland-latest
-  bound: 1473990
   pre_clip: 1
   skip_mapset: 1
 
@@ -77,7 +100,6 @@ skip_mp_upload:    1
   code:  6
   alias: fi-keskisu
   srcalias:  finland-latest
-  bound: 1701740
   pre_clip: 1
   skip_mapset: 1
 
@@ -85,7 +107,6 @@ skip_mp_upload:    1
   code:  7
   alias: fi-pirk
   srcalias:  finland-latest
-  bound: 1701741
   pre_clip: 1
   skip_mapset: 1
 
@@ -93,7 +114,6 @@ skip_mp_upload:    1
   code:  8
   alias: fi-etelapohj
   srcalias:  finland-latest
-  bound: 1702263
   pre_clip: 1
   skip_mapset: 1
 
@@ -101,7 +121,6 @@ skip_mp_upload:    1
   code:  9
   alias: fi-keskipohj
   srcalias:  finland-latest
-  bound: 1702330
   pre_clip: 1
   skip_mapset: 1
 
@@ -109,7 +128,6 @@ skip_mp_upload:    1
   code:  10
   alias: fi-paijat
   srcalias:  finland-latest
-  bound: 1703362
   pre_clip: 1
   skip_mapset: 1
 
@@ -117,7 +135,6 @@ skip_mp_upload:    1
   code:  11
   alias: fi-lappi
   srcalias:  finland-latest
-  bound: 1724359
   pre_clip: 1
   skip_mapset: 1
 
@@ -125,7 +142,6 @@ skip_mp_upload:    1
   code:  12
   alias: fi-pohjpohj
   srcalias:  finland-latest
-  bound: 1724360
   pre_clip: 1
   skip_mapset: 1
 
@@ -133,7 +149,6 @@ skip_mp_upload:    1
   code:  13
   alias: fi-kainuu
   srcalias:  finland-latest
-  bound: 1997164
   pre_clip: 1
   skip_mapset: 1
 
@@ -141,7 +156,6 @@ skip_mp_upload:    1
   code:  14
   alias: fi-pohjkarj
   srcalias:  finland-latest
-  bound: 1999428
   pre_clip: 1
   skip_mapset: 1
 
@@ -149,7 +163,6 @@ skip_mp_upload:    1
   code:  15
   alias: fi-pohj
   srcalias:  finland-latest
-  bound: 2000320
   pre_clip: 1
   skip_mapset: 1
 
@@ -157,7 +170,6 @@ skip_mp_upload:    1
   code:  16
   alias: fi-sata
   srcalias:  finland-latest
-  bound: 2000361
   pre_clip: 1
   skip_mapset: 1
 
@@ -165,7 +177,6 @@ skip_mp_upload:    1
   code:  17
   alias: fi-etelakarj
   srcalias:  finland-latest
-  bound: 2067231
   pre_clip: 1
   skip_mapset: 1
 
@@ -173,7 +184,6 @@ skip_mp_upload:    1
   code:  18
   alias: fi-kymen
   srcalias:  finland-latest
-  bound: 2102313
   pre_clip: 1
   skip_mapset: 1
 
@@ -181,7 +191,6 @@ skip_mp_upload:    1
   code:  19
   alias: fi-land
   srcalias:  finland-latest
-  bound: 2375171
   pre_clip: 1
   skip_mapset: 1
 
@@ -197,7 +206,11 @@ skip_mp_upload:    1
   make_house_search: 1
   skip_mp_upload:    0
   parts:
-    - fi-uusimaa
+#    - fi-uusimaa
+    - fi-raaseporin
+    - fi-helsingin
+    - fi-porvoon
+    - fi-loviisan
     - fi-varsinais
     - fi-etelasavo
     - fi-pohjsavo
