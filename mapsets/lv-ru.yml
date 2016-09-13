@@ -1,0 +1,86 @@
+# Latvia mapset (RU)
+
+# Common settings
+
+---
+
+prefix:         full-ru
+countrycode:    LV
+countryname:    Латвия
+filename:       latvia
+fid:            5740
+codepage:       1251
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+keys:           --textfilter PrepareCP1251 --default-lang=lv --lt-equal ru=en
+url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+skip_mp_upload:    1
+
+# Regions
+
+---
+
+- name:  Земгале
+  code:  1
+  alias: lv-zemgale
+  srcalias:  LV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Курземе
+  code:  2
+  alias: lv-kurzeme
+  srcalias:  LV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Латгале
+  code:  3
+  alias: lv-latgale
+  srcalias:  LV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Видземе
+  code:  4
+  alias: lv-vidzeme
+  srcalias:  LV
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Латвия (море)
+  code:  5
+  alias: lv-sea
+  srcalias:  LV
+  pre_clip: 1
+  skip_mapset: 1
+  keys: --water-back
+
+
+# Mapsets
+
+---
+
+- name: Латвия
+  fid: 5740
+  filename: latvia
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - lv-zemgale
+    - lv-kurzeme
+    - lv-latgale
+    - lv-vidzeme
+    - lv-sea
+

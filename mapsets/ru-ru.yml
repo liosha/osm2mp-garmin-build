@@ -220,6 +220,7 @@ skip_img_build:    0
   code:  35
   alias: vologda
   srcalias:  RU-VLG
+  fixmultipoly: yes
 
 - name:  Воронежская область
   code:  36
@@ -330,6 +331,7 @@ skip_img_build:    0
   code:  53
   alias: novgorod
   srcalias:  RU-NGR
+  fixmultipoly: yes
 
 - name:  Новосибирская область
   code:  54
@@ -591,6 +593,7 @@ skip_img_build:    0
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
+  fixmultipoly: yes
 
 - name:  Ленинградская область (восток)
   code:  215
@@ -600,6 +603,7 @@ skip_img_build:    0
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
+  fixmultipoly: yes
 
 - name:  Свердловская область (1)
   code:  216
@@ -737,6 +741,8 @@ skip_img_build:    0
     - kda-21
     - kda-22
     - kda-sea
+    - krym
+    - sevastopol
 
 - name: Дальневосточный округ
   fid: 504
@@ -824,15 +830,6 @@ skip_img_build:    0
     - osetiya
     - chechen
     - stavrop
-
-- name: Крымский федеральный округ
-  fid: 511
-  filename: kfo 
-  make_house_search: 1
-  skip_mp_upload: 1
-  parts:
-    - krym
-    - sevastopol
 
 - name: Россия
   fid: 400
