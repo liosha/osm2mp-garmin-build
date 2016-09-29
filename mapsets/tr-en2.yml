@@ -57,11 +57,20 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Marmara
-  code:  5
-  alias: tr-marmara
+- name:  Marmara (1)
+  code:  51
+  alias: tr-marmara-1
   srcalias:  turkey-latest
   pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
+- name:  Marmara (2)
+  code:  52
+  alias: tr-marmara-2
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
   skip_mapset: 1
 
 - name:  Mediterranean
@@ -95,7 +104,8 @@ update_cfg:        0
     - tr-black
     - tr-c-anat
     - tr-e-anat
-    - tr-marmara
+    - tr-marmara-1
+    - tr-marmara-2
     - tr-mediter
     - tr-se-anat
 
