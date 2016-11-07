@@ -1,0 +1,86 @@
+# Hungary mapset (HU)
+
+# Common settings
+
+---
+
+prefix:         full-hu
+countrycode:    HU
+countryname:    Magyarország
+filename:       hungary
+fid:            5745
+codepage:       1250
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
+keys:           -tl=hu -dl=hu
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+continue_mode:     0
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+skip_mp_upload:    1
+
+# Regions
+
+---
+
+- name:  Közép-Dunántúl
+  code:  11
+  alias: hu-ctransdan
+  srcalias:  hungary-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Dél-Dunántúl
+  code:  12
+  alias: hu-stransdan
+  srcalias:  hungary-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Nyugat-Dunántúl
+  code:  13
+  alias: hu-wtransdan
+  srcalias:  hungary-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Közép-Magyarország
+  code:  2
+  alias: hu-center
+  srcalias:  hungary-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Alföld és Észak
+  code:  3
+  alias: hu-plain
+  srcalias:  hungary-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name: Magyarország
+  fid: 5745
+  filename: hungary
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - hu-ctransdan
+    - hu-stransdan
+    - hu-wtransdan
+    - hu-center
+    - hu-plain
+
