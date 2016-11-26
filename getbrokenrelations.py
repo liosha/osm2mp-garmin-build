@@ -93,7 +93,7 @@ logger.info("sending http request")
 isSent=False
 for count in range(0,3):
     try:
-        req = urllib2.Request(url=overpass_api, data=encdata)
+        req = urllib2.Request(url=overpass_api, data=encdata, headers={ 'User-Agent': 'getbrokenrelations.py' })
         f = urllib2.urlopen(req,timeout=300)
         print f.read()
         f.close()
