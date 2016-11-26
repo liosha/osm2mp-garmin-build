@@ -32,11 +32,13 @@ our $DEBUG = 1;
 
 
 
+my $overpass_api = "op_de";
 my $basedir = getcwd();
 
 # external commands required for building
 my %CMD = (
-    getbound    => "perl $basedir/getbound/getbound.pl -api op_ru -singlerequest -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
+    getbound    => "perl $basedir/getbound/getbound.pl -api $overpass_api -singlerequest -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
+    getbrokenrelations => "python $basedir/getbrokenrelations.py --api $overpass_api",
     osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
@@ -410,7 +412,7 @@ sub _build_mp {
             ${ \( $reg->{keys} // q{} ) }
         ];
         _qx( $cat_cmd => qq[ "$reg->{source}"
-            | $basedir/getbrokenrelations.py
+            | $CMD{getbrokenrelations}
                 2> "$filebase.getbrokenrelations.log"
             | $cmd_brokenmpoly -
                 >> "$filebase.mp"

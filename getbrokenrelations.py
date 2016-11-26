@@ -21,13 +21,25 @@ from xml.etree import cElementTree as ElementTree
 import urllib
 import urllib2
 import logging
+import argparse
 
-overpass_api='http://overpass.osm.rambler.ru/cgi/interpreter'
+overpass_api_dict = {
+    'op_ru' : 'http://overpass.osm.rambler.ru/cgi/interpreter',
+    'op_de' : 'http://overpass-api.de/api/interpreter'
+}
 
 logging.basicConfig(level=logging.DEBUG,format="%(asctime)s %(levelname)s %(message)s")
 logger=logging.getLogger(__name__)
 
 logger.info("start")
+
+parser = argparse.ArgumentParser(description="Parses input OSM file and downloads relations with missing parts")
+parser.add_argument("--api",choices=['op_ru','op_de'],default="op_ru",
+        help="overpass api provider: op_de|op_ru (default: op_ru)")
+args = parser.parse_args();
+
+overpass_api = overpass_api_dict[args.api]
+
 relations=dict()
 ways=set()
 curmembers=set()
