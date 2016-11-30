@@ -417,6 +417,7 @@ skip_img_build:    0
   code:  69
   alias: tver
   srcalias:  RU-TVE
+  fixmultipoly: yes
  
 - name:  Томская область
   code:  70
