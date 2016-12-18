@@ -1,0 +1,41 @@
+# Lebanon (EN)
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    LB
+countryname:    Lebanon
+filename:       lebanon
+fid:            5747
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+codepage:       1252
+keys:           -tl=en -dl=ar 
+url_base:       http://download.geofabrik.de/asia/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+update_cfg:        0
+
+
+# Regions
+
+---
+
+- name:  Lebanon
+  code:  0
+  alias: lebanon
+  bound: lb
+  srcalias:  lebanon-latest
+
+
+
+# Mapsets
+
+---
+
+
