@@ -358,10 +358,10 @@ skip_img_build:    0
   alias: penz
   srcalias:  RU-PNZ
 
-- name:  Пермский край
-  code:  59
-  alias: perm
-  srcalias:  RU-PER
+#- name:  Пермский край
+#  code:  59
+#  alias: perm
+#  srcalias:  RU-PER
 
 - name:  Псковская область
   code:  60
@@ -624,6 +624,26 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Пермский край (1)
+  code:  218
+  alias: perm-1
+  srcalias:  RU-PER
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Пермский край (2)
+  code:  219
+  alias: perm-2
+  srcalias:  RU-PER
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+
+
 
 # Mapsets
 
@@ -677,7 +697,14 @@ skip_img_build:    0
     - sverdl-1
     - sverdl-2
 
-
+- name: Пермский край
+  fid: 515
+  filename: perm
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - perm-1
+    - perm-2
 
 - name: Центральный округ
   fid: 501
@@ -813,7 +840,8 @@ skip_img_build:    0
     - nizhegorod
     - orenburg
     - penz
-    - perm
+    - perm-1
+    - perm-2
     - samar
     - saratov
     - ulyan
@@ -902,7 +930,8 @@ skip_img_build:    0
     - orenburg
     - orlovsk
     - penz
-    - perm
+    - perm-1
+    - perm-2
     - pskov
     - rostov
     - ryazan
