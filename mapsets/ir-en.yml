@@ -1,0 +1,95 @@
+# Iran (EN,ya.translate)
+
+# Common settings
+
+---
+
+prefix:         full-en
+countrycode:    IR
+countryname:    Iran
+filename:       iran
+fid:            5748
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en_t.txt
+  - readme/readme_ru_t.txt
+codepage:       1252
+keys:           -tl=en -dl=fa --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_fa_en=2 --textfilter Unidecode
+url_base:       http://download.geofabrik.de/asia/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+skip_mp_upload:    1   
+update_cfg:        0
+
+
+# Regions
+
+---
+
+- name:  Iran (1)
+  code:  1
+  alias: iran-1
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Iran (2)
+  code:  2
+  alias: iran-2
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Iran (31)
+  code:  31
+  alias: iran-31
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Iran (32)
+  code:  32
+  alias: iran-32
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+
+- name:  Iran (41)
+  code:  41
+  alias: iran-41
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Iran (42)
+  code:  42
+  alias: iran-42
+  srcalias:  iran-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+# Mapsets
+
+---
+
+- name:  Iran
+  fid: 5748
+  filename: iran
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - iran-1
+    - iran-2
+    - iran-31
+    - iran-32
+    - iran-41
+    - iran-42
+
