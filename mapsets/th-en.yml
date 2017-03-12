@@ -76,6 +76,7 @@ skip_dl_bounds:    0
   fid: 5709
   filename: thailand
   make_house_search: 1
+  skip_mp_upload:    0
   parts:
     - th-ne
     - th-nw
