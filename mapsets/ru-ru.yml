@@ -546,9 +546,18 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Московская область (восток)
+- name:  Московская область (северо-восток)
   code:  251
-  alias: mosobl-east
+  alias: mosobl-ne
+  srcalias:  RU-MOS
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (юго-восток)
+  code:  252
+  alias: mosobl-se
   srcalias:  RU-MOS
   pre_clip: 1
   clipbound: yes
@@ -676,7 +685,8 @@ skip_img_build:    0
   skip_mp_upload: 0
   parts:
     - mosobl-west
-    - mosobl-east
+    - mosobl-ne
+    - mosobl-se
 
 - name: Сахалинская область
   fid: 512
@@ -722,8 +732,8 @@ skip_img_build:    0
     - kursk
     - lipetsk
     - moscow
-#    - mosobl
-    - mosobl-east
+    - mosobl-ne
+    - mosobl-se
     - mosobl-west
     - orlovsk
     - ryazan
@@ -918,8 +928,8 @@ skip_img_build:    0
     - leningrad-west
     - lipetsk
     - magadan
-#    - mosobl
-    - mosobl-east
+    - mosobl-ne
+    - mosobl-se
     - mosobl-west
     - moscow
     - murmansk
