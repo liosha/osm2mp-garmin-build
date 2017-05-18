@@ -1,4 +1,4 @@
-package PerlIO::via::PrepareCP1250;
+package PerlIO::via::PrepareCP1252;
 
 # $Id$
 # ABSTRACT: prepare unicode stream to be encoded as cp1252
