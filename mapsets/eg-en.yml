@@ -9,16 +9,16 @@ countrycode:    EG
 countryname:    Egypt
 filename:       egypt
 fid:            5731
-codepage:       1252
+codepage:       1251
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
-keys:           -tl=en -dl=ar --codepage=1252
+keys:           -tl=en -dl=ar --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/africa/
 config_file_ftp:   ftp.yml
-continue_mode:     1
+continue_mode:     0
 make_house_search: 1
 mp_threads_num:    1
 update_cfg:        0
@@ -33,11 +33,54 @@ skip_mp_upload:    0
 
 ---
 
-- name:  Egypt
-  code:  0
-  alias: egypt
-  bound: eg
+- name:  Egypt(1)
+  code:  1
+  alias: egypt-1
+  pre_clip: 1
+  clipbound: yes
   srcalias: egypt-latest
+  skip_mapset: 1
   keys: --water-back
 
+- name:  Egypt(2)
+  code:  2
+  alias: egypt-2
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Egypt(3)
+  code:  3
+  alias: egypt-3
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Egypt(4)
+  code:  4
+  alias: egypt-4
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
+# Mapsets
+
+---
+
+- name: Egypt
+  fid: 5731
+  filename: egypt
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - egypt-1
+    - egypt-2
+    - egypt-3
+    - egypt-4
 
