@@ -35,9 +35,17 @@ update_cfg:        0
   pre_clip: yes
   clipbound: yes
 
-- name:  Croatia (North)
+- name:  Croatia (North-East)
   code:  2
-  alias: croatia-north
+  alias: croatia-ne
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (North-West)
+  code:  3
+  alias: croatia-nw
   srcalias:  croatia-latest
   skip_mapset: 1
   pre_clip: yes
@@ -55,5 +63,6 @@ update_cfg:        0
   skip_mp_upload:    0
   parts:
     - croatia-south
-    - croatia-north
+    - croatia-ne
+    - croatia-nw
 

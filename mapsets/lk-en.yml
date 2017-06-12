@@ -15,7 +15,7 @@ readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
 codepage:       1252
-keys:           -tl=en -dl=si 
+keys:           -tl=en -dl=si --textfilter PrepareCP1252
 url_base:       http://download.geofabrik.de/asia/
 config_file_ftp:   ftp.yml
 make_house_search: 1
@@ -26,15 +26,35 @@ update_cfg:        0
 
 ---
 
-- name:  Sri Lanka
-  code:  0
-  alias: sri-lanka
-  bound: lk
+- name:  Sri Lanka (1)
+  code:  1
+  alias: sri-lanka-1
   srcalias:  sri-lanka-latest
   keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Sri Lanka (2)
+  code:  2
+  alias: sri-lanka-2
+  srcalias:  sri-lanka-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
 
 # Mapsets
 
 ---
 
+- name: Sri Lanka
+  fid: 5729
+  filename: sri-lanka
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - sri-lanka-1
+    - sri-lanka-2
 
