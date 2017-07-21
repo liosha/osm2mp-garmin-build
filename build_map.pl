@@ -32,14 +32,14 @@ our $DEBUG = 1;
 
 
 
-my $overpass_api = "op_de";
+my $overpass_api = "op_ru";
 my $basedir = getcwd();
 
 # external commands required for building
 my %CMD = (
     getbound    => "perl $basedir/getbound/getbound.pl -api $overpass_api -singlerequest -aliases $basedir/getbound/etc/osm-getbound-aliases.yml -aliasesdir $basedir/getbound/aliases.d",
     getbrokenrelations => "python $basedir/getbrokenrelations.py --api $overpass_api",
-    osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp --out-osm",
+    osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
     housesearch => "perl $basedir/osm2mp/mp-housesearch.pl",
@@ -48,6 +48,7 @@ my %CMD = (
     gmaptool    => 'gmt',
     arc         => "7za -bd -w$basedir/tmp",
     bzcat       => 'bzip2 -dcq',
+    bzip2       => 'bzip2 -c',
 );
 
 my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
@@ -376,10 +377,12 @@ sub _build_mp {
         $reg->{format} eq 'bz2' ? 'bzcat' :
         croak "Unknown format '$reg->{format}'";
 
-    my $cat_params = $reg->{pre_clip}
-        #? "-B=\"$reg->{pre_poly}\""  # --complete-ways
-        ? "-B=\"$reg->{pre_poly}\" --complex-ways"
-        : q{};        
+    my $cat_params = q{};
+    if ( $cat_cmd eq 'osmconvert' ) {
+        $cat_params = $reg->{pre_clip}
+            ? "-B=\"$reg->{pre_poly}\" --complex-ways --out-osm"
+            : "--out-osm";        
+    }
 
     my $osm2mp_params = qq[
         --config $basedir/$settings->{config}
@@ -398,27 +401,6 @@ sub _build_mp {
         | $CMD{osm2mp} $osm2mp_params - -o $filebase.mp
             2> $filebase.osm2mp.log
     ] );
-
-    if ( $reg->{fixmultipoly} ) {
-        logg( "Repairing broken multipolygons for '$reg->{alias}'" );
-        my $cmd_brokenmpoly = qq[
-            $CMD{osm2mp}
-            --config $basedir/$settings->{config_brokenmpoly}
-            --codepage $settings->{codepage}
-            --bpoly "$reg->{poly}"
-            --defaultcountry $settings->{countrycode}
-            --defaultregion "$reg->{name}"
-            ${ \( $settings->{keys} // q{} ) }
-            ${ \( $reg->{keys} // q{} ) }
-        ];
-        _qx( $cat_cmd => qq[ "$reg->{source}"
-            | $CMD{getbrokenrelations}
-                2> "$filebase.getbrokenrelations.log"
-            | $cmd_brokenmpoly -
-                >> "$filebase.mp"
-                2> "$filebase.osm2mp.broken.log"
-        ] );
-    }
 
     logg( "Postprocessing MP for '$reg->{alias}'" );
     _qx( postprocess => "$filebase.mp" );
@@ -483,6 +465,7 @@ sub get_osm {
     my ($reg) = @_;
 
     state $got = {}; # :shared?
+    state $got_fixed = {}; 
 
     $reg->{format} //= 'pbf';
     $reg->{source} = "$basedir/_src/$reg->{filename}.osm.$reg->{format}";
@@ -490,18 +473,60 @@ sub get_osm {
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
     my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.$reg->{format}";
 
-    if ( $got->{$url} ) {
-        logg( "Source for '$reg->{alias}' have already been downloaded" );
-        $reg->{source} = $got->{$url};
+    if ( $reg->{fixmultipoly} ) {
+        my $source_raw = "$basedir/_src/$reg->{filename}.raw.osm.$reg->{format}";
+        # osmconvert do not allow multiple pbf sources
+        my $source_broken = "$basedir/_src/$reg->{filename}.broken.osm.o5m";
+        my $source_pbf = "$basedir/_src/$reg->{filename}.osm.pbf";
+        if ( $got_fixed->{$url} ) {
+            logg( "Source for '$reg->{alias}' have already been downloaded" );
+            $reg->{format} = 'pbf';
+            $reg->{source} = $got_fixed->{$url};
+        }
+        else {
+            if ( !$settings->{skip_dl_src} && !$reg->{skip_build} ) {
+                logg( "Downloading source (with fixed multipolygons) for '$reg->{alias}'" );
+                my $ret_code = 0;
+                _qx( wget => "$url -O $source_raw -o $reg->{filebase}.wget.log 2> $devnull" );
+                $ret_code += $?;
+                my $cat_cmd = 
+                    $reg->{format} eq 'pbf' ? 'osmconvert' :
+                    $reg->{format} eq 'bz2' ? 'bzcat' :
+                    croak "Unknown format '$reg->{format}'";
+                my $cat_params = $cat_cmd eq 'osmconvert' ? "--out-osm" : q{};        
+                _qx( $cat_cmd => qq[$cat_params "$source_raw"
+                    | $CMD{getbrokenrelations} 2> "$reg->{filebase}.getbrokenrelations.log"
+                    | $CMD{osmconvert} - -o="$source_broken"] );
+                $ret_code += $?;
+                _qx( $CMD{osmconvert} => qq[ "$source_raw" "$source_broken" -o="$source_pbf" ] );
+                $ret_code += $?;
+                logg("Error! Can't download source for $remote_fn") if ( $ret_code ne 0 );
+                unlink $source_raw;
+                unlink $source_broken;
+            }
+            $reg->{format} = 'pbf';
+            $reg->{source} = "$source_pbf";
+            $got_fixed->{$url} = $reg->{source};
+            $got->{$url} = $reg->{source};
+        }
     }
     else {
-        if ( !$settings->{skip_dl_src} && !$reg->{skip_build} ) {
-            logg( "Downloading source for '$reg->{alias}'" );
-            _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
-            my $ret_code = $?;
-            logg("Error! Can't download source for $remote_fn") if ( $ret_code ne 0 );
+        if ( $got->{$url} ) {
+            logg( "Source for '$reg->{alias}' have already been downloaded" );
+            $reg->{source} = $got->{$url};
+            if ( $got_fixed->{$url} ) {
+                $reg->{format} = 'pbf';
+            }
         }
-        $got->{$url} = $reg->{source};
+        else {
+            if ( !$settings->{skip_dl_src} && !$reg->{skip_build} ) {
+                logg( "Downloading source for '$reg->{alias}'" );
+                _qx( wget => "$url -O $reg->{source} -o $reg->{filebase}.wget.log 2> $devnull" );
+                my $ret_code = $?;
+                logg("Error! Can't download source for $remote_fn") if ( $ret_code ne 0 );
+            }
+            $got->{$url} = $reg->{source};
+        }
     }
 
     return $reg;
