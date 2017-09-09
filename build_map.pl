@@ -77,6 +77,7 @@ my ( $settings, $regions, $mapsets ) = YAML::LoadFile( $config_file );
 $settings->{today} = strftime( "%Y-%m-%d", localtime );
 $settings->{codepage} ||= 1251;
 $settings->{encoding} ||= "cp$settings->{codepage}";
+$settings->{format} ||= "pbf";
 
 $settings->{config_file_ftp} =   defined($config_file_ftp)   ? $config_file_ftp   : $settings->{config_file_ftp};
 $settings->{continue_mode} =     defined($continue_mode)     ? $continue_mode     : $settings->{continue_mode};
@@ -374,13 +375,14 @@ sub _build_mp {
 
     my $cat_cmd = 
         $reg->{format} eq 'pbf' ? 'osmconvert' :
+        $reg->{format} eq 'o5m' ? 'osmconvert' :
         $reg->{format} eq 'bz2' ? 'bzcat' :
         croak "Unknown format '$reg->{format}'";
 
     my $cat_params = q{};
     if ( $cat_cmd eq 'osmconvert' ) {
         $cat_params = $reg->{pre_clip}
-            ? "-B=\"$reg->{pre_poly}\" --complex-ways --out-osm"
+            ? "-B=\"$reg->{pre_poly}\" --complete-multipolygons --out-osm"
             : "--out-osm";        
     }
 
@@ -467,20 +469,21 @@ sub get_osm {
     state $got = {}; # :shared?
     state $got_fixed = {}; 
 
-    $reg->{format} //= 'pbf';
-    $reg->{source} = "$basedir/_src/$reg->{filename}.osm.$reg->{format}";
+    $reg->{format} //= $settings->{format};
+    $reg->{srcfilename} //= $settings->{filename};
+    $reg->{source} = "$basedir/_src/$reg->{srcfilename}.osm.$reg->{format}";
 
     my $remote_fn = $reg->{srcalias} // $reg->{alias};
     my $url = $reg->{srcurl} // "$settings->{url_base}/${remote_fn}.osm.$reg->{format}";
 
     if ( $reg->{fixmultipoly} ) {
-        my $source_raw = "$basedir/_src/$reg->{filename}.raw.osm.$reg->{format}";
+        my $source_raw = "$basedir/_src/$reg->{srcfilename}.raw.osm.$reg->{format}";
         # osmconvert do not allow multiple pbf sources
-        my $source_broken = "$basedir/_src/$reg->{filename}.broken.osm.o5m";
-        my $source_pbf = "$basedir/_src/$reg->{filename}.osm.pbf";
+        my $source_broken = "$basedir/_src/$reg->{srcfilename}.broken.osm.o5m";
+        my $source_o5m = "$basedir/_src/$reg->{srcfilename}.osm.o5m";
         if ( $got_fixed->{$url} ) {
             logg( "Source for '$reg->{alias}' have already been downloaded" );
-            $reg->{format} = 'pbf';
+            $reg->{format} = 'o5m';
             $reg->{source} = $got_fixed->{$url};
         }
         else {
@@ -491,6 +494,7 @@ sub get_osm {
                 $ret_code += $?;
                 my $cat_cmd = 
                     $reg->{format} eq 'pbf' ? 'osmconvert' :
+                    $reg->{format} eq 'o5m' ? 'osmconvert' :
                     $reg->{format} eq 'bz2' ? 'bzcat' :
                     croak "Unknown format '$reg->{format}'";
                 my $cat_params = $cat_cmd eq 'osmconvert' ? "--out-osm" : q{};        
@@ -498,14 +502,14 @@ sub get_osm {
                     | $CMD{getbrokenrelations} 2> "$reg->{filebase}.getbrokenrelations.log"
                     | $CMD{osmconvert} - -o="$source_broken"] );
                 $ret_code += $?;
-                _qx( $CMD{osmconvert} => qq[ "$source_raw" "$source_broken" -o="$source_pbf" ] );
+                _qx( $CMD{osmconvert} => qq[ "$source_raw" "$source_broken" -o="$source_o5m" ] );
                 $ret_code += $?;
                 logg("Error! Can't download source for $remote_fn") if ( $ret_code ne 0 );
                 unlink $source_raw;
                 unlink $source_broken;
             }
-            $reg->{format} = 'pbf';
-            $reg->{source} = "$source_pbf";
+            $reg->{format} = 'o5m';
+            $reg->{source} = "$source_o5m";
             $got_fixed->{$url} = $reg->{source};
             $got->{$url} = $reg->{source};
         }
@@ -515,7 +519,7 @@ sub get_osm {
             logg( "Source for '$reg->{alias}' have already been downloaded" );
             $reg->{source} = $got->{$url};
             if ( $got_fixed->{$url} ) {
-                $reg->{format} = 'pbf';
+                $reg->{format} = 'o5m';
             }
         }
         else {

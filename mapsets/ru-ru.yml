@@ -14,13 +14,14 @@ typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
 keys:           --textfilter PrepareCP1251
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 continue_mode:     1
 make_house_search: 1
 mp_threads_num:    2
 update_cfg:        1
-skip_dl_src:       0
+skip_dl_src:       1
 skip_dl_bounds:    0
 skip_img_build:    0
 
@@ -32,479 +33,580 @@ skip_img_build:    0
 - name:  Адыгея
   code:  1
   alias: adygeya
-  srcalias:  RU-AD
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Башкортостан
   code:  2
   alias: bashkir
-  srcalias:  RU-BA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Бурятия
   code:  3
   alias: buryat
-  srcalias:  RU-BU
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Алтай
   code:  4
   alias: altay
-  srcalias:  RU-AL
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Дагестан
   code:  5
   alias: dagestan
-  srcalias:  RU-DA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Ингушетия
   code:  6
   alias: ingush
-  srcalias:  RU-IN
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Кабардино-Балкария
   code:  7
   alias: kabardin
-  srcalias:  RU-KB
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   
 - name:  Калмыкия
   code:  8
   alias: kalmyk
-  srcalias:  RU-KL
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --mp-header TreSize=2048
   
 - name:  Карачаево-Черкесия
   code:  9
   alias: karach
-  srcalias:  RU-KC
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Карелия
   code:  10
   alias: karel
-  srcalias:  RU-KR
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Коми
   code:  11
   alias: komi
-  srcalias:  RU-KO
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --noshorelines --mp-header TreSize=4000
 
 - name:  Марий Эл
   code:  12
   alias: mariyel
-  srcalias:  RU-ME
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Мордовия
   code:  13
   alias: mordov
-  srcalias:  RU-MO
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Якутия (Саха)
   code:  14
   alias: yakut
-  srcalias:  RU-SA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
-  #keys:  --noshorelines --mp-header TreSize=4000
   keys:  --mp-header TreSize=4000
 
 - name:  Северная Осетия
   code:  15
   alias: osetiya
-  srcalias:  RU-SE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Татарстан
   code:  16
   alias: tatar
-  srcalias:  RU-TA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Тыва
   code:  17
   alias: tyva
-  srcalias:  RU-TY
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Удмуртская республика
   code:  18
   alias: udmurt
-  srcalias:  RU-UD
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Хакасия
   code:  19
   alias: khakas
-  srcalias:  RU-KK
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Чеченская республика
   code:  20
   alias: chechen
-  srcalias:  RU-CE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Чувашская республика
   code:  21
   alias: chuvash
-  srcalias:  RU-CU
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Алтайский край
   code:  22
   alias: altayskiy
-  srcalias:  RU-ALT
-
-# memory limit exeeded
-#- name:  Краснодарский край
-#  code:  23
-#  alias: krasnodar
-#  srcalias:  RU-KDA
-#  onering: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Красноярский край
   code:  24
   alias: krasnoyarsk
-  srcalias:  RU-KYA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
-  #keys:  --noshorelines --mp-header TreSize=4000
   keys:  --mp-header TreSize=4000
 
 - name:  Приморский край
   code:  25
   alias: prim
-  srcalias:  RU-PRI
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Ставропольский край
   code:  26
   alias: stavrop
-  srcalias:  RU-STA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Хабаровский край
   code:  27
   alias: khabar
-  srcalias:  RU-KHA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys: --mp-header TreSize=2048
-  fixmultipoly: yes
  
 - name:  Амурская область
   code:  28
   alias: amur
-  srcalias:  RU-AMU
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Архангельская область
   code:  29
   alias: arkhan
-  srcalias:  RU-ARK
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
   keys: --mp-header TreSize=2048
 
 - name:  Астраханская область
   code:  30
   alias: astrakhan
-  srcalias:  RU-AST
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Белгородская область
   code:  31
   alias: belgorod
-  srcalias:  RU-BEL
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Брянская область
   code:  32
   alias: bryansk
-  srcalias:  RU-BRY
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Владимирская область
   code:  33
   alias: vladimir
-  srcalias:  RU-VLA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Волгоградская область
   code:  34
   alias: volgograd
-  srcalias:  RU-VGG
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Вологодская область
   code:  35
   alias: vologda
-  srcalias:  RU-VLG
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Воронежская область
   code:  36
   alias: voronezh
-  srcalias:  RU-VOR
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Ивановская область
   code:  37
   alias: ivanov
-  srcalias:  RU-IVA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Иркутская область
   code:  38
   alias: irkutsk
-  srcalias:  RU-IRK
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys: --mp-header TreSize=2048
 
 - name:  Калининградская область
   code:  39
   alias: kalinin
-  srcalias:  RU-KGD
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Калужская область
   code:  40
   alias: kaluzh
-  srcalias:  RU-KLU
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Камчатский край
   code:  41
   alias: kamch
-  srcalias:  RU-KAM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
+  keys:  --mp-header TreSize=2048
 
 - name:  Кемеровская область
   code:  42
   alias: kemerovo
-  srcalias:  RU-KEM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Кировская область
   code:  43
   alias: kirov
-  srcalias:  RU-KIR
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Костромская область
   code:  44
   alias: kostrom
-  srcalias:  RU-KOS
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Курганская область
   code:  45
   alias: kurgan
-  srcalias:  RU-KGN
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Курская область
   code:  46
   alias: kursk
-  srcalias:  RU-KRS
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Санкт-Петербург
   code:  78
   alias: stpeter
-  srcalias:  RU-SPE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
-  fixmultipoly: yes
- 
-
-#- name:  Ленинградская область
-#  code:  47
-#  alias: leningrad
-#  srcalias:  RU-LEN
-#  onering: yes
 
 - name:  Липецкая область
   code:  48
   alias: lipetsk
-  srcalias:  RU-LIP
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Магаданская область
   code:  49
   alias: magadan
-  srcalias:  RU-MAG
-
-#- name:  Московская область
-#  code:  50
-#  alias: mosobl
-#  srcalias:  RU-MOS
-##  onering: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Москва
   code:  77
   alias: moscow
-  srcalias:  RU-MOW
-#  onering: yes
-  srcurl: http://data.gis-lab.info/osm_dump/dump/latest/RU-MOS.osm.pbf
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
 
 - name:  Мурманская область
   code:  51
   alias: murmansk
-  srcalias:  RU-MUR
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Нижегородская область
   code:  52
   alias: nizhegorod
-  srcalias:  RU-NIZ
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Новгородская область
   code:  53
   alias: novgorod
-  srcalias:  RU-NGR
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Новосибирская область
   code:  54
   alias: novosib
-  srcalias:  RU-NVS
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Омская область
   code:  55
   alias: omsk
-  srcalias:  RU-OMS
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Оренбургская область
   code:  56
   alias: orenburg
-  srcalias:  RU-ORE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Орловская область
   code:  57
   alias: orlovsk
-  srcalias:  RU-ORL
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Пензенская область
   code:  58
   alias: penz
-  srcalias:  RU-PNZ
-
-#- name:  Пермский край
-#  code:  59
-#  alias: perm
-#  srcalias:  RU-PER
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
 
 - name:  Псковская область
   code:  60
   alias: pskov
-  srcalias:  RU-PSK
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Ростовская область
   code:  61
   alias: rostov
-  srcalias:  RU-ROS
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Рязанская область
   code:  62
   alias: ryazan
-  srcalias:  RU-RYA
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
  
 - name:  Самарская область
   code:  63
   alias: samar
-  srcalias:  RU-SAM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Саратовская область
   code:  64
   alias: saratov
-  srcalias:  RU-SAR
- 
-# preview map hides islands, when region is built as one piece
-#- name:  Сахалинская область
-#  code:  65
-#  alias: sakhalin
-#  srcalias:  RU-SAK
-#  keys:  --waterback
-#  onering: yes
-
-#- name:  Свердловская область
-#  code:  66
-#  alias: sverdl
-#  srcalias:  RU-SVE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Смоленская область
   code:  67
   alias: smol
-  srcalias:  RU-SMO
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Тамбовская область
   code:  68
   alias: tambov
-  srcalias:  RU-TAM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Тверская область
   code:  69
   alias: tver
-  srcalias:  RU-TVE
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Томская область
   code:  70
   alias: tomsk
-  srcalias:  RU-TOM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Тульская область
   code:  71
   alias: tul
-  srcalias:  RU-TUL
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Тюменская область
   code:  72
   alias: tumen
-  srcalias:  RU-TYU
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys: --mp-header TreSize=2048
  
 - name:  Ульяновская область
   code:  73
   alias: ulyan
-  srcalias:  RU-ULY
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Челябинская область
   code:  74
   alias: chel
-  srcalias:  RU-CHE
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Забайкальский край
   code:  75
   alias: zabaikal
-  srcalias:  RU-ZAB
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Ярославская область
   code:  76
   alias: yarosl
-  srcalias:  RU-YAR
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Еврейская АО
   code:  79
   alias: evrey
-  srcalias:  RU-YEV
-  fixmultipoly: yes
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
  
 - name:  Ненецкий АО
   code:  83
   alias: nenec
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   onering: yes
-  srcalias:  RU-NEN
  
 - name:  Ханты-Мансийский АО (Югра)
   code:  86
   alias: khanty
-  srcalias:  RU-KHM
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --mp-header TreSize=2048
 
 - name:  Чукотский АО
   code:  87
   alias: chukot
-  #onering: yes
-  srcalias:  RU-CHU
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --mp-header TreSize=4000
 
 - name:  Ямало-Ненецкий АО
   code:  89
   alias: yamal
-  srcalias:  RU-YAN
-  #keys:  --noshorelines --mp-header TreSize=4000
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --mp-header TreSize=4000
 
 - name:  Республика Крым
   code:  82
   alias: krym
-  srcalias: RU-CR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
 
 - name:  Севастополь
   code:  92
   alias: sevastopol
-  srcalias: RU-CR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
 
 - name:  Краснодарский край (1)
   code:  201
   alias: kda-1
-  srcalias:  RU-KDA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -513,7 +615,8 @@ skip_img_build:    0
 - name:  Краснодарский край (21)
   code:  202
   alias: kda-21
-  srcalias:  RU-KDA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -522,7 +625,8 @@ skip_img_build:    0
 - name:  Краснодарский край (22)
   code:  203
   alias: kda-22
-  srcalias:  RU-KDA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -531,7 +635,8 @@ skip_img_build:    0
 - name:  Краснодарский край (море)
   code:  204
   alias: kda-sea
-  srcalias:  RU-KDA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
   skip_mp_upload: 1
@@ -540,7 +645,8 @@ skip_img_build:    0
 - name:  Московская область (запад)
   code:  250
   alias: mosobl-west
-  srcalias:  RU-MOS
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -549,7 +655,8 @@ skip_img_build:    0
 - name:  Московская область (северо-восток)
   code:  251
   alias: mosobl-ne
-  srcalias:  RU-MOS
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -558,7 +665,8 @@ skip_img_build:    0
 - name:  Московская область (юго-восток)
   code:  252
   alias: mosobl-se
-  srcalias:  RU-MOS
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -567,10 +675,11 @@ skip_img_build:    0
 - name:  Остров Сахалин
   code:  211
   alias: sakhalin-island
-  srcalias:  RU-SAK
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
   keys:  --waterback
   onering: yes
-  pre_clip: 1
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
@@ -578,9 +687,10 @@ skip_img_build:    0
 - name:  Южные Курилы
   code:  212
   alias: sakhalin-uzkur
-  srcalias:  RU-SAK
-  keys:  --waterback
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
+  keys:  --waterback
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
@@ -588,9 +698,10 @@ skip_img_build:    0
 - name:  Северные Курилы
   code:  213
   alias: sakhalin-sevkur
-  srcalias:  RU-SAK
-  keys:  --waterback
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
+  keys:  --waterback
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
@@ -598,27 +709,28 @@ skip_img_build:    0
 - name:  Ленинградская область (запад)
   code:  214
   alias: leningrad-west
-  srcalias:  RU-LEN
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
-  fixmultipoly: yes
 
 - name:  Ленинградская область (восток)
   code:  215
   alias: leningrad-east
-  srcalias:  RU-LEN
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
-  fixmultipoly: yes
 
 - name:  Свердловская область (1)
   code:  216
   alias: sverdl-1
-  srcalias:  RU-SVE
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -627,7 +739,8 @@ skip_img_build:    0
 - name:  Свердловская область (2)
   code:  217
   alias: sverdl-2
-  srcalias:  RU-SVE
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -636,7 +749,8 @@ skip_img_build:    0
 - name:  Пермский край (1)
   code:  218
   alias: perm-1
-  srcalias:  RU-PER
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -645,7 +759,8 @@ skip_img_build:    0
 - name:  Пермский край (2)
   code:  219
   alias: perm-2
-  srcalias:  RU-PER
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   skip_mapset: 1
@@ -754,7 +869,6 @@ skip_img_build:    0
     - arkhan
     - vologda
     - kalinin
-#    - leningrad
     - leningrad-east
     - leningrad-west
     - murmansk
@@ -771,7 +885,6 @@ skip_img_build:    0
   parts:
     - adygeya
     - kalmyk
-#    - krasnodar
     - astrakhan
     - volgograd
     - rostov
@@ -794,7 +907,6 @@ skip_img_build:    0
     - khabar
     - amur
     - magadan
-#    - sakhalin
     - sakhalin-island
     - sakhalin-uzkur
     - sakhalin-sevkur
@@ -923,7 +1035,6 @@ skip_img_build:    0
     - kurgan
     - kursk
     - stpeter
-#    - leningrad
     - leningrad-east
     - leningrad-west
     - lipetsk
@@ -947,7 +1058,6 @@ skip_img_build:    0
     - ryazan
     - samar
     - saratov
-#    - sakhalin
     - sakhalin-island
     - sakhalin-uzkur
     - sakhalin-sevkur

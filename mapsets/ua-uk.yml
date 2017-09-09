@@ -12,7 +12,7 @@ fid:            5708
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
-keys:           -tl=uk --codepage=1251 --textfilter PrepareCP1251 
+keys:           -dl=uk -tl=uk --codepage=1251 --textfilter PrepareCP1251 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 mp_threads_num:    1
