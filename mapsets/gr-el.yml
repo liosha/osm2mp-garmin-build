@@ -1,4 +1,4 @@
-# Crete (EL)
+# Greece (EL)
 
 # Common settings
 
@@ -8,37 +8,122 @@ prefix:         full-el
 countrycode:    GR 
 countryname:    Ελλάδα
 filename:       crete
-fid:            5743
+fid:            5751
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1253
 keys:           -tl=el --textfilter PrepareCP1253
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 make_house_search: 1
 update_cfg:        0
+skip_mp_upload:    1   
 
 
 # Regions
 
 ---
 
-- name:  Κρήτη
-  code:  0
-  alias: crete
-  bound: 282436
+- name:  Αγίου Όρους
+  code:  1
+  alias: gr-mount
   srcalias:  greece-latest
   keys: --water-back
   pre_clip: 1
   clipbound: yes
   onering: yes
+  skip_mapset: 1
 
+- name:  Ήπειρος
+  code:  2
+  alias: gr-epirus
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Αττική
+  code:  3
+  alias: gr-attica
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Θεσσαλία
+  code:  4
+  alias: gr-thessaly
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Πελοπόννησος
+  code:  5
+  alias: gr-pelopon
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Αιγαίο
+  code:  6
+  alias: gr-aegean
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Κρήτη
+  code:  7
+  alias: gr-crete
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Μακεδονία
+  code:  8
+  alias: gr-macedonia
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
 
 
 # Mapsets
 
 ---
 
+- name: Ελλάδα
+  fid: 5751
+  filename: greece
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - gr-mount
+    - gr-epirus
+    - gr-attica
+    - gr-thessaly
+    - gr-pelopon
+    - gr-aegean
+    - gr-crete
+    - gr-macedonia
 

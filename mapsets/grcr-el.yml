@@ -1,0 +1,44 @@
+# Crete (EL)
+
+# Common settings
+
+---
+
+prefix:         full-el
+countrycode:    GR 
+countryname:    Ελλάδα
+filename:       crete
+fid:            5743
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+codepage:       1253
+keys:           -tl=el --textfilter PrepareCP1253
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+update_cfg:        0
+
+
+# Regions
+
+---
+
+- name:  Κρήτη
+  code:  0
+  alias: crete
+  bound: 282436
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+
+
+
+# Mapsets
+
+---
+
+

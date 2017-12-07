@@ -40,18 +40,37 @@ skip_dl_bounds:    0
   onering: yes
   clipbound: yes
 
-- name:  Thailand northwest
+- name:  Thailand northwest 1
   code:  2
-  alias: th-nw
+  alias: th-nw1
   srcalias: thailand-latest
   skip_mapset: 1
   pre_clip: 1
   onering: yes
   clipbound: yes
 
-- name:  Thailand centre
+- name:  Thailand northwest 2
   code:  3
-  alias: th-c
+  alias: th-nw2
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+
+- name:  Thailand centre 1
+  code:  4
+  alias: th-c1
+  srcalias: thailand-latest
+  skip_mapset: 1
+  pre_clip: 1
+  onering: yes
+  clipbound: yes
+
+- name:  Thailand centre 2
+  code:  5
+  alias: th-c2
   srcalias: thailand-latest
   skip_mapset: 1
   pre_clip: 1
@@ -59,7 +78,7 @@ skip_dl_bounds:    0
   clipbound: yes
 
 - name:  Thailand south
-  code:  4
+  code:  6
   alias: th-s
   srcalias: thailand-latest
   skip_mapset: 1
@@ -79,8 +98,9 @@ skip_dl_bounds:    0
   skip_mp_upload:    0
   parts:
     - th-ne
-    - th-nw
-    - th-c
+    - th-nw1
+    - th-nw2
+    - th-c1
+    - th-c2
     - th-s
-
 

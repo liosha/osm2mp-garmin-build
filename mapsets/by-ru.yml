@@ -58,14 +58,13 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-# BY-HM    Минск  город
-
 - name:  Минская область
   code:  6
   alias: by-minsk
   srcalias:  BY
   bound: BY-MI
   pre_clip: 1
+  onering: yes
   skip_mapset: 1
 
 - name:  Могилёвская область
@@ -74,6 +73,15 @@ update_cfg:        0
   srcalias:  BY
   bound: BY-MA
   pre_clip: 1
+  skip_mapset: 1
+
+- name:  Минск
+  code:  8
+  alias: by-minsk-city
+  srcalias:  BY
+  bound: BY-HM
+  pre_clip: 1
+  onering: yes
   skip_mapset: 1
 
 
@@ -92,6 +100,7 @@ update_cfg:        0
     - by-gomel
     - by-grodno
     - by-minsk
+    - by-minsk-city
     - by-mogilev
 
 

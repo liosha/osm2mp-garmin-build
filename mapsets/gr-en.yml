@@ -1,4 +1,4 @@
-# Crete (EN)
+# Greece (EN)
 
 # Common settings
 
@@ -7,38 +7,123 @@
 prefix:         full-en
 countrycode:    GR 
 countryname:    Greece
-filename:       crete
-fid:            5744
+filename:       greece
+fid:            5750
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en.txt
+  - readme/readme_ru.txt
 codepage:       1252
 keys:           -dl=el -tl=en --lt-equal en=de
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 make_house_search: 1
 update_cfg:        0
+skip_mp_upload:    1   
 
 
 # Regions
 
 ---
 
-- name:  Crete
-  code:  0
-  alias: crete
-  bound: 282436
+- name:  Holy Mountain
+  code:  1
+  alias: gr-mount
   srcalias:  greece-latest
   keys: --water-back
   pre_clip: 1
   clipbound: yes
   onering: yes
+  skip_mapset: 1
 
+- name:  Epirus
+  code:  2
+  alias: gr-epirus
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Attica
+  code:  3
+  alias: gr-attica
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Thessaly
+  code:  4
+  alias: gr-thessaly
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Peloponnese
+  code:  5
+  alias: gr-pelopon
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Aegean
+  code:  6
+  alias: gr-aegean
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Crete
+  code:  7
+  alias: gr-crete
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Macedonia
+  code:  8
+  alias: gr-macedonia
+  srcalias:  greece-latest
+  keys: --water-back
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
 
 
 # Mapsets
 
 ---
 
+- name: Greece
+  fid: 5750
+  filename: greece
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - gr-mount
+    - gr-epirus
+    - gr-attica
+    - gr-thessaly
+    - gr-pelopon
+    - gr-aegean
+    - gr-crete
+    - gr-macedonia
 
