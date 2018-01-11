@@ -20,21 +20,42 @@ url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 make_house_search: 1
 update_cfg:        0
+skip_mp_upload:    1
 
 
 # Regions
 
 ---
 
-- name:  Србија
-  code:  0
-  alias: serbia
-  srcalias:  serbia-latest
 
+- name:  Централна Србија
+  code:  1
+  alias: rs-central
+  bound: 1658166 
+  srcalias:  serbia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Војводина
+  code:  2
+  alias: rs-voivodina
+  bound: 1279074
+  srcalias:  serbia-latest
+  pre_clip: 1
+  skip_mapset: 1
 
 
 # Mapsets
 
 ---
 
+
+- name:  Србија
+  fid: 5726
+  filename: serbia
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - rs-central
+    - rs-voivodina
 

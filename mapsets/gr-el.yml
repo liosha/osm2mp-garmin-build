@@ -103,7 +103,7 @@ skip_mp_upload:    1
   srcalias:  greece-latest
   keys: --water-back
   pre_clip: 1
-  clipbound: yes
+  #clipbound: yes
   onering: yes
   skip_mapset: 1
 
