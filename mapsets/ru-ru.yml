@@ -384,13 +384,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Нижегородская область
-  code:  52
-  alias: nizhegorod
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Новгородская область
   code:  53
   alias: novgorod
@@ -556,14 +549,6 @@ skip_img_build:    0
   pre_clip: 1
   onering: yes
  
-- name:  Ханты-Мансийский АО (Югра)
-  code:  86
-  alias: khanty
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  keys:  --mp-header TreSize=2048
-
 - name:  Чукотский АО
   code:  87
   alias: chukot
@@ -768,6 +753,7 @@ skip_img_build:    0
   onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
+  keys: --mp-header TreSize=2048
 
 - name:  Архангельская область (2)
   code:  221
@@ -781,13 +767,59 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Архангельская область (3)
-  code:  223
+  code:  222
   alias: arkhan-3
   srcalias: local
   srcfilename: local
   pre_clip: 1
   clipbound: yes
   onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Нижегородская область (1)
+  code:  223
+  alias: nizhegorod-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Нижегородская область (2)
+  code:  224
+  alias: nizhegorod-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ханты-Мансийский АО - Югра (1)
+  code:  225
+  alias: khanty-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  keys:  --mp-header TreSize=2048
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ханты-Мансийский АО - Югра (2)
+  code:  226
+  alias: khanty-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  keys:  --mp-header TreSize=2048
   skip_mapset: 1
   skip_mp_upload: 1
 
@@ -864,6 +896,23 @@ skip_img_build:    0
     - arkhan-2
     - arkhan-3
 
+- name: Нижегородская область
+  fid: 517
+  filename: nizhegorod
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - nizhegorod-1
+    - nizhegorod-2
+
+- name:  Ханты-Мансийский АО - Югра
+  fid: 518
+  filename: khanty
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - khanty-1
+    - khanty-2
 
 - name: Центральный округ
   fid: 501
@@ -979,7 +1028,8 @@ skip_img_build:    0
     - sverdl-2
     - tumen
     - chel
-    - khanty
+    - khanty-1
+    - khanty-2
     - yamal
 
 - name: Приволжский округ
@@ -995,7 +1045,8 @@ skip_img_build:    0
     - udmurt
     - chuvash
     - kirov
-    - nizhegorod
+    - nizhegorod-1
+    - nizhegorod-2
     - orenburg
     - penz
     - perm-1
@@ -1082,7 +1133,8 @@ skip_img_build:    0
     - mosobl-west
     - moscow
     - murmansk
-    - nizhegorod
+    - nizhegorod-1
+    - nizhegorod-2
     - novgorod
     - novosib
     - omsk
@@ -1113,7 +1165,8 @@ skip_img_build:    0
     - yarosl
     - evrey
     - nenec
-    - khanty
+    - khanty-1
+    - khanty-2
     - chukot
     - yamal
     - kda-1

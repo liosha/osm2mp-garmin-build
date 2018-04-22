@@ -58,12 +58,23 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Минская область
-  code:  6
-  alias: by-minsk
+- name:  Минская область (1)
+  code:  11
+  alias: by-minsk-1
   srcalias:  BY
-  bound: BY-MI
+  bound: BY-MI-1
   pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+
+- name:  Минская область (2)
+  code:  12
+  alias: by-minsk-2
+  srcalias:  BY
+  bound: BY-MI-2
+  pre_clip: 1
+  clipbound: yes
   onering: yes
   skip_mapset: 1
 
@@ -99,7 +110,8 @@ update_cfg:        0
     - by-vitebsk
     - by-gomel
     - by-grodno
-    - by-minsk
+    - by-minsk-1
+    - by-minsk-2
     - by-minsk-city
     - by-mogilev
 
