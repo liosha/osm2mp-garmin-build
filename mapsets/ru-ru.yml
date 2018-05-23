@@ -511,14 +511,7 @@ skip_img_build:    0
   srcalias: local
   srcfilename: local
   pre_clip: 1
- 
-- name:  Челябинская область
-  code:  74
-  alias: chel
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
- 
+
 - name:  Забайкальский край
   code:  75
   alias: zabaikal
@@ -822,8 +815,29 @@ skip_img_build:    0
   keys:  --mp-header TreSize=2048
   skip_mapset: 1
   skip_mp_upload: 1
-
-
+ 
+- name:  Челябинская область (1)
+  code:  227
+  alias: chel-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Челябинская область (2)
+  code:  228
+  alias: chel-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
 # Mapsets
 
 ---
@@ -913,6 +927,15 @@ skip_img_build:    0
   parts:
     - khanty-1
     - khanty-2
+
+- name:  Челябинская область
+  fid: 519
+  filename: chel
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - chel-1
+    - chel-2
 
 - name: Центральный округ
   fid: 501
@@ -1027,7 +1050,8 @@ skip_img_build:    0
     - sverdl-1
     - sverdl-2
     - tumen
-    - chel
+    - chel-1
+    - chel-2
     - khanty-1
     - khanty-2
     - yamal
@@ -1160,7 +1184,8 @@ skip_img_build:    0
     - tul
     - tumen
     - ulyan
-    - chel
+    - chel-1
+    - chel-2
     - zabaikal
     - yarosl
     - evrey
