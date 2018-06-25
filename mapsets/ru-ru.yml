@@ -572,9 +572,19 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Краснодарский край (1)
+- name:  Краснодарский край (11)
   code:  201
-  alias: kda-1
+  alias: kda-11
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Краснодарский край (12)
+  code:  202
+  alias: kda-12
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -583,7 +593,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Краснодарский край (21)
-  code:  202
+  code:  203
   alias: kda-21
   srcalias: local
   srcfilename: local
@@ -593,7 +603,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Краснодарский край (22)
-  code:  203
+  code:  204
   alias: kda-22
   srcalias: local
   srcfilename: local
@@ -603,7 +613,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Краснодарский край (море)
-  code:  204
+  code:  205
   alias: kda-sea
   srcalias: local
   srcfilename: local
@@ -848,7 +858,8 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 0
   parts:
-    - kda-1
+    - kda-11
+    - kda-12
     - kda-21
     - kda-22
     - kda-sea
@@ -996,7 +1007,8 @@ skip_img_build:    0
     - astrakhan
     - volgograd
     - rostov
-    - kda-1
+    - kda-11
+    - kda-12
     - kda-21
     - kda-22
     - kda-sea
@@ -1194,7 +1206,8 @@ skip_img_build:    0
     - khanty-2
     - chukot
     - yamal
-    - kda-1
+    - kda-11
+    - kda-12
     - kda-21
     - kda-22
     - kda-sea
