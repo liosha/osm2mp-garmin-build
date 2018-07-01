@@ -15,7 +15,10 @@ INSTALLATION (MAPSOURCE)
 
 	- Unpack the map into the separate folder (you can use 7zip archiver
 	  from 7-zip.org)
-	- Run INSTALL.BAT script as administrator
+	- Install map
+		-IMG: run INSTALL.BAT script as administrator
+		-GMAPI: copy FAMILY_XXX.gmap (or create shortcut)  
+			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start MapSource
 	- Choose a map from the list (in the upper left corner)
@@ -30,7 +33,10 @@ INSTALLATION (BASECAMP)
 
 	- Unpack the map into the separate folder (you can use 7zip archiver
 	  from 7-zip.org)
-	- Run INSTALL.BAT script as administrator
+	- Install map
+		-IMG: run INSTALL.BAT script as administrator
+		-GMAPI: copy FAMILY_XXX.gmap (or create shortcut)  
+			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start BaseCamp
 	- Choose a map from the list in the toolbox
@@ -43,19 +49,18 @@ INSTALLATION (BASECAMP)
 	  
 INSTALLATION (OSX)
 
-option A
+GMAPI
+	- Unpack the map into the separate folder (you can use 7zip archiver
+	- Open FAMILY_XXX.gmap
+	- see INSTALLATION (BASECAMP)
+
+IMG
 	- Install the map on a Windows PC
 	- Convert the map using MapConverter from Garmin
 	  http://www8.garmin.com/support/download_details.jsp?id=3897
 	- Install converted map on the OSX using Map Manager software
 	  http://www8.garmin.com/osx/
-
-option B
-	- Download tool, kindly provided by user kilex:
-	  http://cl.ly/cnNK
-	- Unpack the archive with the map
-	- Copy tool into the folder with the map and run it
-	  http://forum.openstreetmap.org/viewtopic.php?pid=487666#p487666
+	- see INSTALLATION (BASECAMP)
 
 SUPPORT
 
