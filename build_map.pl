@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/local/bin/perl
 
 use 5.010;
 use strict;
@@ -32,7 +32,7 @@ our $DEBUG = 1;
 
 
 
-my $overpass_api = "op_ru";
+my $overpass_api = "op_de";
 my $basedir = getcwd();
 
 # external commands required for building
@@ -41,17 +41,18 @@ my %CMD = (
     getbrokenrelations => "python $basedir/getbrokenrelations.py --api $overpass_api",
     osmconvert  => "osmconvert -t=$basedir/tmp/osmconvert-temp",
     osm2mp      => "perl $basedir/osm2mp/osm2mp.pl",
+    gmapi_builder      => "python $basedir/gmapi-builder.py",
     postprocess => "perl $basedir/osm2mp/mp-postprocess.pl",
     housesearch => "perl $basedir/osm2mp/mp-housesearch.pl",
     log2html    => "perl $basedir/log2html.pl",
-    cgpsmapper  => ( $^O ~~ 'MSWin32' ? 'cgpsmapper' : 'wine cgpsmapper.exe' ),
-    gmaptool    => 'gmt',
+    cgpsmapper  => ( $^O eq 'MSWin32' ? 'cgpsmapper' : 'wine cgpsmapper.exe' ),
+    gmaptool  => ( $^O eq 'MSWin32' ? 'gmt' : 'wine gmt.exe' ),
     arc         => "7za -bd -w$basedir/tmp",
     bzcat       => 'bzip2 -dcq',
     bzip2       => 'bzip2 -c',
 );
 
-my $devnull  = $^O ~~ 'MSWin32' ? 'nul' : '/dev/null';
+my $devnull  = $^O eq 'MSWin32' ? 'nul' : '/dev/null';
 
 GetOptions(
     'h|help|usage'  => \&usage,
@@ -258,9 +259,10 @@ sub cgpsm_run {
 sub _build_img {
     my ($reg, $pl) = @_;
 
+    my $skip_gmapi = exists($reg->{skip_gmapi}) ? ($reg->{skip_gmapi}) : ($settings->{skip_gmapi}); 
+
     my $start_dir = getcwd();
     chdir $mapset_dir;
-
     my $reg_path = $reg->{path} = "$mapset_dir/$reg->{alias}_$settings->{today}";
     mkdir $reg_path;
 
@@ -281,20 +283,28 @@ sub _build_img {
     unlink $mp_file;
 
     my @files;
+    my $arc_file;
     if ( -f "$reg->{mapid}.img" ) {
 
         $reg->{fid} = $settings->{fid} + $reg->{code} // 0;
         @files = map {"$_.img"} @imgs;
 
         if ( !$reg->{skip_mapset} ) {
-            my $arc_file = _build_mapset( $reg, \@files );
+            $arc_file = _build_mapset( $reg, \@files );
 
             $pl->enqueue(
                 { alias => $reg->{alias}, role => 'IMG', file => $arc_file },
                 block => 'upload',
             );
+            if ( !${skip_gmapi} ) {
+                $arc_file = _build_gmapi( $reg, \@files );
+
+                $pl->enqueue(
+                    { alias => $reg->{alias}, role => 'GMAPI', file => $arc_file },
+                    block => 'upload',
+                );
+            }
         }
-        #rmtree( $reg->{path} );
         File::Path::Tiny::rm( $reg->{path} );
     }
     else {
@@ -361,7 +371,7 @@ sub _build_mapset {
     unlink $arc_file;
     _qx( arc => "a -y $arc_file $reg->{path} >$devnull 2>$devnull" );
     #rmtree( $reg->{path} );
-    File::Path::Tiny::rm( $reg->{path} );
+    #File::Path::Tiny::rm( $reg->{path} );
 
     return $arc_file;
 }
@@ -459,7 +469,59 @@ sub _arc_mp {
     return;
 }
 
+sub _build_gmapi {
+    my ($reg, $files) = @_;
 
+    logg( "Building gmapi for '$reg->{alias}'" );
+
+    my $regdir = "$mapset_dir/$reg->{alias}_$settings->{today}";
+    my $gmapidir = "$mapset_dir/$reg->{alias}_gmapi_$settings->{today}";
+    mkdir "$gmapidir";
+
+    my $files_str = join(' ',  map {"$regdir/$_"} @$files );
+
+    my $gmapi_params = qq[
+        -o $gmapidir
+        -s $regdir/osm_$reg->{fid}.typ
+        -t $regdir/osm.TDB
+        -b $regdir/osm.img
+        -i $regdir/osm.MDX
+        -m $regdir/OSM_MDR.IMG
+        -c $settings->{codepage}
+        $files_str $regdir/osm.img
+    ];
+
+    _qx( $CMD{gmapi_builder} => qq[ $gmapi_params 
+        2> $gmapidir/gmapi.log
+    ] );
+    my $ret_code = $?;
+    if ( $ret_code ne 0 ){
+        logg("Error! Can't build gmapi for '$reg->{alias}'");
+        copy("$gmapidir/gmapi.log","$basedir/_logs/".(exists($reg->{code}) ? ($reg->{code}) : ($reg->{fid})).".gmapi." . time() . ".log") if ( -f "$gmapidir/gmapi.log");
+        return;
+    }
+
+    my @readme ;
+    if ( exists($settings->{readme}) ){
+        @readme = ref $settings->{readme} ? @{$settings->{readme}} : ($settings->{readme});
+        foreach ( @readme ) {
+            copy "$basedir/$_" => "$gmapidir";
+        }
+    }
+
+    logg( "Compressing gmapi for '$reg->{alias}'" );
+    
+    my $arc_file = "$basedir/_rel/$settings->{prefix}.$reg->{alias}.gmapi.7z";
+    logg("unlink $arc_file") if $DEBUG;
+    unlink $arc_file;
+    logg("_qx arc a -y $arc_file $gmapidir >$devnull 2>$devnull") if $DEBUG;
+    _qx( arc => "a -y $arc_file $gmapidir >$devnull 2>$devnull" );
+    #rmtree("$regdir");
+    File::Path::Tiny::rm("$gmapidir");
+    #File::Path::Tiny::rm("$regdir");
+
+    return $arc_file; 
+}
 
 ##  Thread workers
 
@@ -600,6 +662,7 @@ sub build_mapset {
     my ($mapset, $pl) = @_;
     my $house_search= $settings->{make_house_search} && $mapset->{make_house_search} ;
     my $skip_mp_upload = exists($mapset->{skip_mp_upload}) ? ($mapset->{skip_mp_upload}) : ($settings->{skip_mp_upload}); 
+    my $skip_gmapi = exists($mapset->{skip_gmapi}) ? ($mapset->{skip_gmapi}) : ($settings->{skip_gmapi}); 
 
     logg("Mapset '$mapset->{filename}' (@{$mapset->{parts}})");
     _arc_mp($mapset->{filename},\@{$mapset->{parts}}, $pl) unless $skip_mp_upload; 
@@ -629,14 +692,27 @@ sub build_mapset {
     chdir $mapset_dir;
     my $arc_file;
     if ( scalar @files > 0 ) {
+
         $arc_file = _build_mapset( $map_info, \@files );
+        $pl->enqueue(
+            { alias => $mapset->{filename}, role => 'mapset', file => $arc_file },
+                block => 'upload',
+            );
+        if ( !${skip_gmapi} ) {
+            $arc_file = _build_gmapi( $map_info, \@files );
+            $pl->enqueue(
+                { alias => $mapset->{filename}, role => 'GMAPI', file => $arc_file },
+                block => 'upload',
+            );
+        }
+        File::Path::Tiny::rm( $map_info->{path} );
     }
     else {
         logg( "Error! Empty mapset '$mapset->{filename}'" );
     }
     chdir $basedir;
 
-    return { alias => $mapset->{filename}, role => 'mapset', file => $arc_file };
+    return;
 }
 
 
@@ -652,7 +728,7 @@ sub upload {
     }
     
     my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-    _qx( curl => "--retry 100 $auth -T $file->{file} $settings->{serv} 2> $devnull" );
+    _qx( curl => "-sS --retry-connrefused --retry 100 $auth -T $file->{file} $settings->{serv}" );
     unlink $file->{file}  if $file->{delete};
 
     return;
