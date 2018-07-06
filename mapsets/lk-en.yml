@@ -44,6 +44,15 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
+- name:  Sri Lanka (3)
+  code:  3
+  alias: sri-lanka-3
+  srcalias:  sri-lanka-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
 
 # Mapsets
 
@@ -57,4 +66,5 @@ update_cfg:        0
   parts:
     - sri-lanka-1
     - sri-lanka-2
+    - sri-lanka-3
 
