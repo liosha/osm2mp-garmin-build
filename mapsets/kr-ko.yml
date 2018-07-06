@@ -1,0 +1,90 @@
+# South Korea (KO)
+
+# Common settings
+
+---
+
+prefix:         full-ko
+countrycode:    KR
+countryname:    대한민국
+filename:       south-korea
+fid:            5753
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+codepage:       949
+keys:           -tl=ko -dl=ko 
+url_base:       http://download.geofabrik.de/asia/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+update_cfg:        0
+
+
+# Regions
+
+---
+
+- name:  South Korea (1)
+  code:  1
+  alias: south-korea-1
+  srcalias:  south-korea-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  South Korea (2)
+  code:  2
+  alias: south-korea-2
+  srcalias:  south-korea-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  South Korea (3)
+  code:  3
+  alias: south-korea-3
+  srcalias:  south-korea-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  South Korea (4)
+  code:  4
+  alias: south-korea-4
+  srcalias:  south-korea-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  South Korea (5)
+  code:  5
+  alias: south-korea-5
+  srcalias:  south-korea-latest
+  keys: --water-back
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name: 대한민국
+  fid: 5753
+  filename: south-korea
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - south-korea-1
+    - south-korea-2
+    - south-korea-3
+    - south-korea-4
+    - south-korea-5
+
