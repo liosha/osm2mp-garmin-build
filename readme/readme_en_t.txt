@@ -17,7 +17,7 @@ INSTALLATION (MAPSOURCE)
 	  from 7-zip.org)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
-		-GMAPI: copy FAMILY_XXX.gmap (or create shortcut)  
+		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)  
 			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start MapSource
@@ -35,7 +35,7 @@ INSTALLATION (BASECAMP)
 	  from 7-zip.org)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
-		-GMAPI: copy FAMILY_XXX.gmap (or create shortcut)  
+		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)  
 			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start BaseCamp
