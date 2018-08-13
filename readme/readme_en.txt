@@ -8,8 +8,9 @@ DESCRIPTION
 REQUIREMENTS
 
 	You will require MapSource or BaseCamp to install this map (both can
-	be downloaded from garmin.com). If you use Linux, you can try 
-	QLandkarteGT, but the result may vary.
+	be downloaded from garmin.com). WARNING: BaseCamp 4.7.0 (and newer)
+        can use only GMAPI format. If you use Linux, you can try QLandkarteGT,
+        but the result may vary.
 
 INSTALLATION (MAPSOURCE)
 

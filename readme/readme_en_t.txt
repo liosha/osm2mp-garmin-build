@@ -8,8 +8,9 @@ DESCRIPTION
 REQUIREMENTS
 
 	You will require MapSource or BaseCamp to install this map (both can
-	be downloaded from garmin.com). If you use Linux, you can try 
-	QLandkarteGT, but the result may vary.
+	be downloaded from garmin.com). WARNING: BaseCamp 4.7.0 (and newer)
+        can use only GMAPI format. If you use Linux, you can try QLandkarteGT,
+        but the result may vary.
 
 INSTALLATION (MAPSOURCE)
 
@@ -17,7 +18,7 @@ INSTALLATION (MAPSOURCE)
 	  from 7-zip.org)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
-		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)  
+                -GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)
 			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start MapSource
@@ -35,7 +36,7 @@ INSTALLATION (BASECAMP)
 	  from 7-zip.org)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
-		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)  
+                -GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)
 			into %AppData%\Garmin\Maps
 	- Plug in your device
 	- Start BaseCamp
