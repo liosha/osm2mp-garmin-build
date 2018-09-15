@@ -3,6 +3,9 @@
 
 ---
 
-serv: ftp://localhost/
-auth: anonymous:anonymous
+serv: localhost
+serv_port: 22
+serv_user: exampleuser
+serv_path: /destination/path
+serv_type: sftp
 

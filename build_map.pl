@@ -27,12 +27,13 @@ use File::Path::Tiny;
 use File::Copy;
 use File::Copy::Recursive;
 use File::Glob ':bsd_glob';
+use Net::SFTP::Foreign;
 
 our $DEBUG = 1;
 
 
 
-my $overpass_api = "op_de";
+my $overpass_api = "op_fr";
 my $basedir = getcwd();
 
 # external commands required for building
@@ -101,7 +102,7 @@ $settings->{skip_img_build} = defined($skip_img_build) ? $skip_img_build : $sett
 
 if ( $settings->{config_file_ftp} ) {
     my ($ftp) = YAML::LoadFile( $settings->{config_file_ftp} );
-    $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv auth /;
+    $settings->{$_} = $ftp->{$_} // q{}  for qw/ serv serv_port serv_user serv_password serv_path serv_type /;
 }
 
 my $mapset_dir = "$basedir/$settings->{prefix}.$settings->{filename}.temp";
@@ -209,8 +210,11 @@ exit;
 
 sub logg {
     my @logs = @_;
-    if ( $settings->{auth} ) {
-	s/$settings->{auth}/***/g for @logs;
+    if ( $settings->{serv_password} ) {
+	s/$settings->{serv_password}/***/g for @logs;
+    }
+    if ( $settings->{serv_user} ) {
+	s/$settings->{serv_user}/***/g for @logs;
     }
     printf STDERR "%s: (%d)  @logs\n", strftime("%Y-%m-%d %H:%M:%S", localtime), threads->tid();
     return;
@@ -726,10 +730,29 @@ sub upload {
         logg("Nothing to upload, skip");
         return;
     }
-    
-    my $auth = $settings->{auth} ? "-u $settings->{auth}" : q{};
-    _qx( curl => "-sS --retry-connrefused --retry 100 $auth -T $file->{file} $settings->{serv}" );
-    unlink $file->{file}  if $file->{delete};
+   
+    if ( $settings->{serv_type} eq "ftp" ) {
+        my $auth = $settings->{serv_user} ? "-u $settings->{serv_user}:$settings->{serv_password}" : q{};
+        my $url = "ftp://$settings->{serv}";
+        if ( $settings->{serv_port} ) {
+            $url = "$url:$settings->{serv_port}";
+        }
+        if ( $settings->{serv_path} ) {
+            $url = "$url/$settings->{serv_path}/";
+        }
+        _qx( curl => "-sS --retry-connrefused --retry 100 $auth -T $file->{file} $url" );
+        unlink $file->{file}  if $file->{delete};
+    } 
+    elsif ( $settings->{serv_type} eq "sftp" ) {
+        my $port=$settings->{serv_port} ? int($settings->{serv_port}) : 22;
+        my $sftp = Net::SFTP::Foreign->new(host => $settings->{serv}, user => $settings->{serv_user}, port => $settings->{serv_port}); 
+        $sftp->put($file->{file}, $settings->{serv_path}."/".basename($file->{file}));
+        if ( int($sftp->error()) != 0 ) {
+            logg("SFTP: ".int($sftp->error)." ".$sftp->error);
+            logg("Error! Can't upload $file->{file} to $settings->{serv}:$settings->{serv_path}");
+        }
+        unlink $file->{file}  if $file->{delete};
+    }
 
     return;
 }
