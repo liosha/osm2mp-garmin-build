@@ -47,22 +47,31 @@ skip_mp_upload:    1
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Helsingin seutukunta
+- name:  Helsingin seutukunta (1)
   code:  102
-  alias: fi-helsingin
+  alias: fi-helsingin-1
   srcalias:  finland-latest
   pre_clip: 1
   skip_mapset: 1
+  clipbound: yes
+
+- name:  Helsingin seutukunta (2)
+  code:  103
+  alias: fi-helsingin-2
+  srcalias:  finland-latest
+  pre_clip: 1
+  skip_mapset: 1
+  clipbound: yes
 
 - name:  Porvoon seutukunta
-  code:  103
+  code:  104
   alias: fi-porvoon
   srcalias:  finland-latest
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Loviisan seutukunta
-  code:  104
+  code:  105
   alias: fi-loviisan
   srcalias:  finland-latest
   pre_clip: 1
@@ -208,7 +217,8 @@ skip_mp_upload:    1
   parts:
 #    - fi-uusimaa
     - fi-raaseporin
-    - fi-helsingin
+    - fi-helsingin-1
+    - fi-helsingin-2
     - fi-porvoon
     - fi-loviisan
     - fi-varsinais

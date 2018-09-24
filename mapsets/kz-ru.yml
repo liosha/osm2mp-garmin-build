@@ -14,13 +14,14 @@ typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
 codepage:       1251
 keys:           -tl=ru --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 mp_threads_num:    1
 make_house_search: 1
 skip_mp_upload:    1
 update_cfg:        0
-skip_dl_src:       0
+skip_dl_src:       1
 skip_dl_bounds:    0
 
 
@@ -34,16 +35,18 @@ skip_dl_bounds:    0
 - name:  Астана
   code:  1
   alias: kz-astana
-  srcalias:  KZ
   bound: KZ-AST
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Акмолинская область
   code:  2
   alias: kz-akmol
-  srcalias:  KZ
   bound: KZ-AKM
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
   onering: yes
@@ -51,16 +54,18 @@ skip_dl_bounds:    0
 - name:  Актюбинская область
   code:  3
   alias: kz-aktub
-  srcalias:  KZ
   bound: KZ-AKT
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Алматинская область
   code:  4
   alias: kz-almat
-  srcalias:  KZ
   bound: KZ-ALM
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
@@ -69,88 +74,99 @@ skip_dl_bounds:    0
 - name:  Атырауская область
   code:  6
   alias: kz-atyr
-  srcalias:  KZ
   bound: KZ-ATY
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Восточно-Казахстанская область
   code:  7
   alias: kz-vost
-  srcalias:  KZ
   bound: KZ-VOS
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Жамбыльская область
   code:  8
   alias: kz-zhamb
-  srcalias:  KZ
   bound: KZ-ZHA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Западно-Казахстанская область
   code:  9
   alias: kz-zap
-  srcalias:  KZ
   bound: KZ-ZAP
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Карагандинская область
   code:  10
   alias: kz-karag
-  srcalias:  KZ
   bound: KZ-KAR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Костанайская область
   code:  11
   alias: kz-kostan
-  srcalias:  KZ
   bound: KZ-KUS
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Кызылординская область
   code:  12
   alias: kz-kyzyl
-  srcalias:  KZ
   bound: KZ-KZY
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Мангистауская область
   code:  13
   alias: kz-mangis
-  srcalias:  KZ
   bound: KZ-MAN
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Павлодарская область
   code:  14
   alias: kz-pavlo
-  srcalias:  KZ
   bound: KZ-PAV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Северо-Казахстанская область
   code:  15
   alias: kz-sever
-  srcalias:  KZ
   bound: KZ-SEV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Южно-Казахстанская область
   code:  16
   alias: kz-yuzh
-  srcalias:  KZ
   bound: KZ-YUZ
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 

@@ -14,12 +14,14 @@ config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
 keys:           -tl=ru --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 mp_threads_num:    1
 make_house_search: 1
 skip_mp_upload:    1   
 update_cfg:        0
+skip_dl_src:       1
 
 
 # Regions
@@ -29,40 +31,45 @@ update_cfg:        0
 - name:  Брестская область
   code:  1
   alias: by-brest
-  srcalias:  BY
   bound: BY-BR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Витебская область
   code:  2
   alias: by-vitebsk
-  srcalias:  BY
   bound: BY-VI
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Гомельская область
   code:  3
   alias: by-gomel
-  srcalias:  BY
   bound: BY-HO
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Гродненская область
   code:  4
   alias: by-grodno
-  srcalias:  BY
   bound: BY-HR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Минская область (1)
   code:  11
   alias: by-minsk-1
-  srcalias:  BY
   bound: BY-MI-1
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   onering: yes
@@ -71,8 +78,9 @@ update_cfg:        0
 - name:  Минская область (2)
   code:  12
   alias: by-minsk-2
-  srcalias:  BY
   bound: BY-MI-2
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   clipbound: yes
   onering: yes
@@ -81,16 +89,18 @@ update_cfg:        0
 - name:  Могилёвская область
   code:  7
   alias: by-mogilev
-  srcalias:  BY
   bound: BY-MA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Минск
   code:  8
   alias: by-minsk-city
-  srcalias:  BY
   bound: BY-HM
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   onering: yes
   skip_mapset: 1

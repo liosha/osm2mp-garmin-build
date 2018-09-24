@@ -14,11 +14,13 @@ typ:            open-cfg/osm.typ
 codepage:       1251
 readme:         readme/readme_ru_t.txt
 keys:           -tl=ru -dl=uk --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_uk_ru=2 --textfilter PrepareCP1251 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
+skip_dl_src:       1
 skip_dl_bounds:    1
 skip_mp_upload:    1
 update_cfg:        0
@@ -31,64 +33,72 @@ update_cfg:        0
 - name:  Винницкая область
   code:  5
   alias: ua-vinnic
-  srcalias:  UA
   bound: UA-05
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Волынская область
   code:  7
   alias: ua-volyn
-  srcalias:  UA
   bound: UA-07
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Днепропетровская область
   code:  12
   alias: ua-dnepro
-  srcalias:  UA
   bound: UA-12
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Донецкая область
   code:  14
   alias: ua-doneck
-  srcalias:  UA
   bound: UA-14
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Житомирская область
   code:  18
   alias: ua-gitomir
-  srcalias:  UA
   bound: UA-18
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Закарпатская область
   code:  21
   alias: ua-zakarpat
-  srcalias:  UA
   bound: UA-21
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Запорожская область
   code:  23
   alias: ua-zaporog
-  srcalias:  UA
   bound: UA-23
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Ивано-Франковская область
   code:  26
   alias: ua-ivanofr
-  srcalias:  UA
   bound: UA-26
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
@@ -97,144 +107,162 @@ update_cfg:        0
 - name:  Киевская область
   code:  32
   alias: ua-kiev
-  srcalias:  UA
   bound: UA-32
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Кировоградская область
   code:  35
   alias: ua-kirovogr
-  srcalias:  UA
   bound: UA-35
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Севастополь
   code:  40
   alias: ua-sevastopol
-  srcalias:  UA
   bound: UA-40
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Крым
   code:  43
   alias: ua-krym
-  srcalias:  UA
   bound: UA-43
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Луганская область
   code:  44
   alias: ua-lugansk
-  srcalias:  UA
   bound: UA-44
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Львовская область
   code:  46
   alias: ua-lvov
-  srcalias:  UA
   bound: UA-46
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Николаевская область
   code:  48
   alias: ua-nikolaev
-  srcalias:  UA
   bound: UA-48
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Одесская область
   code:  51
   alias: ua-odess
-  srcalias:  UA
   bound: UA-51
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Полтавская область
   code:  53
   alias: ua-poltav
-  srcalias:  UA
   bound: UA-53
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Ровненская область
   code:  56
   alias: ua-rovn
-  srcalias:  UA
   bound: UA-56
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Сумская область
   code:  59
   alias: ua-sum
-  srcalias:  UA
   bound: UA-59
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Тернопольская область
   code:  61
   alias: ua-ternop
-  srcalias:  UA
   bound: UA-61
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Харьковская область
   code:  63
   alias: ua-harkov
-  srcalias:  UA
   bound: UA-63
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Херсонская область
   code:  65
   alias: ua-herson
-  srcalias:  UA
   bound: UA-65
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Хмельницкая область
   code:  68
   alias: ua-hmeln
-  srcalias:  UA
   bound: UA-68
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Черкасская область
   code:  71
   alias: ua-cherkas
-  srcalias:  UA
   bound: UA-71
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Черновицкая область
   code:  73
   alias: ua-chernov
-  srcalias:  UA
   bound: UA-73
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Черниговская область
   code:  74
   alias: ua-chernig
-  srcalias:  UA
   bound: UA-74
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 

@@ -16,13 +16,14 @@ readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
 keys:           -tl=lt 
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 continue_mode:     1
 make_house_search: 1
 mp_threads_num:    1
 update_cfg:        0
-skip_dl_src:       0
+skip_dl_src:       1
 skip_dl_bounds:    0
 skip_img_build:    0
 skip_mp_upload:    1
@@ -36,80 +37,90 @@ skip_mp_upload:    1
 - name:  Alytaus apskritis
   code:  1
   alias: lt-alytaus
-  srcalias:  LT
   bound: LT-AL
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Kauno apskritis
   code:  2
   alias: lt-kauno
-  srcalias:  LT
   bound: LT-KU
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Klaipėdos apskritis
   code:  3
   alias: lt-klaipedos
-  srcalias:  LT
   bound: LT-KL
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Marijampolės apskritis
   code:  4
   alias: lt-marijampoles
-  srcalias:  LT
   bound: LT-MR
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Panevėžio apskritis
   code:  5
   alias: lt-panevezio
-  srcalias:  LT
   bound: LT-PN
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Šiaulių apskritis
   code:  6
   alias: lt-siauliu
-  srcalias:  LT
   bound: LT-SA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Tauragės apskritis
   code:  7
   alias: lt-taurages
-  srcalias:  LT
   bound: LT-TA
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Telšių apskritis
   code:  8
   alias: lt-telsiu
-  srcalias:  LT
   bound: LT-TE
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Utenos apskritis
   code:  9
   alias: lt-utenos
-  srcalias:  LT
   bound: LT-UT
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Vilniaus apskritis
   code:  10
   alias: lt-vilniaus
-  srcalias:  LT
   bound: LT-VL
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 

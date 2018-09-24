@@ -14,7 +14,8 @@ typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
 codepage:       1251
 keys:           -tl=ru --textfilter PrepareCP1251
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 make_house_search: 1
 mp_threads_num:    1   
@@ -22,6 +23,7 @@ make_house_search: 1
 skip_mp_upload:    1   
 update_cfg:        0
 skip_dl_bounds:    0   
+skip_dl_src:       1
 
 
 
@@ -32,8 +34,9 @@ skip_dl_bounds:    0
 - name:  Грузия
   code:  1
   alias: georgia-ka
-  srcalias:  GE
   bound: ge-ka
+  srcalias: local
+  srcfilename: local
   keys: -dl=ka 
   skip_mapset: 1
   pre_clip: yes
@@ -42,7 +45,8 @@ skip_dl_bounds:    0
 - name:  Абхазия
   code:  2
   alias: abkhazia
-  srcalias:  GE
+  srcalias: local
+  srcfilename: local
   keys: -dl=ru
   skip_mapset: 1
   pre_clip: yes
@@ -51,7 +55,8 @@ skip_dl_bounds:    0
 - name:  Южная Осетия
   code:  3
   alias: south-ossetia
-  srcalias:  GE
+  srcalias: local
+  srcfilename: local
   keys: -dl=os --lt-gme os-ru:/data/garmin/gme-translit/os-ru.dat
   skip_mapset: 1
   pre_clip: yes
