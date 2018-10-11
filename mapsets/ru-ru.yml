@@ -622,9 +622,9 @@ skip_img_build:    0
   skip_mp_upload: 1
   keys: --water-back
 
-- name:  Московская область (запад)
+- name:  Московская область (1)
   code:  250
-  alias: mosobl-west
+  alias: mosobl-1
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -632,9 +632,9 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Московская область (северо-восток)
+- name:  Московская область (2)
   code:  251
-  alias: mosobl-ne
+  alias: mosobl-2
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -642,9 +642,19 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Московская область (юго-восток)
+- name:  Московская область (3)
   code:  252
-  alias: mosobl-se
+  alias: mosobl-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (4)
+  code:  253
+  alias: mosobl-4
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -879,9 +889,10 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 0
   parts:
-    - mosobl-west
-    - mosobl-ne
-    - mosobl-se
+    - mosobl-1
+    - mosobl-2
+    - mosobl-3
+    - mosobl-4
 
 - name: Сахалинская область
   fid: 512
@@ -964,9 +975,10 @@ skip_img_build:    0
     - kursk
     - lipetsk
     - moscow
-    - mosobl-ne
-    - mosobl-se
-    - mosobl-west
+    - mosobl-1
+    - mosobl-2
+    - mosobl-3
+    - mosobl-4
     - orlovsk
     - ryazan
     - smol
@@ -1164,9 +1176,10 @@ skip_img_build:    0
     - leningrad-west
     - lipetsk
     - magadan
-    - mosobl-ne
-    - mosobl-se
-    - mosobl-west
+    - mosobl-1
+    - mosobl-2
+    - mosobl-3
+    - mosobl-4
     - moscow
     - murmansk
     - nizhegorod-1
