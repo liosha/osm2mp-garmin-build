@@ -313,13 +313,6 @@ skip_img_build:    0
   onering: yes
   keys:  --mp-header TreSize=2048
 
-- name:  Кемеровская область
-  code:  42
-  alias: kemerovo
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Кировская область
   code:  43
   alias: kirov
@@ -857,6 +850,29 @@ skip_img_build:    0
   onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
+
+- name:  Кемеровская область (1)
+  code:  229 
+  alias: kemerovo-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Кемеровская область (2)
+  code:  230 
+  alias: kemerovo-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
  
 # Mapsets
 
@@ -959,6 +975,16 @@ skip_img_build:    0
     - chel-1
     - chel-2
 
+- name:  Кемеровская область
+  fid: 520
+  filename: kemerovo
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - kemerovo-1
+    - kemerovo-2
+
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1059,7 +1085,8 @@ skip_img_build:    0
     - zabaikal
     - krasnoyarsk
     - irkutsk
-    - kemerovo
+    - kemerovo-1
+    - kemerovo-2
     - novosib
     - omsk
     - tomsk
@@ -1166,7 +1193,8 @@ skip_img_build:    0
     - kalinin
     - kaluzh
     - kamch
-    - kemerovo
+    - kemerovo-1
+    - kemerovo-2
     - kirov
     - kostrom
     - kurgan
