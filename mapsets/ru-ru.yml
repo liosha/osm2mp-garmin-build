@@ -181,13 +181,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Алтайский край
-  code:  22
-  alias: altayskiy
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Красноярский край
   code:  24
   alias: krasnoyarsk
@@ -873,6 +866,28 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Алтайский край (1)
+  code:  231
+  alias: altayskiy-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Алтайский край (2)
+  code:  232
+  alias: altayskiy-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
  
 # Mapsets
 
@@ -984,6 +999,14 @@ skip_img_build:    0
     - kemerovo-1
     - kemerovo-2
 
+- name:  Алтайский край
+  fid: 521
+  filename: altayskiy
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - altayskiy-1
+    - altayskiy-2
 
 - name: Центральный округ
   fid: 501
@@ -1081,7 +1104,8 @@ skip_img_build:    0
     - buryat
     - tyva
     - khakas
-    - altayskiy
+    - altayskiy-1
+    - altayskiy-2
     - zabaikal
     - krasnoyarsk
     - irkutsk
@@ -1171,7 +1195,8 @@ skip_img_build:    0
     - khakas
     - chechen
     - chuvash
-    - altayskiy
+    - altayskiy-1
+    - altayskiy-2
     - krasnodar
     - krasnoyarsk
     - prim
