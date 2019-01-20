@@ -13,7 +13,7 @@ config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:         readme/readme_ru.txt
 config_brokenmpoly: open-cfg/garmin-ru-brokenmpoly.cfg
-keys:           --textfilter PrepareCP1251 --default-lang=az --lt-equal ru=en --lt-gme az-ru:/data/garmin/gme-translit/az-ru.dat
+keys:           --textfilter PrepareCP1251 --default-lang=az --lt-equal ru=en --lt-gme az-ru:/garmin/gme-translit/az-ru.dat
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 continue_mode:     1
