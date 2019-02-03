@@ -1,0 +1,216 @@
+# Norway mapset (NO)
+
+# Common settings
+
+---
+
+prefix:         full-no
+countrycode:    NO
+countryname:    Norge
+filename:       norway
+fid:            5755
+codepage:       1252
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+keys:           -tl=no -dl=no
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+skip_mp_upload:    1
+
+# Regions
+
+---
+
+- name:  Hordaland
+  code:  1
+  alias:  no-hordaland
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Vestfold
+  code:  2
+  alias:  no-vestfold
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Telemark
+  code:  3
+  alias:  no-telemark
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Rogaland
+  code:  4
+  alias:  no-rogaland
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Vest-Agder
+  code:  5
+  alias:  no-vestagder
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Aust-Agder
+  code:  6
+  alias:  no-austagder
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Østfold
+  code:  7
+  alias:  no-ostfold
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Oslo
+  code:  8
+  alias:  no-oslo
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Akershus
+  code:  9
+  alias:  no-akershus
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Finnmark
+  code:  10
+  alias:  no-finnmark
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Trøndelag
+  code:  11
+  alias:  no-trondelag
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Møre og Romsdal
+  code:  12
+  alias:  no-romsdal
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Troms
+  code:  13
+  alias:  no-troms
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Sogn og Fjordane
+  code:  14
+  alias:  no-fjordane
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Nordland
+  code:  15
+  alias:  no-nordland
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Buskerud
+  code:  16
+  alias:  no-buskerud
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Oppland
+  code:  17
+  alias:  no-oppland
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Hedmark
+  code:  18
+  alias:  no-hedmark
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Svalbard
+  code:  19
+  alias:  no-svalbard
+  srcalias:  norway-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+
+# Mapsets
+
+---
+
+- name: Norge
+  fid: 5755
+  filename: norway
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - no-hordaland
+    - no-vestfold
+    - no-telemark
+    - no-rogaland
+    - no-vestagder
+    - no-austagder
+    - no-ostfold
+    - no-oslo
+    - no-akershus
+    - no-finnmark
+    - no-trondelag
+    - no-romsdal
+    - no-troms
+    - no-fjordane
+    - no-nordland
+    - no-buskerud
+    - no-oppland
+    - no-hedmark
+    - no-svalbard
+

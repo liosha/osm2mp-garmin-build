@@ -1,0 +1,234 @@
+# Sweden mapset (SV)
+
+# Common settings
+
+---
+
+prefix:         full-sv
+countrycode:    SE
+countryname:    Sverige
+filename:       sweden
+fid:            5754
+codepage:       1252
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+keys:           -tl=sv -dl=sv
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+continue_mode:     1
+make_house_search: 1
+mp_threads_num:    1
+update_cfg:        0
+skip_dl_src:       0
+skip_dl_bounds:    0
+skip_img_build:    0
+skip_mp_upload:    1
+
+# Regions
+
+---
+
+- name:  Norrbottens län
+  code:  1
+  alias:  sv-norrbotten
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Västerbottens län
+  code:  2
+  alias:  sv-vasterbotten
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Jämtlands län
+  code:  3
+  alias:  sv-jamtland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Västernorrlands län
+  code:  4
+  alias:  sv-vasternorrland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Gävleborgs län
+  code:  5
+  alias:  sv-gavleborg
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Dalarnas län
+  code:  6
+  alias:  sv-dalecarlia
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Uppsala län
+  code:  7
+  alias:  sv-uppsala
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Västmanlands län
+  code:  8
+  alias:  sv-vastmanland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Örebro län
+  code:  9
+  alias:  sv-orebro
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Värmlands län
+  code:  10
+  alias:  sv-varmland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Västra Götalands län
+  code:  11
+  alias:  sv-vastragotaland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Jönköpings län
+  code:  12
+  alias:  sv-jonkoping
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Södermanlands län
+  code:  13
+  alias:  sv-sodermanland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Stockholms län
+  code:  14
+  alias:  sv-stockholm
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Hallands län
+  code:  15
+  alias:  sv-halland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Skåne län
+  code:  16
+  alias:  sv-skane
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Kronobergs län
+  code:  17
+  alias:  sv-kronoberg
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Blekinge län
+  code:  18
+  alias:  sv-blekinge
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Kalmar län
+  code:  19
+  alias:  sv-kalmar
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Östergötlands län
+  code:  20
+  alias:  sv-ostergotland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+- name:  Gotlands län
+  code:  21
+  alias:  sv-goland
+  srcalias:  sweden-latest
+  preclip:  1
+  skip_mapset:  1
+  keys: --water-back
+
+
+# Mapsets
+
+---
+
+- name: Sverige
+  fid: 5754
+  filename: sweden
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - sv-norrbotten
+    - sv-vasterbotten
+    - sv-jamtland
+    - sv-vasternorrland
+    - sv-gavleborg
+    - sv-dalecarlia
+    - sv-uppsala
+    - sv-vastmanland
+    - sv-orebro
+    - sv-varmland
+    - sv-vastragotaland
+    - sv-jonkoping
+    - sv-sodermanland
+    - sv-stockholm
+    - sv-halland
+    - sv-skane
+    - sv-kronoberg
+    - sv-blekinge
+    - sv-kalmar
+    - sv-ostergotland
+    - sv-goland
+
