@@ -16,9 +16,12 @@
 
 	- Распаковывать архив в отдельную папку
 	- Установить карту
-                -Базовый вариант: запустить скрипт INSTALL.BAT от имени администратора
-                -GMAPI: копировать папку FAMILY_XXX.gmapi\FAMILY_XXX.gmap (или ярлык на нее) в
-			папку %AppData%\Garmin\Maps
+		-Базовый вариант: запустить скрипт INSTALL.BAT от имени администратора
+		-GMAPI: копировать папку FAMILY_XXX.gmapi\FAMILY_XXX.gmap (или ярлык на нее) в
+			папку C:\users\<имя пользователя>\Application Data\Garmin\Maps     
+				(Windows 7-10)
+			или C:\Documents and Settings\<имя пользователя>\Application Data\Garmin\Maps
+				(Windows XP)
 	- Подключить навигатор
 	- Открыть программу MapSource
 	- Выбрать установленную карту в списке карт (в левом верхнем углу на 
