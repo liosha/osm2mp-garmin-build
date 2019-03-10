@@ -362,6 +362,7 @@ skip_img_build:    0
   srcalias: local
   srcfilename: local
   pre_clip: 1
+  onering: yes
 
 - name:  Мурманская область
   code:  51
@@ -615,6 +616,7 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   clipbound: yes
+  onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
@@ -625,6 +627,7 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   clipbound: yes
+  onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
@@ -635,6 +638,7 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   clipbound: yes
+  onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
@@ -645,6 +649,7 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   clipbound: yes
+  onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
 
