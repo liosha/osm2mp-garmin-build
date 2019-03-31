@@ -18,7 +18,7 @@
 	- Установить карту
 		-Базовый вариант: запустить скрипт INSTALL.BAT от имени администратора
 		-GMAPI: копировать папку FAMILY_XXX.gmapi\FAMILY_XXX.gmap (или ярлык на нее) в
-			папку C:\users\<имя пользователя>\Application Data\Garmin\Maps     
+			папку C:\users\<имя пользователя>\AppData\Roaming\Garmin\Maps
 				(Windows 7-10)
 			или C:\Documents and Settings\<имя пользователя>\Application Data\Garmin\Maps
 				(Windows XP)
@@ -36,7 +36,10 @@
 	- Установить карту
 		-Базовый вариант: запустить скрипт INSTALL.BAT от имени администратора
                 -GMAPI: копировать папку FAMILY_XXX.gmapi\FAMILY_XXX.gmap (или ярлык на нее) в
-			папку %AppData%\Garmin\Maps
+			папку C:\users\<имя пользователя>\AppData\Roaming\Garmin\Maps
+				(Windows 7-10)
+			или C:\Documents and Settings\<имя пользователя>\Application Data\Garmin\Maps
+				(Windows XP)
 	- Подключить навигатор
 	- Открыть программу BaseCamp
 	- Выбрать карту в меню Карты 

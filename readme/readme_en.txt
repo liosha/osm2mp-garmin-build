@@ -19,7 +19,7 @@ INSTALLATION (MAPSOURCE)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
 		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)
-			into C:\users\<user's name>\Application Data\Garmin\Maps     
+			into C:\users\<user's name>\AppData\Roaming\Garmin\Maps 
 				(Windows 7-10)
 			or into C:\Documents and Settings\<user's name>\Application Data\Garmin\Maps
 				(Windows XP)
@@ -39,8 +39,11 @@ INSTALLATION (BASECAMP)
 	  from 7-zip.org)
 	- Install map
 		-IMG: run INSTALL.BAT script as administrator
-                -GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)
-			into %AppData%\Garmin\Maps
+		-GMAPI: copy FAMILY_XXX.gmapi\FAMILY_XXX.gmap (or create shortcut)
+			into C:\users\<user's name>\AppData\Roaming\Garmin\Maps 
+				(Windows 7-10)
+			or into C:\Documents and Settings\<user's name>\Application Data\Garmin\Maps
+				(Windows XP)
 	- Plug in your device
 	- Start BaseCamp
 	- Choose a map from the list in the toolbox
