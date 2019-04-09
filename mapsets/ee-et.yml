@@ -142,7 +142,7 @@ skip_mp_upload:    1
   bound: EE-78
   srcalias: local
   srcfilename: local
-  #pre_clip: 1
+  pre_clip: 1
   skip_mapset: 1
   fixmultipoly: yes
 

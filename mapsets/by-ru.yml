@@ -46,12 +46,23 @@ skip_dl_src:       1
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Гомельская область
-  code:  3
-  alias: by-gomel
-  bound: BY-HO
+- name:  Гомельская область (1)
+  code:  13
+  alias: by-gomel-1
+  bound: BY-HO-1
   srcalias: local
   srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Гомельская область (2)
+  code:  14
+  alias: by-gomel-2
+  bound: BY-HO-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -118,7 +129,8 @@ skip_dl_src:       1
   parts:
     - by-brest
     - by-vitebsk
-    - by-gomel
+    - by-gomel-1
+    - by-gomel-2
     - by-grodno
     - by-minsk-1
     - by-minsk-2
