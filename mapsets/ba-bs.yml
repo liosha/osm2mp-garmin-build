@@ -26,15 +26,42 @@ update_cfg:        0
 
 ---
 
-- name:  Bosna i Hercegovina
-  code:  0
-  alias: bosnia-herzegovina
+- name:  Bosna i Hercegovina (1)
+  code:  1
+  alias: bosnia-herzegovina-1
   srcalias:  bosnia-herzegovina-latest
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
 
+- name:  Bosna i Hercegovina (2)
+  code:  2
+  alias: bosnia-herzegovina-2
+  srcalias:  bosnia-herzegovina-latest
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Bosna i Hercegovina (3)
+  code:  3
+  alias: bosnia-herzegovina-3
+  srcalias:  bosnia-herzegovina-latest
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
 
 
 # Mapsets
 
 ---
 
+- name: Bosna i Hercegovina
+  fid: 5724
+  alias: bosnia-herzegovina
+  make_house_search: 1
+  skip_mp_upload:    0   
+  parts:
+    - bosnia-herzegovina-1
+    - bosnia-herzegovina-2
+    - bosnia-herzegovina-3
 
