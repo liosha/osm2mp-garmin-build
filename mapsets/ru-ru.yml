@@ -420,13 +420,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
  
-- name:  Ростовская область
-  code:  61
-  alias: rostov
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
- 
 - name:  Рязанская область
   code:  62
   alias: ryazan
@@ -893,7 +886,29 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
- 
+- name:  Ростовская область (1)
+  code:  233
+  alias: rostov-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ростовская область (2)
+  code:  234
+  alias: rostov-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+
 # Mapsets
 
 ---
@@ -1072,7 +1087,8 @@ skip_img_build:    0
     - kalmyk
     - astrakhan
     - volgograd
-    - rostov
+    - rostov-1
+    - rostov-2
     - kda-11
     - kda-12
     - kda-21
@@ -1251,7 +1267,8 @@ skip_img_build:    0
     - perm-1
     - perm-2
     - pskov
-    - rostov
+    - rostov-1
+    - rostov-2
     - ryazan
     - samar
     - saratov
