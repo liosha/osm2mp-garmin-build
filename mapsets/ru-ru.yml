@@ -1028,6 +1028,15 @@ skip_img_build:    0
     - altayskiy-1
     - altayskiy-2
 
+- name:  Ростовская область
+  fid: 522
+  filename: rostov
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - rostov-1
+    - rostov-2
+
 - name: Центральный округ
   fid: 501
   filename: cfo
