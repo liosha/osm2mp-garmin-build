@@ -169,7 +169,7 @@ skip_dl_bounds:    0
   srcfilename: local
   pre_clip: 1
   onering: yes
-  skip_mapset: 0
+  skip_mapset: 1
 
 - name:  Шымкент
   code:  17
@@ -178,7 +178,7 @@ skip_dl_bounds:    0
   srcalias: local
   srcfilename: local
   pre_clip: 1
-  skip_mapset: 0
+  skip_mapset: 1
 
 
 # Mapsets
