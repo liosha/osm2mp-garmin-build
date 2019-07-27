@@ -161,14 +161,24 @@ skip_dl_bounds:    0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Южно-Казахстанская область
+- name:  Туркестанская область
   code:  16
-  alias: kz-yuzh
+  alias: kz-turkestan
   bound: KZ-YUZ
   srcalias: local
   srcfilename: local
   pre_clip: 1
-  skip_mapset: 1
+  onering: yes
+  skip_mapset: 0
+
+- name:  Шымкент
+  code:  17
+  alias: kz-shymkent
+  bound: KZ-SHY
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  skip_mapset: 0
 
 
 # Mapsets
@@ -195,5 +205,6 @@ skip_dl_bounds:    0
     - kz-mangis
     - kz-pavlo
     - kz-sever
-    - kz-yuzh
+    - kz-turkestan
+    - kz-shymkent
 
