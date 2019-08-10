@@ -9,8 +9,15 @@ REQUIREMENTS
 
 	You will require MapSource or BaseCamp to install this map (both can
 	be downloaded from garmin.com). WARNING: BaseCamp 4.7.0 (and newer)
-        can use only GMAPI format. If you use Linux, you can try QLandkarteGT,
-        but the result may vary.
+	can use only GMAPI format. If you use Linux, you can try QLandkarteGT,
+	but the result may vary.
+
+ATTENTION
+
+	Do not use this product as the only source of information about the area. 
+	It may contain incomplete or inaccurate data, some features are missing 
+	compared to the Garmin products. And there are some issues that are impossible 
+	to fix at the moment. Always plan your route and check map quality before the trip.
 
 INSTALLATION (MAPSOURCE)
 
@@ -68,6 +75,18 @@ IMG
 	- Install converted map on the OSX using Map Manager software
 	  http://www8.garmin.com/osx/
 	- see INSTALLATION (BASECAMP)
+
+KNOWN PROBLEMS
+
+	- BaseCamp version 4.7.0 or later cannot install IMG maps correctly, use GMAPI 
+		format
+	- The latest versions of BaseCamp and some devices cannot build route correctly
+		when you use "Driving" (automobile) activity profile. Switch to 
+		"Motorcycling" profile. It has some limitations though: access restrictions
+		for the roads will be ignored
+	- BaseCamp 4.8.4 for MacOS does not display Russian letters in map names and 
+		object labels. Garmin support recommends installing version 4.7.0 before
+		they fix this bug.
 
 SUPPORT
 
