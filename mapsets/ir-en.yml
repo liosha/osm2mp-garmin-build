@@ -15,7 +15,7 @@ readme:
   - readme/readme_en_t.txt
   - readme/readme_ru_t.txt
 codepage:       1252
-keys:           -tl=en -dl=fa --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_fa_en=2 --textfilter Unidecode
+keys:           -tl=en -dl=fa --lt-yatr-key=@/garmin/yatr.key  --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_fa_en=2 --textfilter Unidecode
 url_base:       http://download.geofabrik.de/asia/
 config_file_ftp:   ftp.yml
 make_house_search: 1

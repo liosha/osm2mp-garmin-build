@@ -15,7 +15,7 @@ typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en_t.txt
   - readme/readme_ru_t.txt
-keys:           -dl=ru -tl=en --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_ru_en=3 --textfilter Unidecode
+keys:           -dl=ru -tl=en --lt-yatr-key=@/garmin/yatr.key  --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_ru_en=3 --textfilter Unidecode
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 mp_threads_num:    1

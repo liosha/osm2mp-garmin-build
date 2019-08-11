@@ -177,6 +177,14 @@ skip_mp_upload:    1
   skip_mapset: 1
   clipbound: yes
 
+- name:  Pohjois-Karjala (3)
+  code:  108
+  alias: fi-pohjkarj-3
+  srcalias:  finland-latest
+  pre_clip: 1
+  skip_mapset: 1
+  clipbound: yes
+
 - name:  Pohjanmaa
   code:  15
   alias: fi-pohj
@@ -244,6 +252,7 @@ skip_mp_upload:    1
     - fi-kainuu
     - fi-pohjkarj-1
     - fi-pohjkarj-2
+    - fi-pohjkarj-3
     - fi-pohj
     - fi-sata
     - fi-etelakarj

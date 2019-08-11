@@ -15,7 +15,7 @@ codepage:       1251
 readme:
   - readme/readme_en_t.txt
   - readme/readme_ru_t.txt
-keys:           -tl=ru -dl=tr --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter PrepareCP1251
+keys:           -tl=ru -dl=tr --lt-yatr-key=@/garmin/yatr.key  --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_tr_ru=2 --textfilter PrepareCP1251
 url_base:       http://download.geofabrik.de/europe/
 config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!

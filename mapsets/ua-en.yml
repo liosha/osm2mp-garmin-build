@@ -15,7 +15,7 @@ readme:
   - readme/readme_en_t.txt
   - readme/readme_ru_t.txt
 codepage:       1252
-keys:           -tl=en -dl=uk --lt-yatr-key=@/data/garmin/yatr.key --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_ru_en=3 --lt-priority yatr_uk_en=2 --codepage=1252 --textfilter Unidecode 
+keys:           -tl=en -dl=uk --lt-yatr-key=@/garmin/yatr.key --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_ru_en=3 --lt-priority yatr_uk_en=2 --codepage=1252 --textfilter Unidecode 
 url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
 config_file_ftp:   ftp.yml
 # sqlite cache is not thread-compatible!

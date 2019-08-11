@@ -15,7 +15,7 @@ typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
-keys:           -tl=fr -dl=ar --lt-yatr-key=@/data/garmin/yatr.key  --lt-yatr-cache-dir /data/garmin/cache/yatr --lt-priority yatr_ar_fr=2 --textfilter PrepareCP1252
+keys:           -tl=fr -dl=ar --lt-yatr-key=@/garmin/yatr.key  --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_ar_fr=2 --textfilter PrepareCP1252
 url_base:       http://download.geofabrik.de/africa/
 config_file_ftp:   ftp.yml
 continue_mode:     0

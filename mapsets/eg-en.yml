@@ -9,13 +9,13 @@ countrycode:    EG
 countryname:    Egypt
 filename:       egypt
 fid:            5731
-codepage:       1251
+codepage:       1252
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
-keys:           -tl=en -dl=ar --textfilter PrepareCP1251
+keys:           -tl=en -dl=ar 
 url_base:       http://download.geofabrik.de/africa/
 config_file_ftp:   ftp.yml
 continue_mode:     0
@@ -33,9 +33,18 @@ skip_mp_upload:    0
 
 ---
 
-- name:  Egypt(1)
-  code:  1
-  alias: egypt-1
+- name:  Egypt(11)
+  code:  11
+  alias: egypt-11
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Egypt(12)
+  code:  12
+  alias: egypt-12
   pre_clip: 1
   clipbound: yes
   srcalias: egypt-latest
@@ -60,14 +69,31 @@ skip_mp_upload:    0
   skip_mapset: 1
   keys: --water-back
 
-- name:  Egypt(4)
-  code:  4
-  alias: egypt-4
+- name:  Egypt(41
+  code:  41
+  alias: egypt-41
   pre_clip: 1
   clipbound: yes
   srcalias: egypt-latest
   skip_mapset: 1
   keys: --water-back
+
+- name:  Egypt(42)
+  code:  42
+  alias: egypt-42
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+
+- name:  Egypt(43)
+  code:  43
+  alias: egypt-43
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+
 
 # Mapsets
 
@@ -79,8 +105,11 @@ skip_mp_upload:    0
   make_house_search: 1
   skip_mp_upload:    0   
   parts:
-    - egypt-1
+    - egypt-11
+    - egypt-12
     - egypt-2
     - egypt-3
-    - egypt-4
+    - egypt-41
+    - egypt-42
+    - egypt-43
 
