@@ -582,9 +582,19 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Краснодарский край (22)
+- name:  Краснодарский край (221)
   code:  204
-  alias: kda-22
+  alias: kda-221
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Краснодарский край (222)
+  code:  205
+  alias: kda-222
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -593,7 +603,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Краснодарский край (море)
-  code:  205
+  code:  206
   alias: kda-sea
   srcalias: local
   srcfilename: local
@@ -922,7 +932,8 @@ skip_img_build:    0
     - kda-11
     - kda-12
     - kda-21
-    - kda-22
+    - kda-221
+    - kda-222
     - kda-sea
 
 - name: Ленинградская область
@@ -1101,7 +1112,8 @@ skip_img_build:    0
     - kda-11
     - kda-12
     - kda-21
-    - kda-22
+    - kda-221
+    - kda-222
     - kda-sea
     - krym
     - sevastopol
@@ -1306,7 +1318,8 @@ skip_img_build:    0
     - kda-11
     - kda-12
     - kda-21
-    - kda-22
+    - kda-221
+    - kda-222
     - kda-sea
     - krym
     - sevastopol
