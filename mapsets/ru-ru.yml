@@ -197,13 +197,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Ставропольский край
-  code:  26
-  alias: stavrop
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
- 
 - name:  Хабаровский край
   code:  27
   alias: khabar
@@ -928,7 +921,26 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-
+- name:  Ставропольский край (1)
+  code:  238
+  alias: stavrop-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Ставропольский край (2)
+  code:  239
+  alias: stavrop-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
 # Mapsets
 
 ---
@@ -1058,6 +1070,15 @@ skip_img_build:    0
   parts:
     - rostov-1
     - rostov-2
+
+- name:  Ставропольский край
+  fid: 523
+  filename: stavrop
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - stavrop-1
+    - stavrop-2
 
 - name: Центральный округ
   fid: 501
@@ -1220,7 +1241,8 @@ skip_img_build:    0
     - karach
     - osetiya
     - chechen
-    - stavrop
+    - stavrop-1
+    - stavrop-2
 
 - name: Россия
   fid: 400
@@ -1254,7 +1276,8 @@ skip_img_build:    0
     - krasnodar
     - krasnoyarsk
     - prim
-    - stavrop
+    - stavrop-1
+    - stavrop-2
     - khabar
     - amur
     - arkhan-1
