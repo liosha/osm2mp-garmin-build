@@ -27,19 +27,23 @@ skip_mp_upload:    1
 
 ---
 
-
-- name:  Централна Србија
+- name:  Србија (1)
   code:  1
-  alias: rs-central
-  bound: 1658166 
+  alias: serbia-1
   srcalias:  serbia-latest
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Војводина
+- name:  Србија (2)
   code:  2
-  alias: rs-voivodina
-  bound: 1279074
+  alias: serbia-2
+  srcalias:  serbia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Србија (3)
+  code:  3
+  alias: serbia-3
   srcalias:  serbia-latest
   pre_clip: 1
   skip_mapset: 1
@@ -49,13 +53,13 @@ skip_mp_upload:    1
 
 ---
 
-
 - name:  Србија
   fid: 5726
   filename: serbia
   make_house_search: 1
   skip_mp_upload:    0
   parts:
-    - rs-central
-    - rs-voivodina
+    - serbia-1
+    - serbia-2
+    - serbia-3
 
