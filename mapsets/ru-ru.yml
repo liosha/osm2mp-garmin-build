@@ -538,9 +538,19 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Краснодарский край (11)
+- name:  Краснодарский край (111)
   code:  201
-  alias: kda-11
+  alias: kda-111
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Краснодарский край (112)
+  code:  242
+  alias: kda-112
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -945,7 +955,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Новосибирская область (2)
-  code:  240
+  code:  241
   alias: novosib-2
   srcalias: local
   srcfilename: local
@@ -965,7 +975,8 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 0
   parts:
-    - kda-11
+    - kda-111
+    - kda-112
     - kda-12
     - kda-21
     - kda-221
@@ -1164,7 +1175,8 @@ skip_img_build:    0
     - volgograd
     - rostov-1
     - rostov-2
-    - kda-11
+    - kda-111
+    - kda-112
     - kda-12
     - kda-21
     - kda-221
@@ -1376,7 +1388,8 @@ skip_img_build:    0
     - khanty-2
     - chukot
     - yamal
-    - kda-11
+    - kda-111
+    - kda-112
     - kda-12
     - kda-21
     - kda-221
