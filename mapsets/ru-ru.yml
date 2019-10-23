@@ -371,13 +371,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Новосибирская область
-  code:  54
-  alias: novosib
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Омская область
   code:  55
   alias: omsk
@@ -941,6 +934,27 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
  
+- name:  Новосибирская область (1)
+  code:  240
+  alias: novosib-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Новосибирская область (2)
+  code:  240
+  alias: novosib-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+
 # Mapsets
 
 ---
@@ -1080,6 +1094,15 @@ skip_img_build:    0
     - stavrop-1
     - stavrop-2
 
+- name:  Новосибирская область
+  fid: 524
+  filename: novosib
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - novosib-1
+    - novosib-2
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1185,7 +1208,8 @@ skip_img_build:    0
     - irkutsk
     - kemerovo-1
     - kemerovo-2
-    - novosib
+    - novosib-1
+    - novosib-2
     - omsk
     - tomsk
 
@@ -1315,7 +1339,8 @@ skip_img_build:    0
     - nizhegorod-1
     - nizhegorod-2
     - novgorod
-    - novosib
+    - novosib-1
+    - novosib-2
     - omsk
     - orenburg
     - orlovsk
