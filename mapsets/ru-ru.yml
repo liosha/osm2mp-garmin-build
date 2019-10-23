@@ -894,6 +894,17 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Ростовская область (3)
+  code:  243
+  alias: rostov-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 - name:  Пермский край (1)
   code:  235
   alias: perm-1
@@ -1095,6 +1106,7 @@ skip_img_build:    0
   parts:
     - rostov-1
     - rostov-2
+    - rostov-3
 
 - name:  Ставропольский край
   fid: 523
@@ -1175,6 +1187,7 @@ skip_img_build:    0
     - volgograd
     - rostov-1
     - rostov-2
+    - rostov-3
     - kda-111
     - kda-112
     - kda-12
@@ -1363,6 +1376,7 @@ skip_img_build:    0
     - pskov
     - rostov-1
     - rostov-2
+    - rostov-3
     - ryazan
     - samar
     - saratov
