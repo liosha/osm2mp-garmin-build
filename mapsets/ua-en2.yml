@@ -1,4 +1,4 @@
-# Ukraine mapset (EN,ya.translate)
+# Ukraine mapset (EN)
 
 # Common settings
 
@@ -8,18 +8,17 @@ prefix:         full-en
 countrycode:    UA
 countryname:    Ukraine
 filename:       ukraine
-fid:            5716
+fid:            5756
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
 codepage:       1252
 readme:
-  - readme/readme_en_t.txt
-  - readme/readme_ru_t.txt
-keys:           -tl=en -dl=uk --lt-yatr-key=@/garmin/yatr.key --lt-yatr-cache-dir /garmin/cache/yatr --lt-priority yatr_ru_en=3 --lt-priority yatr_uk_en=2 --codepage=1252 --textfilter Unidecode 
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+keys:           -tl=en -dl=uk --textfilter PrepareCP1252
 url_base:       http://localhost/
 format:         o5m
 config_file_ftp:   ftp.yml
-# sqlite cache is not thread-compatible!
 mp_threads_num:    1
 make_house_search: 1
 skip_dl_src:       1
@@ -275,7 +274,7 @@ update_cfg:        0
 ---
 
 - name: Ukraine
-  fid: 5716
+  fid: 5756
   filename: ukraine
   make_house_search: 1
   skip_mp_upload:    0
@@ -306,3 +305,4 @@ update_cfg:        0
     - ua-cherkas
     - ua-chernig
     - ua-chernov
+
