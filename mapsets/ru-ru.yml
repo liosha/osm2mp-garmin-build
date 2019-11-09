@@ -1178,7 +1178,7 @@ skip_img_build:    0
 - name: Южный округ
   fid: 503
   filename: ufo
-  make_house_search: 1
+  make_house_search: 0
   skip_mp_upload: 1
   parts:
     - adygeya
