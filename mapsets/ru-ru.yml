@@ -726,6 +726,26 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Свердловская область (3)
+  code:  244
+  alias: sverdl-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Свердловская область (4)
+  code:  245
+  alias: sverdl-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 - name:  Архангельская область (1)
   code:  220
   alias: arkhan-1
@@ -1032,6 +1052,8 @@ skip_img_build:    0
   parts:
     - sverdl-1
     - sverdl-2
+    - sverdl-3
+    - sverdl-4
 
 - name: Пермский край
   fid: 515
@@ -1247,6 +1269,8 @@ skip_img_build:    0
     - kurgan
     - sverdl-1
     - sverdl-2
+    - sverdl-3
+    - sverdl-4
     - tumen
     - chel-1
     - chel-2
@@ -1385,6 +1409,8 @@ skip_img_build:    0
     - sakhalin-sevkur
     - sverdl-1
     - sverdl-2
+    - sverdl-3
+    - sverdl-4
     - smol
     - tambov
     - tver
