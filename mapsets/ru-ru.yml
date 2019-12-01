@@ -947,6 +947,16 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Ростовская область (6)
+  code:  256
+  alias: rostov-6
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
 - name:  Пермский край (1)
   code:  235
@@ -1154,6 +1164,7 @@ skip_img_build:    0
     - rostov-3
     - rostov-4
     - rostov-5
+    - rostov-6
 
 - name:  Ставропольский край
   fid: 523
@@ -1237,6 +1248,7 @@ skip_img_build:    0
     - rostov-3
     - rostov-4
     - rostov-5
+    - rostov-6
     - kda-111
     - kda-112
     - kda-12
@@ -1430,6 +1442,7 @@ skip_img_build:    0
     - rostov-3
     - rostov-4
     - rostov-5
+    - rostov-6
     - ryazan
     - samar
     - saratov
