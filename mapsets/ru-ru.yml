@@ -58,13 +58,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   
-- name:  Дагестан
-  code:  5
-  alias: dagestan
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  
 - name:  Ингушетия
   code:  6
   alias: ingush
@@ -1028,6 +1021,35 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Дагестан (море)
+  code:  257
+  alias: dagestan-sea
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  skip_mapset: 1
+  skip_mp_upload: 1
+  keys: --water-back
+
+- name:  Дагестан (1)
+  code:  258
+  alias: dagestan-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Дагестан (2)
+  code:  259
+  alias: dagestan-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
 # Mapsets
 
@@ -1183,6 +1205,16 @@ skip_img_build:    0
   parts:
     - novosib-1
     - novosib-2
+
+- name: Дагестан
+  fid: 525
+  filename: dagestan
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - dagestan-1
+    - dagestan-2
+    - dagestan-sea
 
 - name: Центральный округ
   fid: 501
@@ -1347,7 +1379,9 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 1
   parts:
-    - dagestan
+    - dagestan-1
+    - dagestan-2
+    - dagestan-sea
     - ingush
     - kabardin
     - karach
@@ -1366,7 +1400,9 @@ skip_img_build:    0
     - bashkir
     - buryat
     - altay
-    - dagestan
+    - dagestan-1
+    - dagestan-2
+    - dagestan-sea
     - ingush
     - kabardin
     - kalmyk
