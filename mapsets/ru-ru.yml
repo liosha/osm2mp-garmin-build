@@ -36,14 +36,7 @@ skip_img_build:    0
   srcalias: local
   srcfilename: local
   pre_clip: 1
-
-- name:  Башкортостан
-  code:  2
-  alias: bashkir
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  
+ 
 - name:  Бурятия
   code:  3
   alias: buryat
@@ -1051,6 +1044,26 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Башкортостан (1)
+  code:  260
+  alias: bashkir-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Башкортостан (2)
+  code:  261
+  alias: bashkir-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
 # Mapsets
 
 ---
@@ -1216,6 +1229,15 @@ skip_img_build:    0
     - dagestan-2
     - dagestan-sea
 
+- name: Башкортостан
+  fid: 526
+  filename: bashkir
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - bashkir-1
+    - bashkir-2
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1355,7 +1377,8 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 1
   parts:
-    - bashkir
+    - bashkir-1
+    - bashkir-2
     - mariyel
     - mordov
     - tatar
@@ -1397,7 +1420,8 @@ skip_img_build:    0
   skip_mp_upload: 1
   parts:
     - adygeya
-    - bashkir
+    - bashkir-1
+    - bashkir-2
     - buryat
     - altay
     - dagestan-1

@@ -51,6 +51,15 @@ skip_mp_upload:    0
   skip_mapset: 1
   keys: --water-back
 
+- name:  Egypt(13)
+  code:  13
+  alias: egypt-13
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
 - name:  Egypt(2)
   code:  2
   alias: egypt-2
@@ -60,14 +69,39 @@ skip_mp_upload:    0
   skip_mapset: 1
   keys: --water-back
 
-- name:  Egypt(3)
-  code:  3
-  alias: egypt-3
+- name:  Egypt(31)
+  code:  31
+  alias: egypt-31
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+
+- name:  Egypt(32)
+  code:  32
+  alias: egypt-32
   pre_clip: 1
   clipbound: yes
   srcalias: egypt-latest
   skip_mapset: 1
   keys: --water-back
+
+- name:  Egypt(33)
+  code:  33
+  alias: egypt-33
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+  keys: --water-back
+
+- name:  Egypt(34)
+  code:  34
+  alias: egypt-34
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
 
 - name:  Egypt(41
   code:  41
@@ -94,6 +128,14 @@ skip_mp_upload:    0
   srcalias: egypt-latest
   skip_mapset: 1
 
+- name:  Egypt(44)
+  code:  44
+  alias: egypt-44
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+
 
 # Mapsets
 
@@ -107,9 +149,14 @@ skip_mp_upload:    0
   parts:
     - egypt-11
     - egypt-12
+    - egypt-13
     - egypt-2
-    - egypt-3
+    - egypt-31
+    - egypt-32
+    - egypt-33
+    - egypt-34
     - egypt-41
     - egypt-42
     - egypt-43
+    - egypt-44
 
