@@ -672,9 +672,9 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Ленинградская область (запад)
-  code:  214
-  alias: leningrad-west
+- name:  Ленинградская область (1)
+  code:  262
+  alias: leningrad-1
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -682,9 +682,29 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Ленинградская область (восток)
-  code:  215
-  alias: leningrad-east
+- name:  Ленинградская область (2)
+  code:  263
+  alias: leningrad-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ленинградская область (3)
+  code:  264
+  alias: leningrad-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Ленинградская область (4)
+  code:  265
+  alias: leningrad-4
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -1088,8 +1108,10 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 0
   parts:
-    - leningrad-west
-    - leningrad-east
+    - leningrad-1
+    - leningrad-2
+    - leningrad-3
+    - leningrad-4
 
 - name: Московская область
   fid: 510
@@ -1279,8 +1301,10 @@ skip_img_build:    0
     - arkhan-3
     - vologda
     - kalinin
-    - leningrad-east
-    - leningrad-west
+    - leningrad-1
+    - leningrad-2
+    - leningrad-3
+    - leningrad-4
     - murmansk
     - novgorod
     - pskov
@@ -1474,8 +1498,10 @@ skip_img_build:    0
     - kurgan
     - kursk
     - stpeter
-    - leningrad-east
-    - leningrad-west
+    - leningrad-1
+    - leningrad-2
+    - leningrad-3
+    - leningrad-4
     - lipetsk
     - magadan
     - mosobl-1

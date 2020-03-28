@@ -136,6 +136,14 @@ skip_mp_upload:    0
   srcalias: egypt-latest
   skip_mapset: 1
 
+- name:  Egypt(45)
+  code:  45
+  alias: egypt-45
+  pre_clip: 1
+  clipbound: yes
+  srcalias: egypt-latest
+  skip_mapset: 1
+
 
 # Mapsets
 
@@ -159,4 +167,5 @@ skip_mp_upload:    0
     - egypt-42
     - egypt-43
     - egypt-44
+    - egypt-45
 
