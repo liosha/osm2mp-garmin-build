@@ -80,13 +80,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Карелия
-  code:  10
-  alias: karel
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Коми
   code:  11
   alias: komi
@@ -1083,6 +1076,26 @@ skip_img_build:    0
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
+
+- name:  Карелия (1)
+  code:  266
+  alias: karel-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Карелия (2)
+  code:  267
+  alias: karel-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
  
 # Mapsets
 
@@ -1260,6 +1273,16 @@ skip_img_build:    0
     - bashkir-1
     - bashkir-2
 
+- name: Карелия
+  fid: 527
+  filename: karel
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - karel-1
+    - karel-2
+
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1294,7 +1317,8 @@ skip_img_build:    0
   make_house_search: 1
   skip_mp_upload: 1
   parts:
-    - karel
+    - karel-1
+    - karel-2
     - komi
     - arkhan-1
     - arkhan-2
@@ -1455,7 +1479,8 @@ skip_img_build:    0
     - kabardin
     - kalmyk
     - karach
-    - karel
+    - karel-1
+    - karel-2
     - komi
     - mariyel
     - mordov
