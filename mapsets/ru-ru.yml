@@ -1028,7 +1028,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Дагестан (море)
-  code:  257
+  code:  268
   alias: dagestan-sea
   srcalias: local
   srcfilename: local
@@ -1038,7 +1038,7 @@ skip_img_build:    0
   keys: --water-back
 
 - name:  Дагестан (1)
-  code:  258
+  code:  269
   alias: dagestan-1
   srcalias: local
   srcfilename: local
@@ -1048,8 +1048,28 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Дагестан (2)
-  code:  259
+  code:  270
   alias: dagestan-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Дагестан (3)
+  code:  271
+  alias: dagestan-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Дагестан (4)
+  code:  272
+  alias: dagestan-4
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -1262,6 +1282,8 @@ skip_img_build:    0
   parts:
     - dagestan-1
     - dagestan-2
+    - dagestan-3
+    - dagestan-4
     - dagestan-sea
 
 - name: Башкортостан
@@ -1452,6 +1474,8 @@ skip_img_build:    0
   parts:
     - dagestan-1
     - dagestan-2
+    - dagestan-3
+    - dagestan-4
     - dagestan-sea
     - ingush
     - kabardin
@@ -1474,6 +1498,8 @@ skip_img_build:    0
     - altay
     - dagestan-1
     - dagestan-2
+    - dagestan-3
+    - dagestan-4
     - dagestan-sea
     - ingush
     - kabardin
