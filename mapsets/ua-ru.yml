@@ -36,6 +36,7 @@ update_cfg:        0
   bound: UA-05
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -45,6 +46,7 @@ update_cfg:        0
   bound: UA-07
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -54,15 +56,43 @@ update_cfg:        0
   bound: UA-12
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Донецкая область
-  code:  14
-  alias: ua-doneck
-  bound: UA-14
+- name:  Донецкая область (1)
+  code:  101
+  alias: ua-doneck-1
   srcalias: local
   srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецкая область (2)
+  code:  102
+  alias: ua-doneck-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецкая область (3)
+  code:  103
+  alias: ua-doneck-3
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецкая область (4)
+  code:  104
+  alias: ua-doneck-4
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -72,6 +102,7 @@ update_cfg:        0
   bound: UA-18
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -81,6 +112,7 @@ update_cfg:        0
   bound: UA-21
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -90,6 +122,7 @@ update_cfg:        0
   bound: UA-23
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -99,17 +132,27 @@ update_cfg:        0
   bound: UA-26
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
-# UA-30   Киев    город
+- name:  Киев
+  code:  30
+  alias: ua-kiev
+  bound: UA-30
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
 
 - name:  Киевская область
   code:  32
-  alias: ua-kiev
+  alias: ua-kievobl
   bound: UA-32
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -119,6 +162,7 @@ update_cfg:        0
   bound: UA-35
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -128,6 +172,7 @@ update_cfg:        0
   bound: UA-40
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -137,6 +182,7 @@ update_cfg:        0
   bound: UA-43
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -146,6 +192,7 @@ update_cfg:        0
   bound: UA-44
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -155,6 +202,7 @@ update_cfg:        0
   bound: UA-46
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -164,6 +212,7 @@ update_cfg:        0
   bound: UA-48
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -173,6 +222,7 @@ update_cfg:        0
   bound: UA-51
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -182,6 +232,7 @@ update_cfg:        0
   bound: UA-53
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -191,6 +242,7 @@ update_cfg:        0
   bound: UA-56
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -200,6 +252,7 @@ update_cfg:        0
   bound: UA-59
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -209,6 +262,7 @@ update_cfg:        0
   bound: UA-61
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -218,6 +272,7 @@ update_cfg:        0
   bound: UA-63
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -227,6 +282,7 @@ update_cfg:        0
   bound: UA-65
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -236,6 +292,7 @@ update_cfg:        0
   bound: UA-68
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -245,6 +302,7 @@ update_cfg:        0
   bound: UA-71
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -254,6 +312,7 @@ update_cfg:        0
   bound: UA-73
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -263,6 +322,7 @@ update_cfg:        0
   bound: UA-74
   srcalias: local
   srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -282,13 +342,17 @@ update_cfg:        0
     - ua-volyn
     - ua-lugansk
     - ua-dnepro
-    - ua-doneck
+    - ua-doneck-1
+    - ua-doneck-2
+    - ua-doneck-3
+    - ua-doneck-4
     - ua-gitomir
     - ua-rovn
     - ua-zakarpat
     - ua-zaporog
     - ua-ivanofr
     - ua-kiev
+    - ua-kievobl
     - ua-kirovogr
     - ua-sevastopol
     - ua-krym
@@ -304,3 +368,4 @@ update_cfg:        0
     - ua-cherkas
     - ua-chernig
     - ua-chernov
+

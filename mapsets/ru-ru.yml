@@ -328,14 +328,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Москва
-  code:  77
-  alias: moscow
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  onering: yes
-
 - name:  Мурманская область
   code:  51
   alias: murmansk
@@ -1116,7 +1108,63 @@ skip_img_build:    0
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
- 
+
+- name:  Москва (1)
+  code:  273
+  alias: moscow-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Москва (2)
+  code:  274
+  alias: moscow-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Москва (3)
+  code:  275
+  alias: moscow-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Москва (4)
+  code:  276
+  alias: moscow-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Москва (5)
+  code:  277
+  alias: moscow-5
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+
 # Mapsets
 
 ---
@@ -1320,7 +1368,11 @@ skip_img_build:    0
     - kostrom
     - kursk
     - lipetsk
-    - moscow
+    - moscow-1
+    - moscow-2
+    - moscow-3
+    - moscow-4
+    - moscow-5
     - mosobl-1
     - mosobl-2
     - mosobl-3
@@ -1559,7 +1611,11 @@ skip_img_build:    0
     - mosobl-2
     - mosobl-3
     - mosobl-4
-    - moscow
+    - moscow-1
+    - moscow-2
+    - moscow-3
+    - moscow-4
+    - moscow-5
     - murmansk
     - nizhegorod-1
     - nizhegorod-2
