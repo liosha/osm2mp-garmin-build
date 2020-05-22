@@ -1,0 +1,105 @@
+# Slovakia (SK)
+
+# Common settings
+
+---
+
+prefix:         full-sk
+countrycode:    SK
+countryname:    Slovenská republika
+filename:       slovakia
+fid:            5757
+config:         open-cfg/garmin-ru.cfg
+typ:            open-cfg/osm.typ
+readme:
+  - readme/readme_en.txt
+  - readme/readme_ru.txt
+codepage:       1250
+keys:           -tl=sk -dl=sk --textfilter PrepareCP1250
+url_base:       http://download.geofabrik.de/europe/
+config_file_ftp:   ftp.yml
+make_house_search: 1
+update_cfg:        0
+skip_mp_upload:    1
+
+
+# Regions
+
+---
+
+- name:  Bratislavský kraj
+  code:  1
+  alias: slovakia-1
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Trnavský kraj
+  code:  2
+  alias: slovakia-2
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Trenčianský kraj
+  code:  3
+  alias: slovakia-3
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Nitrianský kraj
+  code:  4
+  alias: slovakia-4
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Žilinský kraj
+  code:  5
+  alias: slovakia-5
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Banskobystrický kraj
+  code:  6
+  alias: slovakia-6
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Prešovský kraj
+  code:  7
+  alias: slovakia-7
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Košický kraj
+  code:  8
+  alias: slovakia-8
+  srcalias:  slovakia-latest
+  pre_clip: 1
+  skip_mapset: 1
+
+
+# Mapsets
+
+---
+
+- name:  Slovenská republika
+  fid: 5757
+  filename: slovakia
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - slovakia-1
+    - slovakia-2
+    - slovakia-3
+    - slovakia-4
+    - slovakia-5
+    - slovakia-6
+    - slovakia-7
+    - slovakia-8
+
