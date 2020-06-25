@@ -772,7 +772,7 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Нижегородская область (1)
-  code:  223
+  code:  278
   alias: nizhegorod-1
   srcalias: local
   srcfilename: local
@@ -783,8 +783,19 @@ skip_img_build:    0
   skip_mp_upload: 1
 
 - name:  Нижегородская область (2)
-  code:  224
+  code:  279
   alias: nizhegorod-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Нижегородская область (3)
+  code:  280
+  alias: nizhegorod-3
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -1254,6 +1265,7 @@ skip_img_build:    0
   parts:
     - nizhegorod-1
     - nizhegorod-2
+    - nizhegorod-3
 
 - name:  Ханты-Мансийский АО - Югра
   fid: 518
@@ -1509,6 +1521,7 @@ skip_img_build:    0
     - kirov
     - nizhegorod-1
     - nizhegorod-2
+    - nizhegorod-3
     - orenburg
     - penz
     - perm-1
@@ -1619,6 +1632,7 @@ skip_img_build:    0
     - murmansk
     - nizhegorod-1
     - nizhegorod-2
+    - nizhegorod-3
     - novgorod
     - novosib-1
     - novosib-2
