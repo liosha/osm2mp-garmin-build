@@ -278,13 +278,6 @@ skip_img_build:    0
   onering: yes
   keys:  --mp-header TreSize=2048
 
-- name:  Кировская область
-  code:  43
-  alias: kirov
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Костромская область
   code:  44
   alias: kostrom
@@ -1221,6 +1214,46 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Кировская область (1)
+  code:  287
+  alias: kirov-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Кировская область (2)
+  code:  288
+  alias: kirov-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Кировская область (3)
+  code:  289
+  alias: kirov-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Кировская область (4)
+  code:  290
+  alias: kirov-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
 
 # Mapsets
 
@@ -1414,6 +1447,16 @@ skip_img_build:    0
     - karel-1
     - karel-2
 
+- name: Кировская область
+  fid: 528
+  filename: kirov
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - kirov-1
+    - kirov-2
+    - kirov-3
+    - kirov-4
 
 - name: Центральный округ
   fid: 501
@@ -1572,7 +1615,10 @@ skip_img_build:    0
     - tatar
     - udmurt
     - chuvash
-    - kirov
+    - kirov-1
+    - kirov-2
+    - kirov-3
+    - kirov-4
     - nizhegorod-1
     - nizhegorod-2
     - nizhegorod-3
@@ -1663,7 +1709,10 @@ skip_img_build:    0
     - kamch
     - kemerovo-1
     - kemerovo-2
-    - kirov
+    - kirov-1
+    - kirov-2
+    - kirov-3
+    - kirov-4
     - kostrom
     - kurgan
     - kursk
