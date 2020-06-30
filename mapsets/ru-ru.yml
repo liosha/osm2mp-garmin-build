@@ -829,7 +829,7 @@ skip_img_build:    0
   skip_mp_upload: 1
  
 - name:  Челябинская область (1)
-  code:  227
+  code:  281
   alias: chel-1
   srcalias: local
   srcfilename: local
@@ -840,7 +840,7 @@ skip_img_build:    0
   skip_mp_upload: 1
  
 - name:  Челябинская область (2)
-  code:  228
+  code:  282
   alias: chel-2
   srcalias: local
   srcfilename: local
@@ -849,6 +849,52 @@ skip_img_build:    0
   onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
+
+- name:  Челябинская область (3)
+  code:  283
+  alias: chel-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Челябинская область (4)
+  code:  284
+  alias: chel-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+
+- name:  Челябинская область (5)
+  code:  285
+  alias: chel-5
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Челябинская область (6)
+  code:  286
+  alias: chel-6
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 - name:  Кемеровская область (1)
   code:  229 
@@ -1284,6 +1330,10 @@ skip_img_build:    0
   parts:
     - chel-1
     - chel-2
+    - chel-3
+    - chel-4
+    - chel-5
+    - chel-6
 
 - name:  Кемеровская область
   fid: 520
@@ -1501,6 +1551,10 @@ skip_img_build:    0
     - tumen
     - chel-1
     - chel-2
+    - chel-3
+    - chel-4
+    - chel-5
+    - chel-6
     - khanty-1
     - khanty-2
     - yamal
@@ -1669,6 +1723,10 @@ skip_img_build:    0
     - ulyan
     - chel-1
     - chel-2
+    - chel-3
+    - chel-4
+    - chel-5
+    - chel-6
     - zabaikal
     - yarosl
     - evrey
