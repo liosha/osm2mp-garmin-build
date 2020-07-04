@@ -16,13 +16,14 @@ readme:
   - readme/readme_en.txt
   - readme/readme_ru.txt
 keys:           --textfilter PrepareCP1251 --default-lang=lv --lt-equal ru=en
-url_base:       http://data.gis-lab.info/osm_dump/dump/latest/
+url_base:       http://localhost/
+format:         o5m
 config_file_ftp:   ftp.yml
 continue_mode:     1
 make_house_search: 1
 mp_threads_num:    1
 update_cfg:        0
-skip_dl_src:       0
+skip_dl_src:       1
 skip_dl_bounds:    0
 skip_img_build:    0
 skip_mp_upload:    1
@@ -34,35 +35,40 @@ skip_mp_upload:    1
 - name:  Земгале
   code:  1
   alias: lv-zemgale
-  srcalias:  LV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Курземе
   code:  2
   alias: lv-kurzeme
-  srcalias:  LV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Латгале
   code:  3
   alias: lv-latgale
-  srcalias:  LV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Видземе
   code:  4
   alias: lv-vidzeme
-  srcalias:  LV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
 
 - name:  Латвия (море)
   code:  5
   alias: lv-sea
-  srcalias:  LV
+  srcalias: local
+  srcfilename: local
   pre_clip: 1
   skip_mapset: 1
   keys: --water-back
