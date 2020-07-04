@@ -1458,6 +1458,18 @@ skip_img_build:    0
     - kirov-3
     - kirov-4
 
+- name: Москва
+  fid: 529
+  filename: moscow
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - moscow-1
+    - moscow-2
+    - moscow-3
+    - moscow-4
+    - moscow-5
+
 - name: Центральный округ
   fid: 501
   filename: cfo
