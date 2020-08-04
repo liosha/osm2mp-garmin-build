@@ -118,13 +118,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Татарстан
-  code:  16
-  alias: tatar
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Тыва
   code:  17
   alias: tyva
@@ -1254,6 +1247,46 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
  
+- name:  Татарстан (1)
+  code:  291
+  alias: tatar-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Татарстан (2)
+  code:  292
+  alias: tatar-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Татарстан (3)
+  code:  293
+  alias: tatar-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Татарстан (4)
+  code:  294
+  alias: tatar-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
 
 # Mapsets
 
@@ -1470,6 +1503,17 @@ skip_img_build:    0
     - moscow-4
     - moscow-5
 
+- name: Татарстан
+  fid: 530
+  filename: tatar
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - tatar-1
+    - tatar-2
+    - tatar-3
+    - tatar-4
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1624,7 +1668,10 @@ skip_img_build:    0
     - bashkir-2
     - mariyel
     - mordov
-    - tatar
+    - tatar-1
+    - tatar-2
+    - tatar-3
+    - tatar-4
     - udmurt
     - chuvash
     - kirov-1
@@ -1689,7 +1736,10 @@ skip_img_build:    0
     - mordov
     - yakut
     - osetiya
-    - tatar
+    - tatar-1
+    - tatar-2
+    - tatar-3
+    - tatar-4
     - tyva
     - udmurt
     - khakas
