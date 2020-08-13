@@ -162,13 +162,6 @@ skip_img_build:    0
   onering: yes
   keys:  --mp-header TreSize=4000
 
-- name:  Приморский край
-  code:  25
-  alias: prim
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Хабаровский край
   code:  27
   alias: khabar
@@ -1286,7 +1279,27 @@ skip_img_build:    0
   clipbound: yes
   skip_mapset: 1
   skip_mp_upload: 1
- 
+
+- name:  Приморский край (1)
+  code:  295
+  alias: prim-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Приморский край (2)
+  code:  296
+  alias: prim-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -1514,6 +1527,15 @@ skip_img_build:    0
     - tatar-3
     - tatar-4
 
+- name: Приморский край
+  fid: 531
+  filename: prim
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - prim-1
+    - prim-2
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1604,7 +1626,8 @@ skip_img_build:    0
   parts:
     - yakut
     - kamch
-    - prim
+    - prim-1
+    - prim-2
     - khabar
     - amur
     - magadan
@@ -1749,7 +1772,8 @@ skip_img_build:    0
     - altayskiy-2
     - krasnodar
     - krasnoyarsk
-    - prim
+    - prim-1
+    - prim-2
     - stavrop-1
     - stavrop-2
     - khabar
