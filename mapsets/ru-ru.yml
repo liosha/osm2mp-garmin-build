@@ -392,13 +392,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
  
-- name:  Тверская область
-  code:  69
-  alias: tver
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
- 
 - name:  Томская область
   code:  70
   alias: tomsk
@@ -1300,6 +1293,46 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Тверская область (1)
+  code:  297
+  alias: tver-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Тверская область (2)
+  code:  298
+  alias: tver-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Тверская область (3)
+  code:  299
+  alias: tver-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Тверская область (4)
+  code:  300
+  alias: tver-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -1536,6 +1569,17 @@ skip_img_build:    0
     - prim-1
     - prim-2
 
+- name: Тверская область
+  fid: 532
+  filename: tver
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - tver-1
+    - tver-2
+    - tver-3
+    - tver-4
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1564,7 +1608,10 @@ skip_img_build:    0
     - ryazan
     - smol
     - tambov
-    - tver
+    - tver-1
+    - tver-2
+    - tver-3
+    - tver-4
     - tul
     - yarosl
 
@@ -1851,7 +1898,10 @@ skip_img_build:    0
     - sverdl-4
     - smol
     - tambov
-    - tver
+    - tver-1
+    - tver-2
+    - tver-3
+    - tver-4
     - tomsk
     - tul
     - tumen
