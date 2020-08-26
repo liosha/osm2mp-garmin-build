@@ -29,11 +29,28 @@ update_cfg:        0
 
 ---
 
-- name:  Aegean
-  code:  1
-  alias: tr-aegean
+- name:  Aegean (1)
+  code:  11
+  alias: tr-aegean-1
   srcalias:  turkey-latest
   pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
+- name:  Aegean (2)
+  code:  12
+  alias: tr-aegean-2
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
+- name:  Aegean (3)
+  code:  13
+  alias: tr-aegean-3
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
   skip_mapset: 1
 
 - name:  Black Sea
@@ -43,11 +60,28 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Central Anatolia
-  code: 3 
-  alias: tr-c-anat
+- name:  Central Anatolia (1)
+  code: 31 
+  alias: tr-c-anat-1
   srcalias:  turkey-latest
   pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
+- name:  Central Anatolia (2)
+  code: 32 
+  alias: tr-c-anat-2
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
+- name:  Central Anatolia (3)
+  code: 33 
+  alias: tr-c-anat-3
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
   skip_mapset: 1
 
 - name:  Eastern Anatolia
@@ -81,6 +115,14 @@ update_cfg:        0
   clipbound: yes
   skip_mapset: 1
 
+- name:  Marmara (4)
+  code:  54
+  alias: tr-marmara-4
+  srcalias:  turkey-latest
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+
 - name:  Mediterranean
   code:  6
   alias: tr-mediter
@@ -108,13 +150,18 @@ update_cfg:        0
   make_house_search: 1
   skip_mp_upload:    0
   parts:
-    - tr-aegean
+    - tr-aegean-1
+    - tr-aegean-2
+    - tr-aegean-3
     - tr-black
-    - tr-c-anat
+    - tr-c-anat-1
+    - tr-c-anat-2
+    - tr-c-anat-3
     - tr-e-anat
     - tr-marmara-1
     - tr-marmara-2
     - tr-marmara-3
+    - tr-marmara-4
     - tr-mediter
     - tr-se-anat
 
