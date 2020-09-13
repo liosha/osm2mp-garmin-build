@@ -11,6 +11,7 @@ filename:       ukraine
 fid:            5708
 config:         open-cfg/garmin-ru.cfg
 typ:            open-cfg/osm.typ
+codepage:       1251
 readme:         readme/readme_ru.txt
 keys:           -dl=uk -tl=uk --codepage=1251 --textfilter PrepareCP1251 
 url_base:       http://localhost/
@@ -51,42 +52,6 @@ update_cfg:        0
   code:  12
   alias: ua-dnepro
   bound: UA-12
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Донецька область (1)
-  code:  101
-  alias: ua-doneck-1
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Донецька область (2)
-  code:  102
-  alias: ua-doneck-2
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Донецька область (3)
-  code:  103
-  alias: ua-doneck-3
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Донецька область (4)
-  code:  104
-  alias: ua-doneck-4
   srcalias: local
   srcfilename: local
   clipbound: yes
@@ -137,16 +102,6 @@ update_cfg:        0
   code:  30
   alias: ua-kiev
   bound: UA-30
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
-- name:  Київська область
-  code:  32
-  alias: ua-kievobl
-  bound: UA-32
   srcalias: local
   srcfilename: local
   clipbound: yes
@@ -323,6 +278,86 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
+- name:  Донецька область (1)
+  code:  101
+  alias: ua-doneck-1
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецька область (2)
+  code:  102
+  alias: ua-doneck-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецька область (3)
+  code:  103
+  alias: ua-doneck-3
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Донецька область (4)
+  code:  104
+  alias: ua-doneck-4
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Київська область (1)
+  code:  105
+  alias: ua-kievobl-1
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Київська область (2)
+  code:  106
+  alias: ua-kievobl-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Київська область (3)
+  code:  107
+  alias: ua-kievobl-3
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Київська область (4)
+  code:  108
+  alias: ua-kievobl-4
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Київська область (5)
+  code:  109
+  alias: ua-kievobl-5
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
 
 
 # Mapsets
@@ -349,7 +384,11 @@ update_cfg:        0
     - ua-zaporog
     - ua-ivanofr
     - ua-kiev
-    - ua-kievobl
+    - ua-kievobl-1
+    - ua-kievobl-2
+    - ua-kievobl-3
+    - ua-kievobl-4
+    - ua-kievobl-5
     - ua-kirovogr
     - ua-sevastopol
     - ua-krym
