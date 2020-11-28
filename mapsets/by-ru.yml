@@ -37,12 +37,43 @@ skip_dl_src:       1
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Витебская область
-  code:  2
-  alias: by-vitebsk
-  bound: BY-VI
+- name:  Витебская область (1)
+  code:  15
+  alias: by-vitebsk-1
+  bound: BY-VI-1
   srcalias: local
   srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Витебская область (2)
+  code:  16
+  alias: by-vitebsk-2
+  bound: BY-VI-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Витебская область (3)
+  code:  17
+  alias: by-vitebsk-3
+  bound: BY-VI-3
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Витебская область (4)
+  code:  18
+  alias: by-vitebsk-4
+  bound: BY-VI-4
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
   pre_clip: 1
   skip_mapset: 1
 
@@ -128,7 +159,10 @@ skip_dl_src:       1
   skip_mp_upload:    0
   parts:
     - by-brest
-    - by-vitebsk
+    - by-vitebsk-1
+    - by-vitebsk-2
+    - by-vitebsk-3
+    - by-vitebsk-4
     - by-gomel-1
     - by-gomel-2
     - by-grodno
