@@ -210,13 +210,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Воронежская область
-  code:  36
-  alias: voronezh
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Ивановская область
   code:  37
   alias: ivanov
@@ -1393,6 +1386,50 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Воронежская область (1)
+  code:  307
+  alias: voronezh-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Воронежская область (2)
+  code:  308
+  alias: voronezh-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Воронежская область (3)
+  code:  309
+  alias: voronezh-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Воронежская область (4)
+  code:  310
+  alias: voronezh-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -1653,6 +1690,17 @@ skip_img_build:    0
     - krasnoyarsk-5
     - krasnoyarsk-6
 
+- name: Воронежская область
+  fid: 534
+  filename: voronezh
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - voronezh-1
+    - voronezh-2
+    - voronezh-3
+    - voronezh-4
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1662,7 +1710,10 @@ skip_img_build:    0
     - belgorod
     - bryansk
     - vladimir
-    - voronezh
+    - voronezh-1
+    - voronezh-2
+    - voronezh-3
+    - voronezh-4
     - ivanov
     - kaluzh
     - kostrom
@@ -1917,7 +1968,10 @@ skip_img_build:    0
     - vladimir
     - volgograd
     - vologda
-    - voronezh
+    - voronezh-1
+    - voronezh-2
+    - voronezh-3
+    - voronezh-4
     - ivanov
     - irkutsk
     - kalinin

@@ -48,16 +48,6 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Дніпропетровська область
-  code:  12
-  alias: ua-dnepro
-  bound: UA-12
-  srcalias: local
-  srcfilename: local
-  clipbound: yes
-  pre_clip: 1
-  skip_mapset: 1
-
 - name:  Житомирська область
   code:  18
   alias: ua-gitomir
@@ -359,6 +349,33 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
+- name:  Дніпропетровська область (1)
+  code:  110
+  alias: ua-dnepro-1
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Дніпропетровська область (2)
+  code:  111
+  alias: ua-dnepro-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Дніпропетровська область (3)
+  code:  112
+  alias: ua-dnepro-3
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
 
 # Mapsets
 
@@ -373,7 +390,9 @@ update_cfg:        0
     - ua-vinnic
     - ua-volyn
     - ua-lugansk
-    - ua-dnepro
+    - ua-dnepro-1
+    - ua-dnepro-2
+    - ua-dnepro-3
     - ua-doneck-1
     - ua-doneck-2
     - ua-doneck-3
