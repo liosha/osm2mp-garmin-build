@@ -535,50 +535,6 @@ skip_img_build:    0
   skip_mp_upload: 1
   keys: --water-back
 
-- name:  Московская область (1)
-  code:  250
-  alias: mosobl-1
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Московская область (2)
-  code:  251
-  alias: mosobl-2
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Московская область (3)
-  code:  252
-  alias: mosobl-3
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Московская область (4)
-  code:  253
-  alias: mosobl-4
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
 - name:  Остров Сахалин
   code:  211
   alias: sakhalin-island
@@ -1430,6 +1386,94 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Московская область (1)
+  code:  311
+  alias: mosobl-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (2)
+  code:  312
+  alias: mosobl-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (3)
+  code:  313
+  alias: mosobl-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (4)
+  code:  314
+  alias: mosobl-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (5)
+  code:  315
+  alias: mosobl-5
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (6)
+  code:  316
+  alias: mosobl-6
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (7)
+  code:  317
+  alias: mosobl-7
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Московская область (8)
+  code:  318
+  alias: mosobl-8
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 
 # Mapsets
 
@@ -1470,6 +1514,10 @@ skip_img_build:    0
     - mosobl-2
     - mosobl-3
     - mosobl-4
+    - mosobl-5
+    - mosobl-6
+    - mosobl-7
+    - mosobl-8
 
 - name: Сахалинская область
   fid: 512
@@ -1728,6 +1776,10 @@ skip_img_build:    0
     - mosobl-2
     - mosobl-3
     - mosobl-4
+    - mosobl-5
+    - mosobl-6
+    - mosobl-7
+    - mosobl-8
     - orlovsk
     - ryazan
     - smol
@@ -1997,6 +2049,10 @@ skip_img_build:    0
     - mosobl-2
     - mosobl-3
     - mosobl-4
+    - mosobl-5
+    - mosobl-6
+    - mosobl-7
+    - mosobl-8
     - moscow-1
     - moscow-2
     - moscow-3
