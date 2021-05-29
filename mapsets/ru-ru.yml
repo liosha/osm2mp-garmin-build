@@ -196,13 +196,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Волгоградская область
-  code:  34
-  alias: volgograd
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-
 - name:  Вологодская область
   code:  35
   alias: vologda
@@ -347,14 +340,7 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
   onering: yes
- 
-- name:  Самарская область
-  code:  63
-  alias: samar
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
- 
+
 - name:  Саратовская область
   code:  64
   alias: saratov
@@ -1473,7 +1459,94 @@ skip_img_build:    0
   onering: yes
   skip_mapset: 1
   skip_mp_upload: 1
+ 
+- name:  Самарская область (1)
+  code:  319
+  alias: samar-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Самарская область (2)
+  code:  320
+  alias: samar-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Самарская область (3)
+  code:  321
+  alias: samar-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Самарская область (4)
+  code:  322
+  alias: samar-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
+- name:  Волгоградская область (1)
+  code:  323
+  alias: volgograd-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Волгоградская область (2)
+  code:  324
+  alias: volgograd-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Волгоградская область (3)
+  code:  325
+  alias: volgograd-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Волгоградская область (4)
+  code:  326
+  alias: volgograd-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
 
 # Mapsets
 
@@ -1749,6 +1822,28 @@ skip_img_build:    0
     - voronezh-3
     - voronezh-4
 
+- name: Самарская область
+  fid: 535
+  filename: samar
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - samar-1
+    - samar-2
+    - samar-3
+    - samar-4
+
+- name: Волгоградская область
+  fid: 536
+  filename: volgograd
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - volgograd-1
+    - volgograd-2
+    - volgograd-3
+    - volgograd-4
+
 - name: Центральный округ
   fid: 501
   filename: cfo
@@ -1824,7 +1919,10 @@ skip_img_build:    0
     - adygeya
     - kalmyk
     - astrakhan
-    - volgograd
+    - volgograd-1
+    - volgograd-2
+    - volgograd-3
+    - volgograd-4
     - rostov-1
     - rostov-2
     - rostov-3
@@ -1937,7 +2035,10 @@ skip_img_build:    0
     - perm-1
     - perm-2
     - perm-3
-    - samar
+    - samar-1
+    - samar-2
+    - samar-3
+    - samar-4
     - saratov
     - ulyan
 
@@ -2018,7 +2119,10 @@ skip_img_build:    0
     - belgorod
     - bryansk
     - vladimir
-    - volgograd
+    - volgograd-1
+    - volgograd-2
+    - volgograd-3
+    - volgograd-4
     - vologda
     - voronezh-1
     - voronezh-2
@@ -2080,7 +2184,10 @@ skip_img_build:    0
     - rostov-5
     - rostov-6
     - ryazan
-    - samar
+    - samar-1
+    - samar-2
+    - samar-3
+    - samar-4
     - saratov
     - sakhalin-island
     - sakhalin-uzkur
