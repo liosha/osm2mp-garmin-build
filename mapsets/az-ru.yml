@@ -17,26 +17,77 @@ keys:           --textfilter PrepareCP1251 --default-lang=az --lt-equal ru=en --
 url_base:       http://localhost/
 format:         o5m
 config_file_ftp:   ftp.yml
-continue_mode:     1
+continue_mode:     0
 make_house_search: 1
 mp_threads_num:    1
 update_cfg:        0
 skip_dl_src:       1
+skip_mp_upload:    1   
+
 
 # Regions
 
 ---
 
-- name:  Азербайджан
-  code:  0
-  alias:  azerbaijan
-  bound:  az
+- name:  Азербайджан (1)
+  code:  1
+  alias:  azerbaijan-1
   srcalias: local
   srcfilename: local
-  pre_clip: 1
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Азербайджан (2)
+  code:  2
+  alias:  azerbaijan-2
+  srcalias: local
+  srcfilename: local
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Азербайджан (3)
+  code:  3
+  alias:  azerbaijan-3
+  srcalias: local
+  srcfilename: local
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Азербайджан (4)
+  code:  4
+  alias:  azerbaijan-4
+  srcalias: local
+  srcfilename: local
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Азербайджан (5)
+  code:  5
+  alias:  azerbaijan-5
+  srcalias: local
+  srcfilename: local
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
 
 # Mapsets
 
 ---
 
+- name:  Азербайджан 
+  fid: 5742
+  filename: azerbaijan
+  make_house_search: 1
+  skip_mp_upload:    0
+  parts:
+    - azerbaijan-1
+    - azerbaijan-2
+    - azerbaijan-3
+    - azerbaijan-4
+    - azerbaijan-5
 

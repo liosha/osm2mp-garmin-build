@@ -27,25 +27,89 @@ update_cfg:        0
 
 ---
 
-- name:  Croatia (South)
+- name:  Croatia (1)
   code:  1
-  alias: croatia-south
+  alias: croatia-1
   srcalias:  croatia-latest
   skip_mapset: 1
   pre_clip: yes
   clipbound: yes
 
-- name:  Croatia (North-East)
+- name:  Croatia (2)
   code:  2
-  alias: croatia-ne
+  alias: croatia-2
   srcalias:  croatia-latest
   skip_mapset: 1
   pre_clip: yes
   clipbound: yes
 
-- name:  Croatia (North-West)
+- name:  Croatia (3)
   code:  3
-  alias: croatia-nw
+  alias: croatia-3
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (4)
+  code:  4
+  alias: croatia-4
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (5)
+  code:  5
+  alias: croatia-5
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (6)
+  code:  6
+  alias: croatia-6
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (7)
+  code:  7
+  alias: croatia-7
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (8)
+  code:  8
+  alias: croatia-8
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (9)
+  code:  9
+  alias: croatia-9
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (10)
+  code:  10
+  alias: croatia-10
+  srcalias:  croatia-latest
+  skip_mapset: 1
+  pre_clip: yes
+  clipbound: yes
+
+- name:  Croatia (11)
+  code:  11
+  alias: croatia-11
   srcalias:  croatia-latest
   skip_mapset: 1
   pre_clip: yes
@@ -62,7 +126,15 @@ update_cfg:        0
   make_house_search: 1
   skip_mp_upload:    0
   parts:
-    - croatia-south
-    - croatia-ne
-    - croatia-nw
+    - croatia-1
+    - croatia-2
+    - croatia-3
+    - croatia-4
+    - croatia-5
+    - croatia-6
+    - croatia-7
+    - croatia-8
+    - croatia-9
+    - croatia-10
+    - croatia-11
 

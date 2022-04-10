@@ -210,14 +210,6 @@ skip_img_build:    0
   srcfilename: local
   pre_clip: 1
 
-- name:  Иркутская область
-  code:  38
-  alias: irkutsk
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  keys: --mp-header TreSize=2048
-
 - name:  Калининградская область
   code:  39
   alias: kalinin
@@ -816,28 +808,6 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
-- name:  Алтайский край (1)
-  code:  231
-  alias: altayskiy-1
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Алтайский край (2)
-  code:  232
-  alias: altayskiy-2
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  onering: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
 - name:  Ростовская область (1)
   code:  233
   alias: rostov-1
@@ -1017,26 +987,6 @@ skip_img_build:    0
 - name:  Дагестан (4)
   code:  272
   alias: dagestan-4
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
-
-- name:  Башкортостан (1)
-  code:  260
-  alias: bashkir-1
-  srcalias: local
-  srcfilename: local
-  pre_clip: 1
-  clipbound: yes
-  skip_mapset: 1
-  skip_mp_upload: 1
- 
-- name:  Башкортостан (2)
-  code:  261
-  alias: bashkir-2
   srcalias: local
   srcfilename: local
   pre_clip: 1
@@ -1548,6 +1498,141 @@ skip_img_build:    0
   skip_mapset: 1
   skip_mp_upload: 1
 
+- name:  Алтайский край (1)
+  code:  327
+  alias: altayskiy-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Алтайский край (2)
+  code:  328
+  alias: altayskiy-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Алтайский край (3)
+  code:  329
+  alias: altayskiy-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Алтайский край (4)
+  code:  330
+  alias: altayskiy-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  onering: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Башкортостан (1)
+  code:  331
+  alias: bashkir-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Башкортостан (2)
+  code:  332
+  alias: bashkir-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Башкортостан (3)
+  code:  333
+  alias: bashkir-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+ 
+- name:  Башкортостан (4)
+  code:  334
+  alias: bashkir-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Иркутская область (1)
+  code:  335
+  alias: irkutsk-1
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+#  keys: --mp-header TreSize=2048
+
+- name:  Иркутская область (2)
+  code:  336
+  alias: irkutsk-2
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Иркутская область (3)
+  code:  337
+  alias: irkutsk-3
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Иркутская область (4)
+  code:  338
+  alias: irkutsk-4
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
+- name:  Иркутская область (5)
+  code:  339
+  alias: irkutsk-5
+  srcalias: local
+  srcfilename: local
+  pre_clip: 1
+  clipbound: yes
+  skip_mapset: 1
+  skip_mp_upload: 1
+
 # Mapsets
 
 ---
@@ -1682,6 +1767,8 @@ skip_img_build:    0
   parts:
     - altayskiy-1
     - altayskiy-2
+    - altayskiy-3
+    - altayskiy-4
 
 - name:  Ростовская область
   fid: 522
@@ -1734,6 +1821,8 @@ skip_img_build:    0
   parts:
     - bashkir-1
     - bashkir-2
+    - bashkir-3
+    - bashkir-4
 
 - name: Карелия
   fid: 527
@@ -1843,6 +1932,18 @@ skip_img_build:    0
     - volgograd-2
     - volgograd-3
     - volgograd-4
+
+- name: Иркутская область
+  fid: 537
+  filename: irkutsk
+  make_house_search: 1
+  skip_mp_upload: 0
+  parts:
+    - irkutsk-1
+    - irkutsk-2
+    - irkutsk-3
+    - irkutsk-4
+    - irkutsk-5
 
 - name: Центральный округ
   fid: 501
@@ -1970,6 +2071,8 @@ skip_img_build:    0
     - khakas
     - altayskiy-1
     - altayskiy-2
+    - altayskiy-3
+    - altayskiy-4
     - zabaikal
     - krasnoyarsk-1
     - krasnoyarsk-2
@@ -1977,7 +2080,11 @@ skip_img_build:    0
     - krasnoyarsk-4
     - krasnoyarsk-5
     - krasnoyarsk-6
-    - irkutsk
+    - irkutsk-1
+    - irkutsk-2
+    - irkutsk-3
+    - irkutsk-4
+    - irkutsk-5
     - kemerovo-1
     - kemerovo-2
     - novosib-1
@@ -2015,6 +2122,8 @@ skip_img_build:    0
   parts:
     - bashkir-1
     - bashkir-2
+    - bashkir-3
+    - bashkir-4
     - mariyel
     - mordov
     - tatar-1
@@ -2070,6 +2179,8 @@ skip_img_build:    0
     - adygeya
     - bashkir-1
     - bashkir-2
+    - bashkir-3
+    - bashkir-4
     - buryat
     - altay
     - dagestan-1
@@ -2099,6 +2210,8 @@ skip_img_build:    0
     - chuvash
     - altayskiy-1
     - altayskiy-2
+    - altayskiy-3
+    - altayskiy-4
     - krasnodar
     - krasnoyarsk-1
     - krasnoyarsk-2
@@ -2129,7 +2242,11 @@ skip_img_build:    0
     - voronezh-3
     - voronezh-4
     - ivanov
-    - irkutsk
+    - irkutsk-1
+    - irkutsk-2
+    - irkutsk-3
+    - irkutsk-4
+    - irkutsk-5
     - kalinin
     - kaluzh
     - kamch
