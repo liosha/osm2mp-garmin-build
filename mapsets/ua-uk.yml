@@ -138,10 +138,27 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Львівська область
-  code:  46
-  alias: ua-lvov
-  bound: UA-46
+- name:  Львівська область (1)
+  code:  461
+  alias: ua-lvivobl-1
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Львівська область (2)
+  code:  462
+  alias: ua-lvivobl-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Львівська область (3)
+  code:  463
+  alias: ua-lvivobl-3
   srcalias: local
   srcfilename: local
   clipbound: yes
@@ -208,10 +225,27 @@ update_cfg:        0
   pre_clip: 1
   skip_mapset: 1
 
-- name:  Харківська область
-  code:  63
-  alias: ua-harkov
-  bound: UA-63
+- name:  Харківська область (1)
+  code:  631
+  alias: ua-harkobl-1
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Харківська область (2)
+  code:  632
+  alias: ua-harkobl-2
+  srcalias: local
+  srcfilename: local
+  clipbound: yes
+  pre_clip: 1
+  skip_mapset: 1
+
+- name:  Харківська область (3)
+  code:  633
+  alias: ua-harkobl-3
   srcalias: local
   srcfilename: local
   clipbound: yes
@@ -411,13 +445,17 @@ update_cfg:        0
     - ua-kirovogr
     - ua-sevastopol
     - ua-krym
-    - ua-lvov
+    - ua-lvivobl-1
+    - ua-lvivobl-2
+    - ua-lvivobl-3
     - ua-nikolaev
     - ua-odess
     - ua-poltav
     - ua-sum
     - ua-ternop
-    - ua-harkov
+    - ua-harkobl-1
+    - ua-harkobl-2
+    - ua-harkobl-3
     - ua-herson
     - ua-hmeln
     - ua-cherkas
